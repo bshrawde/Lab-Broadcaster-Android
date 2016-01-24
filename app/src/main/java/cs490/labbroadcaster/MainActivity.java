@@ -1,7 +1,9 @@
 package cs490.labbroadcaster;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 
@@ -39,37 +42,34 @@ public class MainActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        data.add(new String("LWSN B158"));
-        data.add(new String("LWSN B148"));
-        data.add(new String("LWSN B146"));
-        data.add(new String("HAAS 257"));
-
-
         sharedPref = getSharedPreferences("login", 0);
         email = sharedPref.getString("email","");
         password = sharedPref.getString("pw","");
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new MainRecyclerAdapter(MainActivity.this, data, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
+
+                //TODO: START ANOTHER ACTIVITY FOR DISPLAYING SELECTED LAB'S INFO
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
         if( email.equals("") || password.equals("")){ //If user hasn't logged in before, show dialog box
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyleDark);
             builder.setTitle("Login with Purdue Account");
 
-            final EditText input = new EditText(getApplicationContext());
+            LayoutInflater inflater = this.getLayoutInflater();
 
-            final EditText input2 = new EditText(getApplicationContext());
+            View v = inflater.inflate(R.layout.login_box, null);
+            builder.setView(v);
+            final EditText input = (EditText) v.findViewById(R.id.email);
+            final EditText input2 = (EditText) v.findViewById(R.id.password);
 
-            input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            input.setHint("login@purdue.edu");
-            input2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            input2.setHint("Password");
-
-            LinearLayout ll = new LinearLayout(context);
-            ll.setOrientation(LinearLayout.VERTICAL);
-            ll.addView(input);
-            ll.addView(input2);
-
-            builder.setView(ll);
-            input.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
@@ -91,24 +91,13 @@ public class MainActivity extends ActionBarActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
                     dialog.cancel();
+                    addClassData();
                 }
             });
             builder.show();
+        }else{
+            addClassData();
         }
-        Toast.makeText(this, "Logged in as "+email,
-                Toast.LENGTH_SHORT).show();
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new MainRecyclerAdapter(MainActivity.this, data, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
-
-                //TODO: START ANOTHER ACTIVITY FOR DISPLAYING SELECTED LAB'S INFO
-            }
-        });
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -120,7 +109,31 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+
+        }else if(id == R.id.action_logout){
+            sharedPref = getSharedPreferences("login", 0);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("email", "");
+            editor.putString("pw", "");
+            editor.commit();
+            Intent i = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
         return true;
+    }
+
+    public void addClassData(){
+        data.add(new String("LWSN B158"));
+        data.add(new String("LWSN B148"));
+        data.add(new String("LWSN B146"));
+        data.add(new String("HAAS 257"));
+
+        adapter.notifyDataSetChanged();
     }
 
 }
