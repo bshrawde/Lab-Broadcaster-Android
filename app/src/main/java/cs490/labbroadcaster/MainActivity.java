@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
 
             input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             input.setHint("login@purdue.edu");
-            input2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            input2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             input2.setHint("Password");
 
             LinearLayout ll = new LinearLayout(context);
