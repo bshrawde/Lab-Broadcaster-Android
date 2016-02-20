@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-public class LabWebView extends ActionBarActivity {
+public class LabWebView extends AppCompatActivity {
 
     private WebView webView;
     Context context = this;
@@ -40,10 +41,5 @@ public class LabWebView extends ActionBarActivity {
             webView.loadUrl(calendar);
 
         }
-
-
-
-
-
     }
 }

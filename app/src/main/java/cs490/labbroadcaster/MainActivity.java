@@ -1,5 +1,6 @@
 package cs490.labbroadcaster;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +30,7 @@ import java.util.zip.Inflater;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
     public String email;
     public String password;
@@ -132,8 +133,10 @@ public class MainActivity extends ActionBarActivity {
             Intent i = new Intent(MainActivity.this, MainActivity.class);
             startActivity(i);
             finish();
-        }else if(id == R.id.action_user_settings){
+        }else if(id == R.id.action_user_preferences){
             Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this, UserPreferences.class);
+            startActivity(i);
         }
 
         return true;
