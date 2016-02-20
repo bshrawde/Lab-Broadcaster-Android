@@ -59,9 +59,8 @@ public class MainActivity extends ActionBarActivity {
         adapter = new MainRecyclerAdapter(MainActivity.this, data, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
 
-                //TODO: START ANOTHER ACTIVITY FOR DISPLAYING SELECTED LAB'S INFO
                 Intent intent = new Intent(MainActivity.this, ViewLabActivity.class);
                 intent.putExtra("labRoom", data.get(position).toString());
                 startActivity(intent);
@@ -133,6 +132,8 @@ public class MainActivity extends ActionBarActivity {
             Intent i = new Intent(MainActivity.this, MainActivity.class);
             startActivity(i);
             finish();
+        }else if(id == R.id.action_user_settings){
+            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
         }
 
         return true;

@@ -36,7 +36,7 @@ public class ViewLabActivity extends ActionBarActivity {
         calendar.setTypeface(robotoMono);
 
         /*TODO: USE WEBVIEW AND CHROME CUSTOM TABS DEPENDING ON ANDRIOD VERSION*/
-        /*TODO: FIX BUG WHERE STRING ROOM BECOMES NULL WHEN RETURN FROM WEBVIEW ACTIVITY*/
+        /*TODO: FIX BUG WHERE STRING ROOM BECOMES NULL WHEN RETURN FROM WEBVIEW ACTIVITY With BACK BUTTON IN TOOLBAR*/
 
         webcam.setOnClickListener(new View.OnClickListener() {
             @Override

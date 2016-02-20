@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Lab Broadcaster</string>
     <string name="title_activity_view_lab">ViewLabActivity</string>
+    <string name="title_activity_user_settings">Settings</string>
 </resources>
