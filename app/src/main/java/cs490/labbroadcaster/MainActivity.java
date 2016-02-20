@@ -62,6 +62,9 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
 
                 //TODO: START ANOTHER ACTIVITY FOR DISPLAYING SELECTED LAB'S INFO
+                Intent intent = new Intent(MainActivity.this, ViewLabActivity.class);
+                intent.putExtra("labRoom", data.get(position).toString());
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);
