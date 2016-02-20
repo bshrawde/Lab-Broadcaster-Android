@@ -23,7 +23,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".WebCamView"
+        <activity android:name=".LabWebView"
                   android:parentActivityName=".ViewLabActivity">
 
         </activity>

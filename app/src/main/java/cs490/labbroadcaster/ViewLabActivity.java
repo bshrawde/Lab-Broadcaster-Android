@@ -4,16 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class ViewLabActivity extends ActionBarActivity {
 
@@ -35,36 +30,55 @@ public class ViewLabActivity extends ActionBarActivity {
         mTitle.setTypeface(robotoMono);
 
         final Button webcam = (Button) findViewById(R.id.webcamLink);
-        String linkText = "";
+
+        final Button calendar = (Button) findViewById(R.id.calendarLink);
+        webcam.setTypeface(robotoMono);
+        calendar.setTypeface(robotoMono);
+
         /*TODO: USE WEBVIEW AND CHROME CUSTOM TABS DEPENDING ON ANDRIOD VERSION*/
         /*TODO: FIX BUG WHERE STRING ROOM BECOMES NULL WHEN RETURN FROM WEBVIEW ACTIVITY*/
-        if("LWSN B146".equals(room)){
-//            linkText = "<a href='\\http://lwsnb146-cam.cs.purdue.edu/view/index.shtml\\'>Click here to view the webcam for this room!</a>";
-            linkText = "http://lwsnb146-cam.cs.purdue.edu/view/index.shtml";
-        }else if("LWSN B148".equals(room)){
-//            linkText = "<a href='http://lwsnb148-cam.cs.purdue.edu/view/index.shtml'>Click here to view the webcam for this room!</a>";
-            linkText = "http://lwsnb148-cam.cs.purdue.edu/view/index.shtml";
-        }else if("LWSN B158".equals(room)){
-//            linkText = "<a href='http://lwsnb158-cam.cs.purdue.edu/view/index.shtml'>Click here to view the webcam for this room!</a>";
-            linkText = "http://lwsnb158-cam.cs.purdue.edu/view/index.shtml";
-        }else if("HAAS 257".equals(room)){
-//            linkText = "<a href='http://haas257-cam.cs.purdue.edu/view/index.shtml'>Click here to view the webcam for this room!</a>";
-            linkText = "http://haas257-cam.cs.purdue.edu/view/index.shtml";
-        }
-        final String finalLinkText = linkText;
+
         webcam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent webview = new Intent(ViewLabActivity.this, WebCamView.class);
-                webview.putExtra("webcamURL", finalLinkText);
+                String linkText = "";
+                if("LWSN B146".equals(room)){
+                    linkText = "http://lwsnb146-cam.cs.purdue.edu/view/index.shtml";
+                }else if("LWSN B148".equals(room)){
+                    linkText = "http://lwsnb148-cam.cs.purdue.edu/view/index.shtml";
+                }else if("LWSN B158".equals(room)){
+                    linkText = "http://lwsnb158-cam.cs.purdue.edu/view/index.shtml";
+                }else if("HAAS 257".equals(room)){
+                    linkText = "http://haas257-cam.cs.purdue.edu/view/index.shtml";
+                }
+                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
+                webview.putExtra("webcamURL", linkText);
+                webview.putExtra("calendarURL", "");
                 webview.putExtra("room", room);
                 startActivity(webview);
             }
         });
-//        webcam.setMovementMethod(LinkMovementMethod.getInstance());
-//        webcam.setText(Html.fromHtml(linkText));
-//        webcam.setText(linkText);
-        webcam.setTypeface(robotoMono);
 
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String linkText = "";
+                if("LWSN B146".equals(room)){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb146.html";
+                }else if("LWSN B148".equals(room)){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb148.html";
+                }else if("LWSN B158".equals(room)){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb158.html";
+                }else if("HAAS 257".equals(room)){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/haas257.html";
+                }
+
+                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
+                webview.putExtra("calendarURL", linkText);
+                webview.putExtra("webcamURL", "");
+                webview.putExtra("room", room);
+                startActivity(webview);
+            }
+        });
     }
 }

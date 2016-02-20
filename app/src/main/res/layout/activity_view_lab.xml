@@ -40,4 +40,17 @@
         android:layout_below="@id/toolbar"
         android:gravity="center_horizontal|center_vertical"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Click here to view the calendar for this room!"
+        android:id="@+id/calendarLink"
+        android:clickable="true"
+        android:textSize="15sp"
+        android:layout_below="@id/webcamLink"
+        android:gravity="center_horizontal|center_vertical"/>
+
 </RelativeLayout>
