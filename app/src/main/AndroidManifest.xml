@@ -27,6 +27,11 @@
             android:name=".LabWebView"
             android:parentActivityName=".ViewLabActivity">
         </activity>
+        <activity
+            android:name=".UserPreferences"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>
