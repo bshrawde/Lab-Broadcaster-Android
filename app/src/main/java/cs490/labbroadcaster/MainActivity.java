@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, ViewLabActivity.class);
                 intent.putExtra("labRoom", data.get(position).toString());
+                intent.putExtra("capacity",cap.get(position).toString());
 
                 startActivity(intent);
             }
@@ -146,13 +147,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void addClassData(){
         data.add(new String("LWSN B160"));
+            cap.add(new String("X/25 Computers"));
         data.add(new String("LWSN B158"));
+            cap.add(new String("X/24 Computers"));
         data.add(new String("LWSN B148"));
+            cap.add(new String("X/25 Computers"));
         data.add(new String("LWSN B146"));
+            cap.add(new String("X/24 Computers"));
         data.add(new String("LWSN B131"));
+            cap.add(new String("X/?? Computers"));
         data.add(new String("HAAS G56"));
+            cap.add(new String("X/24 Computers"));
         data.add(new String("HAAS G40"));
+            cap.add(new String("X/24 Computers"));
         data.add(new String("HAAS 257"));
+            cap.add(new String("X/21 Computers"));
 
         adapter.notifyDataSetChanged();
     }
