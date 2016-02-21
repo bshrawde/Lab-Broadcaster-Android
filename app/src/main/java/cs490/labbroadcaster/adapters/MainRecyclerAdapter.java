@@ -29,8 +29,10 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     CustomItemClickListener listener;
 
     ArrayList<String> data = new ArrayList<>();
-    public MainRecyclerAdapter(Context context, ArrayList<String> data, CustomItemClickListener listener){
+    ArrayList<String> cap = new ArrayList<>();
+    public MainRecyclerAdapter(Context context, ArrayList<String> data,ArrayList<String> cap, CustomItemClickListener listener){
         this.mcontext = context;
+        this.cap = cap;
         this.data = data;
         this.listener = listener;
     }
@@ -57,7 +59,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Typeface robotoMono = Typeface.createFromAsset(mcontext.getAssets(), "fonts/roboto-mono-regular.ttf");
         String cRoom = data.get(position);
-        String capacity = "15/20 Computers";
+        String capacity = cap.get(position);
         holder.room.setText(cRoom);
         holder.capacity.setText(capacity);
         holder.room.setTypeface(robotoMono);

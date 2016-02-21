@@ -7,5 +7,13 @@
     <string name="broadcast_summary">Choose whether to broadcast your location when you are in a lab.</string>
 
     <string name="status_setting">Current Status</string>
+    <string name="B160">LWSN B160</string>
+    <string name="B158">LWSN B158</string>
+    <string name="B148">LWSN B148</string>
+    <string name="B146">LWSN B146</string>
+    <string name="B131">LWSN B131</string>
+    <string name="G56">HAAS G56</string>
+    <string name="G40">HAAS G40</string>
+    <string name="H257">HAAS 257</string>
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
 </resources>
