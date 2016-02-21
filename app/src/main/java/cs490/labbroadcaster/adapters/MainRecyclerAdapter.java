@@ -60,6 +60,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         Typeface robotoMono = Typeface.createFromAsset(mcontext.getAssets(), "fonts/roboto-mono-regular.ttf");
         String cRoom = data.get(position);
         String capacity = cap.get(position);
+        //TODO able to change capactiy string to reflect current status of labs
         holder.room.setText(cRoom);
         holder.capacity.setText(capacity);
         holder.room.setTypeface(robotoMono);
