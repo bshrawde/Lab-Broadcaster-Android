@@ -51,6 +51,15 @@ public class ViewLabActivity extends AppCompatActivity {
                     linkText = "http://lwsnb158-cam.cs.purdue.edu/view/index.shtml";
                 }else if("HAAS 257".equals(room)){
                     linkText = "http://haas257-cam.cs.purdue.edu/view/index.shtml";
+                }else if("LWSN B160".equals((room))){
+                    linkText = "http://lwsnb160-cam.cs.purdue.edu/view/index.shtml";
+                }else if("LWSN B131".equals((room))){
+                    linkText = "http://lwsnb131-cam.cs.purdue.edu/view/index.shtml";
+                }else if("HAAS G40".equals((room))){
+                    linkText = "http://haasg040-cam.cs.purdue.edu/view/index.shtml";
+                } else if ("HAAS G56".equals((room))) {
+
+                    linkText = "http://haasg056-cam.cs.purdue.edu/view/index.shtml";
                 }
                 Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
                 webview.putExtra("webcamURL", linkText);
@@ -59,7 +68,6 @@ public class ViewLabActivity extends AppCompatActivity {
                 startActivity(webview);
             }
         });
-
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +80,14 @@ public class ViewLabActivity extends AppCompatActivity {
                     linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb158.html";
                 }else if("HAAS 257".equals(room)){
                     linkText = "https://www.cs.purdue.edu/resources/facilities/haas257.html";
+                }else if("LWSN B160".equals((room))){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb160.html";
+                }else if("LWSN B131".equals((room))){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb131.html";
+                }else if("HAAS G40".equals((room))){
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/haasg40.html";
+                } else if ("HAAS G56".equals((room))) {
+                    linkText = "https://www.cs.purdue.edu/resources/facilities/haasg56.html";
                 }
 
                 Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);

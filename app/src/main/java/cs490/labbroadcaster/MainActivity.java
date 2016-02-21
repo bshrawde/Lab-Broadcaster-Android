@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public String password;
     Context context = this;
     ArrayList<String> data = new ArrayList<>();
+    ArrayList<String> cap = new ArrayList<>();
     private RecyclerView recyclerView;
     private MainRecyclerAdapter adapter;
     @Override
@@ -57,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new MainRecyclerAdapter(MainActivity.this, data, new CustomItemClickListener() {
+        adapter = new MainRecyclerAdapter(MainActivity.this, data,cap, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 //                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, ViewLabActivity.class);
                 intent.putExtra("labRoom", data.get(position).toString());
+
                 startActivity(intent);
             }
         });
@@ -143,9 +145,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addClassData(){
+        data.add(new String("LWSN B160"));
         data.add(new String("LWSN B158"));
         data.add(new String("LWSN B148"));
         data.add(new String("LWSN B146"));
+        data.add(new String("LWSN B131"));
+        data.add(new String("HAAS G56"));
+        data.add(new String("HAAS G40"));
         data.add(new String("HAAS 257"));
 
         adapter.notifyDataSetChanged();
