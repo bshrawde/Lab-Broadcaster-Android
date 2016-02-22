@@ -21,11 +21,13 @@
             android:name=".ViewLabActivity"
             android:label="@string/title_activity_view_lab"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".LabWebView"
-            android:parentActivityName=".ViewLabActivity">
+            android:parentActivityName=".ViewLabActivity"
+            >
         </activity>
         <activity
             android:name=".UserPreferences"

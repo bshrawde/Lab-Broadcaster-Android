@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class ViewLabActivity extends AppCompatActivity {
 
     Context context = this;
+    private String room;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +25,11 @@ public class ViewLabActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Intent intent = getIntent();
-        final String room = intent.getStringExtra("labRoom");
+        if(getIntent().hasExtra("labRoom")){
+            room = getIntent().getStringExtra("labRoom");
+
+        }
+
 //        Log.e("Room",room);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText(room);
