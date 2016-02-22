@@ -16,4 +16,80 @@
     <string name="G40">HAAS G40</string>
     <string name="H257">HAAS 257</string>
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
+
+    <string-array name="courses">
+        <item >CS 177</item>
+        <item >CS 180</item>
+        <item >CS 182</item>
+        <item >CS 240</item>
+        <item >CS 250</item>
+        <item >CS 251</item>
+        <item >CS 252</item>
+        <item >CS 307</item>
+        <item >CS 348</item>
+        <item >CS 352</item>
+        <item >CS 354</item>
+        <item >CS 355</item>
+        <item >CS 381</item>
+        <item >CS 390</item>
+        <item >CS 408</item>
+        <item >CS 422</item>
+        <item >CS 434</item>
+        <item >CS 448</item>
+        <item >CS 456</item>
+        <item >CS 471</item>
+        <item >CS 483</item>
+    </string-array>
+
+    <string-array name="courseschecked">
+        <item >CS 177-checked</item>
+        <item >CS 180-checked</item>
+        <item >CS 182-checked</item>
+        <item >CS 240-checked</item>
+        <item >CS 250-checked</item>
+        <item >CS 251-checked</item>
+        <item >CS 252-checked</item>
+        <item >CS 307-checked</item>
+        <item >CS 348-checked</item>
+        <item >CS 352-checked</item>
+        <item >CS 354-checked</item>
+        <item >CS 355-checked</item>
+        <item >CS 381-checked</item>
+        <item >CS 390-checked</item>
+        <item >CS 408-checked</item>
+        <item >CS 422-checked</item>
+        <item >CS 434-checked</item>
+        <item >CS 448-checked</item>
+        <item >CS 456-checked</item>
+        <item >CS 471-checked</item>
+        <item >CS 483-checked</item>
+    </string-array>-checked
+
+    <string-array name="languages">
+        <item >Python</item>
+        <item >Java</item>
+        <item >C</item>
+        <item >C#</item>
+        <item >C++</item>
+        <item >Bash Script</item>
+        <item >Ruby</item>
+        <item >Perl</item>
+        <item >SQL</item>
+        <item >PL SQL</item>
+        <item >HTML</item>
+    </string-array>
+    <string-array name="languageschecked">
+        <item >Python-checked</item>
+        <item >Java-checked</item>
+        <item >C-checked</item>
+        <item >C#-checked</item>
+        <item >C++-checked</item>
+        <item >Bash Script-checked</item>
+        <item >Ruby-checked</item>
+        <item >Perl-checked</item>
+        <item >SQL-checked</item>
+        <item >PL SQL-checked</item>
+        <item >HTML-checked</item>
+    </string-array>
+    <string-array name="empty_array"/>
 </resources>

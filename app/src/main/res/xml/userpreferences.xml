@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:windowBackground="?attr/background">
     <SwitchPreference
         android:key="pref_broadcast"
         android:title="@string/broadcast_setting"
@@ -12,4 +13,25 @@
         android:summary="@string/status_summary"
         android:defaultValue="Yes"
         ></EditTextPreference>
+    <MultiSelectListPreference
+        android:title="Courses Taken"
+        android:key="pref_classes"
+        android:summary="Select any CS courses you have taken."
+        android:entries="@array/courses"
+        android:entryValues="@array/courseschecked"
+        android:dialogTitle="Courses Taken"
+        android:defaultValue="@array/empty_array"
+        >
+    </MultiSelectListPreference>
+    <MultiSelectListPreference
+        android:title="Known Languages"
+        android:key="pref_languages"
+        android:summary="Select any languages you know."
+        android:entries="@array/languages"
+        android:entryValues="@array/languageschecked"
+        android:dialogTitle="Known Languages"
+        android:defaultValue="@array/empty_array"
+        >
+    </MultiSelectListPreference>
+
 </PreferenceScreen>

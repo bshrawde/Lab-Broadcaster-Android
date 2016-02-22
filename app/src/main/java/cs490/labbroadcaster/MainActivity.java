@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         email = sharedPref.getString("email","");
         password = sharedPref.getString("pw","");
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MainRecyclerAdapter(MainActivity.this, data,cap, new CustomItemClickListener() {
             @Override
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         }else if(id == R.id.action_user_preferences){
-            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(MainActivity.this, UserPreferences.class);
             startActivity(i);
         }
