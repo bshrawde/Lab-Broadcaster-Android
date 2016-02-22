@@ -16,6 +16,7 @@ public class ViewLabActivity extends AppCompatActivity {
 
     Context context = this;
     private String room;
+    private String capacity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,9 @@ public class ViewLabActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("labRoom")){
             room = getIntent().getStringExtra("labRoom");
-
+        }
+        if(getIntent().hasExtra("capacity")){
+            capacity = getIntent().getStringExtra("capacity");
         }
 
 //        Log.e("Room",room);
@@ -35,6 +38,10 @@ public class ViewLabActivity extends AppCompatActivity {
         mTitle.setText(room);
         Typeface robotoMono = Typeface.createFromAsset(context.getAssets(), "fonts/roboto-mono-regular.ttf");
         mTitle.setTypeface(robotoMono);
+
+        TextView mCapacity = (TextView) findViewById(R.id.capacity);
+        mCapacity.setText(capacity);
+        mCapacity.setTypeface(robotoMono);
 
         final Button webcam = (Button) findViewById(R.id.webcamLink);
 

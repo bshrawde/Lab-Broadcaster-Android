@@ -25,15 +25,13 @@
             android:textAllCaps="true"
             android:id="@+id/toolbar_title" />
     </android.support.v7.widget.Toolbar>
-
-
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp"
-        android:text="Click here to view the webcam for this room!"
+        android:text="Webcam"
         android:id="@+id/webcamLink"
         android:clickable="true"
         android:textSize="15sp"
@@ -41,16 +39,30 @@
         android:gravity="center_horizontal|center_vertical"/>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="Click here to view the calendar for this room!"
+        android:text="Schedule"
         android:id="@+id/calendarLink"
         android:clickable="true"
         android:textSize="15sp"
-        android:layout_below="@id/webcamLink"
+        android:layout_below="@id/toolbar"
+        android:layout_toRightOf="@id/webcamLink"
         android:gravity="center_horizontal|center_vertical"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="34dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@id/calendarLink"
+        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:id="@+id/capacity"
+        android:text="15/20 Computers"/>
+
 
 </RelativeLayout>
