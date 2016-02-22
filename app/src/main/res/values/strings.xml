@@ -18,14 +18,14 @@
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
 
     <string-array name="courses">
-        <item >CS 177</item>
-        <item >CS 180</item>
-        <item >CS 182</item>
-        <item >CS 240</item>
-        <item >CS 250</item>
-        <item >CS 251</item>
-        <item >CS 252</item>
-        <item >CS 307</item>
+        <item >CS 177: Programming with Multimedia Objects</item>
+        <item >CS 180: Problem Solving and Object-Oriented Programing</item>
+        <item >CS 182: Foundation Of Computer Science</item>
+        <item >CS 240: Programming in C</item>
+        <item >CS 250: Computer Architecture</item>
+        <item >CS 251: Data Structures and Algorithms</item>
+        <item >CS 252: Systems Programming</item>
+        <item >CS 307: Software Engineering</item>
         <item >CS 348</item>
         <item >CS 352</item>
         <item >CS 354</item>
@@ -44,7 +44,7 @@
     <string-array name="courseschecked">
         <item >CS 177-checked</item>
         <item >CS 180-checked</item>
-        <item >CS 182-checked</item>
+         <item >CS 182-checked</item>
         <item >CS 240-checked</item>
         <item >CS 250-checked</item>
         <item >CS 251-checked</item>
