@@ -24,6 +24,16 @@
         >
     </MultiSelectListPreference>
     <MultiSelectListPreference
+        android:title="Current Courses"
+        android:key="curr_classes"
+        android:summary="Select the CS courses you are currently taking"
+        android:entries="@array/courses"
+        android:entryValus="@array/currentchecked"
+        android:dialogTitle="Current Courses"
+        android:defaultValue="@array/empty_array"
+        >
+    </MultiSelectListPreference>
+    <MultiSelectListPreference
         android:title="Known Languages"
         android:key="pref_languages"
         android:summary="Select any languages you know."

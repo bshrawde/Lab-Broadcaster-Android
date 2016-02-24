@@ -18,33 +18,54 @@
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
 
     <string-array name="courses">
+        <item >CS 110: Introduction to Computers</item>
+        <item >CS 158: C Programming</item>
+        <item >CS 159: Programing Applications for Engineers</item>
         <item >CS 177: Programming with Multimedia Objects</item>
         <item >CS 180: Problem Solving and Object-Oriented Programing</item>
         <item >CS 182: Foundation Of Computer Science</item>
+        <item >CS 190-DL: Digital Literacy</item>
+        <item >CS 190-LCS: Learning Community Seminar</item>
+        <item >CS 197: Freshman Honors Seminar</item>
+        <item >CS 235: Introduction to Organizational Computing</item>
         <item >CS 240: Programming in C</item>
         <item >CS 250: Computer Architecture</item>
         <item >CS 251: Data Structures and Algorithms</item>
         <item >CS 252: Systems Programming</item>
         <item >CS 307: Software Engineering</item>
-        <item >CS 348</item>
-        <item >CS 352</item>
-        <item >CS 354</item>
-        <item >CS 355</item>
-        <item >CS 381</item>
-        <item >CS 390</item>
-        <item >CS 408</item>
-        <item >CS 422</item>
-        <item >CS 434</item>
-        <item >CS 448</item>
-        <item >CS 456</item>
-        <item >CS 471</item>
-        <item >CS 483</item>
+        <item >CS 348: Information Systems</item>
+        <item >CS 352: Compilers: Principles and Practice</item>
+        <item >CS 354: Operating Systems</item>
+        <item >CS 355: Introduction to Cryptography</item>
+        <item >CS 381: Introduction to the Analysis of Algorithms</item>
+        <item >CS 390-CPO: Competitive Programming</item>
+        <item >CS 390-SL2: Service Learning Outreach</item>
+        <item >CS 390-SLO: Service Learning Outreach</item>
+        <item >CS 390-VRA: Virtual Reality Applications</item>
+        <item >CS 408: Software Testing</item>
+        <item >CS 422: Computer Networks</item>
+        <item >CS 434: Advanced Computer Graphics</item>
+        <item >CS 448: Introduction to Relational Database Systems</item>
+        <item >CS 456: Programming Languages</item>
+        <item >CS 471: Introduction to Artificial Intelligence</item>
+        <item >CS 483: Introduction to the theory of computation</item>
+        <item >CS 490-DDP: Data Driven Apprch/Polcy Making</item>
+        <item >CS 490-IOS: IOS Development in Swift</item>
+        <item >CS 490-PHL: Ethics and Philosophy of Info</item>
+        <item >CS 490-SEP: Software Engr Senior Project</item>
     </string-array>
 
     <string-array name="courseschecked">
+        <item >CS 110-checked</item>
+        <item >CS 158-checked</item>
+        <item >CS 159-checked</item>
         <item >CS 177-checked</item>
         <item >CS 180-checked</item>
-         <item >CS 182-checked</item>
+        <item >CS 182-checked</item>
+        <item >CS 190-DL-checked</item>
+        <item >CS 190-LCS-checked</item>
+        <item >CS 197-checked</item>
+        <item >CS 235-checked</item>
         <item >CS 240-checked</item>
         <item >CS 250-checked</item>
         <item >CS 251-checked</item>
@@ -55,7 +76,10 @@
         <item >CS 354-checked</item>
         <item >CS 355-checked</item>
         <item >CS 381-checked</item>
-        <item >CS 390-checked</item>
+        <item >CS 390-CPO-checked</item>
+        <item >CS 390-SL2-checked</item>
+        <item >CS 390-SLO-checked</item>
+        <item >CS 390-VRA-checked</item>
         <item >CS 408-checked</item>
         <item >CS 422-checked</item>
         <item >CS 434-checked</item>
@@ -63,8 +87,48 @@
         <item >CS 456-checked</item>
         <item >CS 471-checked</item>
         <item >CS 483-checked</item>
+        <item >CS 490-DDP-checked</item>
+        <item >CS 490-IOS-checked</item>
+        <item >CS 490-PHL-checked</item>
+        <item >CS 490-SEP-checked</item>
     </string-array>-checked
-
+    <string-array name="currentchecked">
+        <item >CS 110-checked</item>
+        <item >CS 158-checked</item>
+        <item >CS 159-checked</item>
+        <item >CS 177-checked</item>
+        <item >CS 180-checked</item>
+        <item >CS 182-checked</item>
+        <item >CS 190-DL-checked</item>
+        <item >CS 190-LCS-checked</item>
+        <item >CS 197-checked</item>
+        <item >CS 235-checked</item>
+        <item >CS 240-checked</item>
+        <item >CS 250-checked</item>
+        <item >CS 251-checked</item>
+        <item >CS 252-checked</item>
+        <item >CS 307-checked</item>
+        <item >CS 348-checked</item>
+        <item >CS 352-checked</item>
+        <item >CS 354-checked</item>
+        <item >CS 355-checked</item>
+        <item >CS 381-checked</item>
+        <item >CS 390-CPO-checked</item>
+        <item >CS 390-SL2-checked</item>
+        <item >CS 390-SLO-checked</item>
+        <item >CS 390-VRA-checked</item>
+        <item >CS 408-checked</item>
+        <item >CS 422-checked</item>
+        <item >CS 434-checked</item>
+        <item >CS 448-checked</item>
+        <item >CS 456-checked</item>
+        <item >CS 471-checked</item>
+        <item >CS 483-checked</item>
+        <item >CS 490-DDP-checked</item>
+        <item >CS 490-IOS-checked</item>
+        <item >CS 490-PHL-checked</item>
+        <item >CS 490-SEP-checked</item>
+    </string-array>-checked
     <string-array name="languages">
         <item >Python</item>
         <item >Java</item>
