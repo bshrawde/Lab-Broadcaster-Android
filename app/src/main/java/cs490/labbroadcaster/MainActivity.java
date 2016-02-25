@@ -88,27 +88,32 @@ public class MainActivity extends AppCompatActivity {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
             builder.setCancelable(false);
-
-            builder.setPositiveButton("Login", new DialogInterface.OnClickListener(){
+            builder.setPositiveButton("Login",new DialogInterface.OnClickListener(){
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(DialogInterface dialog, int which){
+
+                }
+            });
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+            //override handler
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Boolean close_login = false;
                     email = input.getText().toString();
                     password = input2.getText().toString();
 
-                    //TODO: ADD CHECK FOR VALID LOGIN
+                    if((!email.contains("@purdue.edu"))||password.equals("")){
+                        //make an alert for invalid email
+                    }else{
 
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("email", email);
-                    editor.putString("pw", password);
-                    editor.commit(); //saves username and password
-
-                    InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
-                    dialog.cancel();
-                    addClassData();
+                        dialog.dismiss();
+                        addClassData();
+                    }
+                    //TODO make an area to check both username and password with CAS
                 }
             });
-            builder.show();
         }else{
             addClassData();
         }

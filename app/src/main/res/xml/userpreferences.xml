@@ -28,7 +28,7 @@
         android:key="curr_classes"
         android:summary="Select the CS courses you are currently taking"
         android:entries="@array/courses"
-        android:entryValus="@array/currentchecked"
+        android:entryValues="@array/currentchecked"
         android:dialogTitle="Current Courses"
         android:defaultValue="@array/empty_array"
         >
