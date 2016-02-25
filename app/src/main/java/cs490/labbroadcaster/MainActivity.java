@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     if((!email.contains("@purdue.edu"))||password.equals("")){
                         //make an alert for invalid email
                     }else{
-                        CAS_check authent = new CAS_check();
+                        CAS_check authent = new CAS_check(email,password);
                         //use this java class to check CAS
 
                         dialog.dismiss();

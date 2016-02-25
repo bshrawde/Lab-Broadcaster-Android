@@ -7,6 +7,7 @@
 //Port 389
 //do not specify a search base, LDAP already uses the correct one
 
+
 package cs490.labbroadcaster;
 public class CAS_check{
     private String username="";
