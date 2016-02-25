@@ -136,9 +136,10 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_settings){
 
         }else if(id == R.id.action_logout){
-            sharedPref = getSharedPreferences("login", 0);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = sharedPref.edit();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
             //editor.putString("email", "");
             //editor.putString("pw", "");
             editor.clear();
