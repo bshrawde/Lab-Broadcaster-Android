@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -136,9 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(id == R.id.action_logout){
             sharedPref = getSharedPreferences("login", 0);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("email", "");
-            editor.putString("pw", "");
+            //editor.putString("email", "");
+            //editor.putString("pw", "");
+            editor.clear();
             editor.commit();
             Intent i = new Intent(MainActivity.this, MainActivity.class);
             startActivity(i);
