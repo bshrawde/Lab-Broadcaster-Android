@@ -27,9 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.zip.Inflater;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
+import cs490.labbroadcaster.adapters.server_request;
 
 public class MainActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
@@ -72,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
+
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //Map<String,?> allEntries = preferences.getAll();
+        //for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+        //    System.out.println("get Key: "+entry.getKey());
+        //    System.out.println("value: "+entry.getValue().toString());
+        //   System.out.println("\n\n");
+        //}
 
         if( email.equals("") || password.equals("")){ //If user hasn't logged in before, show dialog box
             AlertDialog.Builder builder =
@@ -119,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }else{
             addClassData();
+
         }
     }
 
@@ -149,9 +161,14 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }else if(id == R.id.action_user_preferences){
 //            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MainActivity.this, UserPreferences.class);
-            startActivity(i);
+            //Intent i = new Intent(MainActivity.this, UserPreferences.class);
+            //startActivity(i);
+            server_request test = new server_request();
+            test.execute("http://pod4-4.cs.purdue.edu:8000");
+
         }
+
+
 
         return true;
     }
