@@ -3,6 +3,9 @@ package cs490.labbroadcaster;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ public class ViewLabActivity extends AppCompatActivity {
     Context context = this;
     private String room;
     private String capacity;
+    private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +78,16 @@ public class ViewLabActivity extends AppCompatActivity {
 
                     linkText = "http://haasg056-cam.cs.purdue.edu/view/index.shtml";
                 }
-                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
-                webview.putExtra("webcamURL", linkText);
-                webview.putExtra("calendarURL", "");
-                webview.putExtra("room", room);
-                startActivity(webview);
+//                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
+//                webview.putExtra("webcamURL", linkText);
+//                webview.putExtra("calendarURL", "");
+//                webview.putExtra("room", room);
+//                startActivity(webview);
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(ViewLabActivity.this, Uri.parse(linkText));
             }
         });
         calendar.setOnClickListener(new View.OnClickListener() {
@@ -103,11 +112,18 @@ public class ViewLabActivity extends AppCompatActivity {
                     linkText = "https://www.cs.purdue.edu/resources/facilities/haasg56.html";
                 }
 
-                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
-                webview.putExtra("calendarURL", linkText);
-                webview.putExtra("webcamURL", "");
-                webview.putExtra("room", room);
-                startActivity(webview);
+//                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
+//                webview.putExtra("calendarURL", linkText);
+//                webview.putExtra("webcamURL", "");
+//                webview.putExtra("room", room);
+//                startActivity(webview);
+
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(ViewLabActivity.this, Uri.parse(linkText));
+
             }
         });
     }
