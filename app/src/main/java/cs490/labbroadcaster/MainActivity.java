@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                     password = input2.getText().toString();
 
                     if((!email.contains("@purdue.edu"))||password.equals("")){
-                        //make an alert for invalid email
                         Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
                     }else{
                         CAS_check authent = new CAS_check(email,password);

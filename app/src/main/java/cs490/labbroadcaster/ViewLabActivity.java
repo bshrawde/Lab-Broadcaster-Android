@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 public class ViewLabActivity extends AppCompatActivity {
 
     Context context = this;
@@ -47,16 +50,11 @@ public class ViewLabActivity extends AppCompatActivity {
         mCapacity.setText(capacity);
         mCapacity.setTypeface(robotoMono);
 
-        final Button webcam = (Button) findViewById(R.id.webcamLink);
 
-        final Button calendar = (Button) findViewById(R.id.calendarLink);
-        webcam.setTypeface(robotoMono);
-        calendar.setTypeface(robotoMono);
+        FloatingActionButton fabcalendar = (FloatingActionButton) findViewById(R.id.fab_calendar);
+        FloatingActionButton fabwebcam = (FloatingActionButton) findViewById(R.id.fab_webcam);
 
-        /*TODO: USE WEBVIEW AND CHROME CUSTOM TABS DEPENDING ON ANDRIOD VERSION*/
-        /*TODO: FIX BUG WHERE STRING ROOM BECOMES NULL WHEN RETURN FROM WEBVIEW ACTIVITY With BACK BUTTON IN TOOLBAR*/
-
-        webcam.setOnClickListener(new View.OnClickListener() {
+        fabwebcam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String linkText = "";
@@ -90,7 +88,8 @@ public class ViewLabActivity extends AppCompatActivity {
                 intent.launchUrl(ViewLabActivity.this, Uri.parse(linkText));
             }
         });
-        calendar.setOnClickListener(new View.OnClickListener() {
+
+        fabcalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String linkText = "";
@@ -123,7 +122,6 @@ public class ViewLabActivity extends AppCompatActivity {
                 builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 CustomTabsIntent intent = builder.build();
                 intent.launchUrl(ViewLabActivity.this, Uri.parse(linkText));
-
             }
         });
     }
