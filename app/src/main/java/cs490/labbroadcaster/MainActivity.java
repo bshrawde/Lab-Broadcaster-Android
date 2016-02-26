@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }else{
-
             addClassData();
 
         }
@@ -147,9 +146,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_settings){
-            server_request test = new server_request();
-            test.execute("http://pod4-4.cs.purdue.edu:8000");
-                System.out.println("SERVER TEST");
+
         }else if(id == R.id.action_logout){
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = preferences.edit();
@@ -166,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(MainActivity.this, UserPreferences.class);
             startActivity(i);
-            server_request test = new server_request();
-            test.execute("http://pod4-4.cs.purdue.edu:8000");
+
+            //server_request test = new server_request();
+            //test.execute("http://pod4-4.cs.purdue.edu:8000");
 
         }
 
