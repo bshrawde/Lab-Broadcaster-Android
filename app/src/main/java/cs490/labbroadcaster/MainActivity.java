@@ -35,8 +35,8 @@ import cs490.labbroadcaster.adapters.server_request;
 
 public class MainActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
-    public String email = "";
-    public String password = "";
+    public String email;
+    public String password;
     Context context = this;
     ArrayList<String> data = new ArrayList<>();
     ArrayList<String> cap = new ArrayList<>();
@@ -124,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
                         CAS_check authent = new CAS_check(email,password);
                         //use this java class to check CAS
 
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("email", email);
+                        editor.putString("pw", password);
+                        editor.commit();
                         dialog.dismiss();
                         addClassData();
                     }
