@@ -35,8 +35,8 @@ import cs490.labbroadcaster.adapters.server_request;
 
 public class MainActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
-    public String email;
-    public String password;
+    public String email = "";
+    public String password = "";
     Context context = this;
     ArrayList<String> data = new ArrayList<>();
     ArrayList<String> cap = new ArrayList<>();
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //   System.out.println("\n\n");
         //}
 
+
         if( email.equals("") || password.equals("")){ //If user hasn't logged in before, show dialog box
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyleDark);
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if((!email.contains("@purdue.edu"))||password.equals("")){
                         //make an alert for invalid email
+                        Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
                     }else{
                         CAS_check authent = new CAS_check(email,password);
                         //use this java class to check CAS
@@ -129,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }else{
+
             addClassData();
 
         }
@@ -154,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
             //editor.putString("email", "");
             //editor.putString("pw", "");
-            editor.clear();
-            editor.commit();
+//            editor.clear();
+//            editor.commit();
             Intent i = new Intent(MainActivity.this, MainActivity.class);
             startActivity(i);
             finish();
