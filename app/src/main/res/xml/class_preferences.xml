@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Classes Taken">
+
+        <ListPreference
+            android:key="list_preference"
+            android:title="Classes Taken"
+            android:summary="Select the classes you have taken"
+            android:entries="@array/courses"
+            android:entryValues="@array/courseschecked"
+            android:dialogTitle="" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

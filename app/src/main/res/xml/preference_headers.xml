@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment="cs490.labbroadcaster.UserPreferences$LocationFrag"
+        android:title="Broadcast Location"
+        android:summary="Choose if you wish to broadcast your location">
+    </header>
+    <header
+        android:title="pref_status"
+        android:summary="Set if you are willing to help or need help">
+    </header>
+    <header
+        android:fragment="cs490.labbroadcaster.UserPreferences$TakenFrag"
+        android:title="Courses Taken"
+        android:summary="Select any CS courses you have taken." />
+    <header
+        android:title="Current Courses"
+        android:summary="Select the CS courses you are currently taking">
+
+    </header>
+    <header
+        android:title="Known Languages"
+        android:summary="Select the CS courses you are currently taking">
+    </header>
+
+
+
+
+</preference-headers>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Broadcast Location">
+
+        <CheckBoxPreference
+            android:key="BroadCast_check"
+            android:title="Broadcasting"
+            android:summary="check to broadcast location uncked to not." />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
