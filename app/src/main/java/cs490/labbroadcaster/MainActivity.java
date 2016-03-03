@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         mTitle.setTypeface(robotoMono);
 
-        sharedPref = getSharedPreferences("login", 0);
+        sharedPref  = PreferenceManager.getDefaultSharedPreferences(context);
+//        sharedPref = getSharedPreferences("login", 0);
         email = sharedPref.getString("email","");
         password = sharedPref.getString("pw","");
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
@@ -64,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MainRecyclerAdapter(MainActivity.this, data,cap, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                Toast.makeText(MainActivity.this,  "Clicked on "+ data.get(position).toString(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(MainActivity.this, ViewLabActivity.class);
                 intent.putExtra("labRoom", data.get(position).toString());
                 intent.putExtra("capacity",cap.get(position).toString());
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
             final EditText input = (EditText) v.findViewById(R.id.email);
             final EditText input2 = (EditText) v.findViewById(R.id.password);
 
+            input.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
@@ -117,9 +117,11 @@ public class MainActivity extends AppCompatActivity {
                     email = input.getText().toString();
                     password = input2.getText().toString();
 
-                    if((!email.contains("@purdue.edu"))||password.equals("")){
+                    if((!email.contains("@purdue.edu"))){
                         Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
-                    }else{
+                    }else if(password.equals("")){
+                        Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
+                    } else{
                         CAS_check authent = new CAS_check(email,password);
                         //use this java class to check CAS
 
@@ -128,13 +130,15 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("pw", password);
                         editor.commit();
                         dialog.dismiss();
+                        /*TODO: Keyboard not hiding automatically for some reason WTF*/
+                        InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
                         addClassData();
                     }
                     //TODO make an area to check both username and password with CAS
                 }
             });
         }else{
-
             addClassData();
 
         }
@@ -154,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_settings){
 
         }else if(id == R.id.action_logout){
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = preferences.edit();
+//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPref.edit();
             editor.clear();
             editor.commit();
             //editor.putString("email", "");
@@ -181,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addClassData(){
+        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
         data.add(new String("LWSN B160"));
             cap.add(new String("X/25 Computers"));
         data.add(new String("LWSN B158"));
