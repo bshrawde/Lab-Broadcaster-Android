@@ -105,12 +105,13 @@ public class UserPreferences extends PreferenceActivity {
                     String[] selected = selections.toArray(new String[] {});
                     String[] help = new String[selected.length];
                     for(int i = 0; i< selected.length; i++){
-                        help[i] = selected[i]+"checked";
+                        help[i] = selected[i].substring(0, selected[i].length()-8);
+                        Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                     }
                     MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                     lp.setEnabled(true);
-                    lp.setEntries(selected);
-                    lp.setEntryValues(help);
+                    lp.setEntries(help);
+                    lp.setEntryValues(selected);
 
                 }else{
                     Log.e("Nothing selected","");

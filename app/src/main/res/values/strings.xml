@@ -18,8 +18,7 @@
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
 
     <string-array name="courses">
-        <item >CS 110:
-                Introduction to Computers</item>
+        <item >CS 110: Introduction to Computers</item>
         <item >CS 158: C Programming</item>
         <item >CS 159: Programing Applications for Engineers</item>
         <item >CS 177: Programming with Multimedia Objects</item>
@@ -57,78 +56,78 @@
     </string-array>
 
     <string-array name="courseschecked">
-        <item >CS 110-checked</item>
-        <item >CS 158-checked</item>
-        <item >CS 159-checked</item>
-        <item >CS 177-checked</item>
-        <item >CS 180-checked</item>
-        <item >CS 182-checked</item>
-        <item >CS 190-DL-checked</item>
-        <item >CS 190-LCS-checked</item>
-        <item >CS 197-checked</item>
-        <item >CS 235-checked</item>
-        <item >CS 240-checked</item>
-        <item >CS 250-checked</item>
-        <item >CS 251-checked</item>
-        <item >CS 252-checked</item>
-        <item >CS 307-checked</item>
-        <item >CS 348-checked</item>
-        <item >CS 352-checked</item>
-        <item >CS 354-checked</item>
-        <item >CS 355-checked</item>
-        <item >CS 381-checked</item>
-        <item >CS 390-CPO-checked</item>
-        <item >CS 390-SL2-checked</item>
-        <item >CS 390-SLO-checked</item>
-        <item >CS 390-VRA-checked</item>
-        <item >CS 408-checked</item>
-        <item >CS 422-checked</item>
-        <item >CS 434-checked</item>
-        <item >CS 448-checked</item>
-        <item >CS 456-checked</item>
-        <item >CS 471-checked</item>
-        <item >CS 483-checked</item>
-        <item >CS 490-DDP-checked</item>
-        <item >CS 490-IOS-checked</item>
-        <item >CS 490-PHL-checked</item>
-        <item >CS 490-SEP-checked</item>
+        <item >CS 110: Introduction to Computers-checked</item>
+        <item >CS 158: C Programming-checked</item>
+        <item >CS 159: Programing Applications for Engineers-checked</item>
+        <item >CS 177: Programming with Multimedia Objects-checked</item>
+        <item >CS 180: Problem Solving and Object-Oriented Programing-checked</item>
+        <item >CS 182: Foundation Of Computer Science-checked</item>
+        <item >CS 190-DL: Digital Literacy-checked</item>
+        <item >CS 190-LCS: Learning Community Seminar-checked</item>
+        <item >CS 197: Freshman Honors Seminar-checked</item>
+        <item >CS 235: Introduction to Organizational Computing-checked</item>
+        <item >CS 240: Programming in C-checked</item>
+        <item >CS 250: Computer Architecture-checked</item>
+        <item >CS 251: Data Structures and Algorithms-checked</item>
+        <item >CS 252: Systems Programming-checked</item>
+        <item >CS 307: Software Engineering-checked</item>
+        <item >CS 348: Information Systems-checked</item>
+        <item >CS 352: Compilers: Principles and Practice-checked</item>
+        <item >CS 354: Operating Systems-checked</item>
+        <item >CS 355: Introduction to Cryptography-checked</item>
+        <item >CS 381: Introduction to the Analysis of Algorithms-checked</item>
+        <item >CS 390-CPO: Competitive Programming-checked</item>
+        <item >CS 390-SL2: Service Learning Outreach-checked</item>
+        <item >CS 390-SLO: Service Learning Outreach-checked</item>
+        <item >CS 390-VRA: Virtual Reality Applications-checked</item>
+        <item >CS 408: Software Testing-checked</item>
+        <item >CS 422: Computer Networks-checked</item>
+        <item >CS 434: Advanced Computer Graphics-checked</item>
+        <item >CS 448: Introduction to Relational Database Systems-checked</item>
+        <item >CS 456: Programming Languages-checked</item>
+        <item >CS 471: Introduction to Artificial Intelligence-checked</item>
+        <item >CS 483: Introduction to the theory of computation-checked</item>
+        <item >CS 490-DDP: Data Driven Apprch/Polcy Making-checked</item>
+        <item >CS 490-IOS: IOS Development in Swift-checked</item>
+        <item >CS 490-PHL: Ethics and Philosophy of Info-checked</item>
+        <item >CS 490-SEP: Software Engr Senior Project-checked</item>
     </string-array>-checked
     <string-array name="currentchecked">
-        <item >CS 110-checked</item>
-        <item >CS 158-checked</item>
-        <item >CS 159-checked</item>
-        <item >CS 177-checked</item>
-        <item >CS 180-checked</item>
-        <item >CS 182-checked</item>
-        <item >CS 190-DL-checked</item>
-        <item >CS 190-LCS-checked</item>
-        <item >CS 197-checked</item>
-        <item >CS 235-checked</item>
-        <item >CS 240-checked</item>
-        <item >CS 250-checked</item>
-        <item >CS 251-checked</item>
-        <item >CS 252-checked</item>
-        <item >CS 307-checked</item>
-        <item >CS 348-checked</item>
-        <item >CS 352-checked</item>
-        <item >CS 354-checked</item>
-        <item >CS 355-checked</item>
-        <item >CS 381-checked</item>
-        <item >CS 390-CPO-checked</item>
-        <item >CS 390-SL2-checked</item>
-        <item >CS 390-SLO-checked</item>
-        <item >CS 390-VRA-checked</item>
-        <item >CS 408-checked</item>
-        <item >CS 422-checked</item>
-        <item >CS 434-checked</item>
-        <item >CS 448-checked</item>
-        <item >CS 456-checked</item>
-        <item >CS 471-checked</item>
-        <item >CS 483-checked</item>
-        <item >CS 490-DDP-checked</item>
-        <item >CS 490-IOS-checked</item>
-        <item >CS 490-PHL-checked</item>
-        <item >CS 490-SEP-checked</item>
+        <item >CS 110: Introduction to Computers-checked</item>
+        <item >CS 158: C Programming-checked</item>
+        <item >CS 159: Programing Applications for Engineers-checked</item>
+        <item >CS 177: Programming with Multimedia Objects-checked</item>
+        <item >CS 180: Problem Solving and Object-Oriented Programing-checked</item>
+        <item >CS 182: Foundation Of Computer Science-checked</item>
+        <item >CS 190-DL: Digital Literacy-checked</item>
+        <item >CS 190-LCS: Learning Community Seminar-checked</item>
+        <item >CS 197: Freshman Honors Seminar-checked</item>
+        <item >CS 235: Introduction to Organizational Computing-checked</item>
+        <item >CS 240: Programming in C-checked</item>
+        <item >CS 250: Computer Architecture-checked</item>
+        <item >CS 251: Data Structures and Algorithms-checked</item>
+        <item >CS 252: Systems Programming-checked</item>
+        <item >CS 307: Software Engineering-checked</item>
+        <item >CS 348: Information Systems-checked</item>
+        <item >CS 352: Compilers: Principles and Practice-checked</item>
+        <item >CS 354: Operating Systems-checked</item>
+        <item >CS 355: Introduction to Cryptography-checked</item>
+        <item >CS 381: Introduction to the Analysis of Algorithms-checked</item>
+        <item >CS 390-CPO: Competitive Programming-checked</item>
+        <item >CS 390-SL2: Service Learning Outreach-checked</item>
+        <item >CS 390-SLO: Service Learning Outreach-checked</item>
+        <item >CS 390-VRA: Virtual Reality Applications-checked</item>
+        <item >CS 408: Software Testing-checked</item>
+        <item >CS 422: Computer Networks-checked</item>
+        <item >CS 434: Advanced Computer Graphics-checked</item>
+        <item >CS 448: Introduction to Relational Database Systems-checked</item>
+        <item >CS 456: Programming Languages-checked</item>
+        <item >CS 471: Introduction to Artificial Intelligence-checked</item>
+        <item >CS 483: Introduction to the theory of computation-checked</item>
+        <item >CS 490-DDP: Data Driven Apprch/Polcy Making-checked</item>
+        <item >CS 490-IOS: IOS Development in Swift-checked</item>
+        <item >CS 490-PHL: Ethics and Philosophy of Info-checked</item>
+        <item >CS 490-SEP: Software Engr Senior Project-checked</item>
     </string-array>-checked
     <string-array name="languages">
         <item >Python</item>
