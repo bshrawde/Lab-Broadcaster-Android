@@ -14,8 +14,14 @@
         android:key="pref_status"
         android:title="@string/status_setting"
         android:summary="Set if you are willing to help or need help"
-        android:defaultValue="Yes"
+        android:defaultValue="I'm willing to help on "
         ></EditTextPreference>
+
+<PreferenceCategory
+    android:title="Courses"
+    android:key="pref_courses">
+
+
     <MultiSelectListPreference
         android:title="Courses Taken"
         android:key="pref_classes"
@@ -36,6 +42,16 @@
         android:defaultValue="@array/empty_array"
         >
     </MultiSelectListPreference>
+    <MultiSelectListPreference
+        android:title="Courses I need help with"
+        android:key="classes_help"
+        android:summary="Select the CS courses you need help with"
+        android:dialogTitle="Current Courses"
+        android:entries="@array/empty_array"
+        android:defaultValue="@array/empty_array"
+        >
+    </MultiSelectListPreference>
+</PreferenceCategory>
     <MultiSelectListPreference
         android:title="Known Languages"
         android:key="pref_languages"

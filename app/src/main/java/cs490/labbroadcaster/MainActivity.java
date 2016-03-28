@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.zip.Inflater;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> cap = new ArrayList<>();
     private RecyclerView recyclerView;
     private MainRecyclerAdapter adapter;
+    public SharedPreferences preferences;
+    int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +86,51 @@ public class MainActivity extends AppCompatActivity {
         //    System.out.println("value: "+entry.getValue().toString());
         //   System.out.println("\n\n");
         //}
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        FloatingActionButton fabstatus = (FloatingActionButton) findViewById(R.id.set_status);
+        if(preferences.getBoolean("pref_broadcast",false) == false){
+            fabstatus.setVisibility(View.GONE);
+        }
 
+        fabstatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                String currentStatus = preferences.getString("pref_status", "");
+
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyleDark);
+                builder.setTitle("Current Status");
+                final EditText status = new EditText(context);
+                status.setText(currentStatus);
+                status.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+                builder.setView(status);
+                builder.setView(status, 25, 0, 25, 0);
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("pref_status", status.getText().toString());
+                        editor.commit();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
         if( email.equals("") || password.equals("")){ //If user hasn't logged in before, show dialog box
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyleDark);
@@ -117,11 +164,26 @@ public class MainActivity extends AppCompatActivity {
                     email = input.getText().toString();
                     password = input2.getText().toString();
 
-                    if((!email.contains("@purdue.edu"))){
-                        Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
-                    }else if(password.equals("")){
-                        Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
-                    } else{
+                    if(debug == 1){
+                        if((!email.contains("@purdue.edu"))){
+                            Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
+                        }else if(password.equals("")){
+                            Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
+                        } else{
+                            CAS_check authent = new CAS_check(email,password);
+                            //use this java class to check CAS
+
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("email", email);
+                            editor.putString("pw", password);
+                            editor.commit();
+                            dialog.dismiss();
+                        /*TODO: Keyboard not hiding automatically for some reason WTF*/
+                            InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
+                            addClassData();
+                        }
+                    }else{
                         CAS_check authent = new CAS_check(email,password);
                         //use this java class to check CAS
 
@@ -135,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
                         addClassData();
                     }
+
                     //TODO make an area to check both username and password with CAS
                 }
             });
@@ -204,6 +267,17 @@ public class MainActivity extends AppCompatActivity {
             cap.add(new String("X/21 Computers"));
 
         adapter.notifyDataSetChanged();
+    }
+
+    protected void onResume(){
+        super.onResume();
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        FloatingActionButton fabstatus = (FloatingActionButton) findViewById(R.id.set_status);
+        if(preferences.getBoolean("pref_broadcast",false) == false){
+            fabstatus.setVisibility(View.GONE);
+        }else{
+            fabstatus.setVisibility(View.VISIBLE);
+        }
     }
 
 }
