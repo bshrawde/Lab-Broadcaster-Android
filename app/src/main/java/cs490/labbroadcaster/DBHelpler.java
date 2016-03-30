@@ -35,11 +35,12 @@ public class DBHelpler extends SQLiteOpenHelper {
         db.execSQL("create table Pref" +"(username text ,taken text,current text,need_help text,languages text" +
                 ",FOREIGN KEY(username) REFERENCES User(username))");
         db.execSQL("create table Labs "+"(Lab_room varchar Primary Key,Total_capacity varchar,current_capacity varchar)");
+        db.execSQL("create table TA   "+"(username text Primary Key,classes text)");
 
     }
     @Override
     public  void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){
-
+        db.execSQL("DROP TABLE IF EXISTS TA");
         db.execSQL("DROP TABLE IF EXISTS User");
         db.execSQL("DROP TABLE IF EXISTS Pref");
         db.execSQL("DROP TABLE IF EXISTS Labs");

@@ -15,7 +15,7 @@ public class DataWrap {
     public DataWrap(Context context){
         dbHelper = new DBHelpler(context);
     }
-
+//region users
     public boolean insertUser(String username,String password){
         boolean status = false;
         boolean exists = false;
@@ -57,6 +57,19 @@ public class DataWrap {
     public boolean getUser(String username){
         return true;
     }
+//endregion
+//region TA
+    public boolean insertTA(String username,String classes){
+        return true;
+    }
+    public boolean updateTA(String username,String classes){
+        return true;
+    }
+    public boolean getTA(String username,String classes){
+        return true;
+    }
+//endregion
+//region Labs
     public boolean insertLab(String name,String total, String current){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -75,7 +88,11 @@ public class DataWrap {
     public boolean getLab(String name){
         return true;
     }
-    public boolean insertPref(){
+//endregion
+//region prefrences
+    public boolean insertPref(String username,String taken,String current,String need_help,String lang){
+        //in db names
+        //username , taken,current,need_help,languages
         return true;
     }
     public boolean updatePref(){
@@ -84,6 +101,7 @@ public class DataWrap {
     public boolean getPref(){
         return true;
     }
+//endregion
     public void delete(){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         dbHelper.onUpgrade(db,1,2);

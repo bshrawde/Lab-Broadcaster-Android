@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //endregion
         if( email.equals("") || password.equals("")){ //If user hasn't logged in before, show dialog box
-            //region build dialog box
+//region build dialog box
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyleDark);
             builder.setTitle("Login with Purdue Account");
@@ -162,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog dialog = builder.create();
             dialog.show();
             //endregion
-            //region new user
+
+//region new use
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener(){
                 @Override
                 public  void onClick(View v){
@@ -194,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             //endregion
-            //region current user
+
+//region current user
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
@@ -322,6 +324,23 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,?> entry : all.entrySet()){
             Log.d("values:",entry.getKey() + ": "+entry.getValue().toString());
         }
+        Set<String> curr_classes = preferences.getStringSet("curr_classes",null); //current classes
+        Set<String> classes_taken = preferences.getStringSet("pref_classes",null);//taken
+        Set<String> TA = preferences.getStringSet("TA",null);                       //classes TA for
+        Set<String> Lang = preferences.getStringSet("pref_languages",null);     //languages
+        Set<String> class_help = preferences.getStringSet("classes_help",null); //classes need help on
+        String helper = preferences.getString("pref_status",null);              // what you can help with
+        Boolean broadcast = preferences.getBoolean("pref_broadcast",false);
+
+        //KEYS
+        //classes_help      what classes you need help with
+        //pref_status       what your willing to help on
+        //pw                password
+        //email             email/username
+        //pref_languages    languages you know
+        //curr_classes      current classes
+        //pref_classes      older classes
+        //TA                classes TA for
     }
 
 }
