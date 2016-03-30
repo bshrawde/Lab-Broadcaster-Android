@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 
@@ -307,13 +310,17 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
         FloatingActionButton fabstatus = (FloatingActionButton) findViewById(R.id.set_status);
         if(preferences.getBoolean("pref_broadcast",false) == false){
             fabstatus.setVisibility(View.GONE);
         }else{
             fabstatus.setVisibility(View.VISIBLE);
+        }
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Map<String,?> all = preferences.getAll();
+
+        for(Map.Entry<String,?> entry : all.entrySet()){
+            Log.d("values:",entry.getKey() + ": "+entry.getValue().toString());
         }
     }
 

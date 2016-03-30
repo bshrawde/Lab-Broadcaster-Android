@@ -54,6 +54,9 @@ public class DataWrap {
     public boolean updateUser(String username,String password,String new_pass){
         return true;
     }
+    public boolean getUser(String username){
+        return true;
+    }
     public boolean insertLab(String name,String total, String current){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -70,6 +73,15 @@ public class DataWrap {
      return  true;
     }
     public boolean getLab(String name){
+        return true;
+    }
+    public boolean insertPref(){
+        return true;
+    }
+    public boolean updatePref(){
+        return true;
+    }
+    public boolean getPref(){
         return true;
     }
     public void delete(){
