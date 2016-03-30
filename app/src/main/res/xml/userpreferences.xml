@@ -16,6 +16,22 @@
         android:summary="Set if you are willing to help or need help"
         android:defaultValue="I'm willing to help on "
         ></EditTextPreference>
+    <ListPreference
+        android:key = "refresh_rate"
+        android:title = "Refresh Rate"
+        android:summary = "choose your refresh rate"
+        android:entries="@array/times"
+        android:entryValues="@array/timeschecked"
+        ></ListPreference>
+    <MultiSelectListPreference
+        android:title="TA for courses"
+        android:key="TA"
+        android:summary="Select courses you were a TA for (will be approved)"
+        android:entries="@array/courses"
+        android:entryValues="@array/TAchecked"
+        android:dialogTitle="Courses TA'd"
+        android:defaultValue="@array/empty_array"
+        ></MultiSelectListPreference>
 
 <PreferenceCategory
     android:title="Courses"

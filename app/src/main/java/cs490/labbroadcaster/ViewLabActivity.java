@@ -76,12 +76,6 @@ public class ViewLabActivity extends AppCompatActivity {
 
                     linkText = "http://haasg056-cam.cs.purdue.edu/view/index.shtml";
                 }
-//                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
-//                webview.putExtra("webcamURL", linkText);
-//                webview.putExtra("calendarURL", "");
-//                webview.putExtra("room", room);
-//                startActivity(webview);
-
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 CustomTabsIntent intent = builder.build();
@@ -110,14 +104,6 @@ public class ViewLabActivity extends AppCompatActivity {
                 } else if ("HAAS G56".equals((room))) {
                     linkText = "https://www.cs.purdue.edu/resources/facilities/haasg56.html";
                 }
-
-//                Intent webview = new Intent(ViewLabActivity.this, LabWebView.class);
-//                webview.putExtra("calendarURL", linkText);
-//                webview.putExtra("webcamURL", "");
-//                webview.putExtra("room", room);
-//                startActivity(webview);
-
-
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 CustomTabsIntent intent = builder.build();

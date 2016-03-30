@@ -26,21 +26,27 @@ public class DBHelpler extends SQLiteOpenHelper {
     public static final String Lab_Column_current = "current_capacity";
 
     public DBHelpler(Context context){
+
         super(context,DB_Name,null,1);
     }
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table Pref "+"(username text,password text,taken text,current text,languages text)");
-        db.execSQL("create table Labs "+"(Lab_room text,Total_capacity text,current_capacity text)");
+        db.execSQL("create table User "+"(username text Primary Key,password text)");
+        db.execSQL("create table Pref" +"(username text ,taken text,current text,need_help text,languages text" +
+                ",FOREIGN KEY(username) REFERENCES User(username))");
+        db.execSQL("create table Labs "+"(Lab_room varchar Primary Key,Total_capacity varchar,current_capacity varchar)");
+
     }
     @Override
     public  void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){
+
+        db.execSQL("DROP TABLE IF EXISTS User");
         db.execSQL("DROP TABLE IF EXISTS Pref");
         db.execSQL("DROP TABLE IF EXISTS Labs");
         onCreate(db);
 
     }
-    public boolean insertUser(String username, String password,String taken,String curr,String lang){
+    /*public boolean insertUser(String username, String password,String taken,String curr,String lang){
         SQLiteDatabase db1 = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -84,10 +90,5 @@ public class DBHelpler extends SQLiteOpenHelper {
         db.update("Pref",contentValues,"username = ? ", new String[]{username}); //mabye change the ? here
 
         return true;
-    }
-    //public Integer deletePref(){
-    //
-    //}
-    //public ArrayList<String> getAllData(){ //probs wont use
-    //}
+    }*/
 }

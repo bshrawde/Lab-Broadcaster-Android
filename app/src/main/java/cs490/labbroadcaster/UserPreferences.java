@@ -27,46 +27,9 @@ public class UserPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //}
-        //this stuff is in case I cant get the UserPref done ignore it for now
-    /*@Override
-    public void onBuildHeaders(List<Header> target){
-        loadHeadersFromResource(R.xml.preference_headers,target);
-    }
-    @Override
-    protected boolean isValidFragment(String fragmentName) {
-        return TakenFrag.class.getName().equals(fragmentName)
-                || super.isValidFragment(fragmentName);
-    }
-
-
-    public static class LocationFrag extends PreferenceFragment{
-
-        @Override
-        public  void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-
-
-            //PreferenceManager.setDefaultValues(getActivity(),R.xml.advanced_preferences,false);
-
-            addPreferencesFromResource(R.xml.fragmented_preferences);
-        }
-    }
-    public static class TakenFrag extends  PreferenceFragment{
-        @Override
-        public void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.class_preferences);
-        }
-    }*/
-
-
         addPreferencesFromResource(R.xml.userpreferences);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-
+//region courses need help on
         Set<String> selections = sharedPrefs.getStringSet("curr_classes", null);
         if(selections.size() == 0){
             MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
@@ -77,13 +40,15 @@ public class UserPreferences extends PreferenceActivity {
             String[] selected = selections.toArray(new String[] {});
             String[] help = new String[selected.length];
             for(int i = 0; i< selected.length; i++){
-                help[i] = selected[i]+"checked";
+                help[i] = selected[i].substring(0, selected[i].length()-8);
+                Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
             }
-            lp.setEntries(selected);
-            lp.setEntryValues(help);
+            lp.setEntries(help);
+            lp.setEntryValues(selected);
 
         }
-
+        //endregion
+//region brodcast status
         if(sharedPrefs.getBoolean("pref_broadcast", true) == true){
             EditTextPreference status = (EditTextPreference) findPreference("pref_status");
             status.setEnabled(true);
@@ -91,7 +56,8 @@ public class UserPreferences extends PreferenceActivity {
             EditTextPreference status = (EditTextPreference) findPreference("pref_status");
             status.setEnabled(false);
         }
-
+//endregion
+        //region update course_help local
         MultiSelectListPreference taking_classes = (MultiSelectListPreference) findPreference("curr_classes");
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -121,11 +87,12 @@ public class UserPreferences extends PreferenceActivity {
                 return true;
             }
         };
+        //endregion
         taking_classes.setOnPreferenceChangeListener(listener);
 
         SwitchPreference broadcast = (SwitchPreference) findPreference("pref_broadcast");
 
-
+//region broadcast status changer
         Preference.OnPreferenceChangeListener listener1 = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -140,30 +107,12 @@ public class UserPreferences extends PreferenceActivity {
                 return true;
             }
         };
-
+//endregion
         broadcast.setOnPreferenceChangeListener(listener1);
-
-
-
-
 
         Preference pref = (Preference) findPreference("pref_classes");
 
-        SQLiteDatabase db = openOrCreateDatabase("pref", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS User_pref(Username varchar,Password varchar,taken varchar,current varchar,langagues varchar);");
-        db.execSQL("INSERT INTO User_pref VALUES('bob','can','all','none','java');");
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //Map<String, ?> allEntries = preferences.getAll();
-        //for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-        //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-        //   System.out.println("get Key: "+entry.getKey());
-        // System.out.println("value: "+entry.getValue().toString());
-        // System.out.println("\n\n");
-        //}
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.clear();
-//        editor.commit();
     }
 
 }
