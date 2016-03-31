@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private MainRecyclerAdapter adapter;
     public SharedPreferences preferences;
     String found = "";
+    String[] found_array= new String[15];
     private boolean populate = false;
     int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
     @Override
@@ -135,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("pref_status", status.getText().toString());
                         editor.commit();
                         //todo dont leave this here
-                        serverTest();
-                        System.out.println("FINAL STIRNG FOUND: "+found);
+                        //serverTest();
+
                         InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
                     }
@@ -282,6 +283,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_settings){
+            server_request test = new server_request();
+            test.LabData();
 
         }else if(id == R.id.action_logout){
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -335,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
     private void serverTest() {
+
         //final String url = "http://www.google.com";
         final String url = "http://mc15.cs.purdue.edu:5000";
 
@@ -359,21 +363,35 @@ public class MainActivity extends AppCompatActivity {
                     //InputStream in = new BufferedReader(con.getInputStream());
 
                     int t = in.available();
-                        System.out.println("avaliable: "+t);
+                        //System.out.println("avaliable: "+t);
                         char d = (char)in.read();
                     char c='a';
                     found+=d;
-                    System.out.println("FIRST CHAR: "+d);
+                    //System.out.println("FIRST CHAR: "+d);
                     while(in.available()>0){
                         c = (char)in.read();
                         found+=c;
-                        System.out.println("CHARS FROM REDER: "+c);
+                        //System.out.println("CHARS FROM REDER: "+c);
 
                     }
                     if(c =='}'){
+                       int counter = 0;
+                        String temp = "";
                         in.close();
                         con.disconnect();
-                        System.out.println("FINAL SGTRING: "+found);
+                        for(int i=0;i<found.length();i++){
+                            char b = found.charAt(i);
+                            temp +=b;
+                            if(b=='\n'){
+                                found_array[counter] = temp;
+                                System.out.println("FOUND ARRAY AT: "+counter+": "+found_array[counter]);
+                                temp ="";
+                                counter++;
+                            }
+                        }
+                        counter = 0;
+                        in.close();
+                        con.disconnect();
                     }
 
                     //in.close();
@@ -449,6 +467,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             fabstatus.setVisibility(View.VISIBLE);
         }
+        System.out.println("FINAL STIRNG FOUND: "+found);
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String,?> all = preferences.getAll();
 
