@@ -96,6 +96,7 @@ public class UserPreferences extends PreferenceActivity {
         Preference.OnPreferenceChangeListener listener1 = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+
                 boolean ischecked = (Boolean) newValue;
                 EditTextPreference status = (EditTextPreference) findPreference("pref_status");
                 SharedPreferences sharedPrefs1 = PreferenceManager.getDefaultSharedPreferences(context);
