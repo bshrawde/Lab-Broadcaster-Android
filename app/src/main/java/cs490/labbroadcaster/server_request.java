@@ -3,10 +3,12 @@ package cs490.labbroadcaster;
         import android.app.Activity;
         import android.app.ProgressDialog;
         import android.content.Context;
+        import android.content.SharedPreferences;
         import android.net.ConnectivityManager;
         import android.net.NetworkInfo;
         import android.os.AsyncTask;
         import android.os.Message;
+        import android.preference.PreferenceManager;
         import android.util.Log;
         import android.widget.EditText;
         import android.widget.Toast;
@@ -41,12 +43,14 @@ class server_request{
     int counter = 0;
     String found = "";
     String[] found_array = new String[10];
-    public void LabData() {
+    public SharedPreferences sharedPref;
+    public void LabData(final String fa[]) {
         //final String url = "http://www.google.com";
         final String url = "http://mc15.cs.purdue.edu:5000";
 
         new Thread() {
             public void run() {
+                Log.e("Thread running","");
                 InputStream in= null;
                 HttpURLConnection con = null;
 
@@ -87,7 +91,8 @@ class server_request{
                             temp +=b;
                             if(b=='\n'){
                                 found_array[counter] = temp;
-                                System.out.println("FOUND ARRAY AT: "+counter+": "+found_array[counter]);
+                                fa[counter] = temp;
+                                Log.e("FOUND ARRAY AT: ",counter+": "+found_array[counter]);
                                 temp ="";
                                 counter++;
                             }

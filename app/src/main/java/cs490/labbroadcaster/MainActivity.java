@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.renderscript.RenderScript;
@@ -266,8 +267,9 @@ public class MainActivity extends AppCompatActivity {
             });
             //endregion
         }else{
-            addClassData();
+//            addClassData();
 
+            new RefreshRoomData().execute();
         }
     }
 
@@ -282,9 +284,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_settings){
-            server_request test = new server_request();
-            test.LabData();
+        if(id == R.id.action_refresh){
+//            server_request test = new server_request();
+//            test.LabData(found_array1);
+            new RefreshRoomData().execute();
 
         }else if(id == R.id.action_logout){
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -302,23 +305,10 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-    public void populateDB(){
-        if(populate==false) {
-            base.insertLab("LWSN B160", "25", "X");
-            base.insertLab("LWSN B158", "24", "X");
-            base.insertLab("LWSN B148", "25", "X");
-            base.insertLab("LWSN B146", "24", "X");
-            base.insertLab("LWSN B131", "?", "X");
-            base.insertLab("HAAS G56", "24", "X");
-            base.insertLab("HAAS G40", "24", "X");
-            base.insertLab("HAAS 257", "21", "X");
-        }else{
-            //update
-        }
 
-    }
+
     public void addClassData(){
-        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
         data.add(new String("LWSN B160"));
             cap.add(new String("X/25 Computers"));
         data.add(new String("LWSN B158"));
@@ -497,4 +487,121 @@ public class MainActivity extends AppCompatActivity {
         //TA                classes TA for
     }
 
+    public class RefreshRoomData extends AsyncTask<String[], Void, String[]> {
+        @Override
+        protected String[] doInBackground(String[]... params) {
+            Log.e("Thread running","");
+            InputStream in= null;
+            HttpURLConnection con = null;
+
+
+            Message msg = Message.obtain();
+            msg.what = 1;
+            String[] found_array1= new String[9];
+            try {
+
+//                URL tt = new URL(url);
+                con = (HttpURLConnection) new URL("http://mc15.cs.purdue.edu:5000").openConnection();
+
+                int status = con.getResponseCode();
+                System.out.println("URL RESPONSE CODE: "+status);
+
+                in = new BufferedInputStream(con.getInputStream());
+                //InputStream in = new BufferedReader(con.getInputStream());
+
+                int t = in.available();
+                //System.out.println("avaliable: "+t);
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+                //System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    //System.out.println("CHARS FROM REDER: "+c);
+
+                }
+                if(c =='}'){
+                    int counter = 0;
+                    String temp = "";
+                    in.close();
+                    con.disconnect();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'){
+                            found_array1[counter] = temp;
+                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    counter = 0;
+                    in.close();
+                    con.disconnect();
+                }
+
+                //in.close();
+                //con.disconnect();
+            }
+            catch (IOException e1) {
+                System.out.println("\n\nTHERE WAS AN ERROR");
+                e1.printStackTrace();
+            }
+            return found_array1;
+        }
+
+        @Override
+        protected void onPostExecute(String s[]){
+            data.clear();
+            cap.clear();
+            for(int i = 0; i<s.length; i++){
+                if(s[i].length() > 2){
+
+                    Log.e("s=","'"+s[i]+"'s.length="+s[i].length());
+                    String[] parts = s[i].split(" : ");
+
+                    Log.e("parts.length", parts.length+"");
+                    parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
+                    parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
+                    parts[1] = parts[1].replaceAll("[^0-9]","");
+                    if(parts[0].equals("LWSN B131")){
+                        parts[1] = parts[1]+"/"+"?? Comptuers";
+                    }else if(parts[0].equals("LWSN B146")){
+                        parts[1] = parts[1]+"/"+"24 Comptuers";
+                    }else if(parts[0].equals("LWSN B148")){
+                        parts[1] = parts[1]+"/"+"25 Comptuers";
+                    }else if(parts[0].equals("LWSN B158")){
+                        parts[1] = parts[1]+"/"+"24 Comptuers";
+                    }else if(parts[0].equals("HAAS G56")){
+                        parts[1] = parts[1]+"/"+"24 Comptuers";
+                    }else if(parts[0].equals("LWSN B160")){
+                        parts[1] = parts[1]+"/"+"25 Comptuers";
+                    }else if(parts[0].equals("HAAS G40")){
+                        parts[1] = parts[1]+"/"+"24 Comptuers";
+                    }else if(parts[0].equals("HAAS 257")){
+                        parts[1] = parts[1]+"/"+"21 Comptuers";
+                    }
+                    data.add(parts[0]);
+                    cap.add(parts[1]);
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+    public void populateDB(){
+        if(populate==false) {
+            base.insertLab("LWSN B160", "25", "X");
+            base.insertLab("LWSN B158", "24", "X");
+            base.insertLab("LWSN B148", "25", "X");
+            base.insertLab("LWSN B146", "24", "X");
+            base.insertLab("LWSN B131", "?", "X");
+            base.insertLab("HAAS G56", "24", "X");
+            base.insertLab("HAAS G40", "24", "X");
+            base.insertLab("HAAS 257", "21", "X");
+        }else{
+            //update
+        }
+
+    }
 }

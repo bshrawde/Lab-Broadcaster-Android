@@ -19,7 +19,7 @@
     <ListPreference
         android:key = "refresh_rate"
         android:title = "Refresh Rate"
-        android:summary = "choose your refresh rate"
+        android:summary = "Choose your refresh rate"
         android:entries="@array/times"
         android:entryValues="@array/timeschecked"
         ></ListPreference>
