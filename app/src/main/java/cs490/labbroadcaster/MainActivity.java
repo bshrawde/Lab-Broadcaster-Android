@@ -497,7 +497,8 @@ public class MainActivity extends AppCompatActivity {
 
             Message msg = Message.obtain();
             msg.what = 1;
-            String[] found_array1= new String[9];
+            String[] found_array1= new String[10];
+            int counter = 0;
             try {
 
 //                URL tt = new URL(url);
@@ -522,21 +523,21 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 if(c =='}'){
-                    int counter = 0;
                     String temp = "";
                     in.close();
                     con.disconnect();
                     for(int i=0;i<found.length();i++){
                         char b = found.charAt(i);
                         temp +=b;
-                        if(b=='\n'){
+                        if(b=='\n' && counter<found_array1.length-1){
+                            Log.e("COUNTER=",counter+"");
                             found_array1[counter] = temp;
                             Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
                             temp ="";
                             counter++;
                         }
                     }
-                    counter = 0;
+
                     in.close();
                     con.disconnect();
                 }
@@ -548,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("\n\nTHERE WAS AN ERROR");
                 e1.printStackTrace();
             }
+            counter = 0;
             return found_array1;
         }
 
@@ -555,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s[]){
             data.clear();
             cap.clear();
-            for(int i = 0; i<s.length; i++){
+            for(int i = 0; i<s.length-1; i++){
                 if(s[i].length() > 2){
 
                     Log.e("s=","'"+s[i]+"'s.length="+s[i].length());
