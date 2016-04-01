@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptGroup;
 import android.support.v4.net.ConnectivityManagerCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> cap = new ArrayList<>();
     DataWrap base = new DataWrap(this);
     private RecyclerView recyclerView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private MainRecyclerAdapter adapter;
     public SharedPreferences preferences;
     String found = "";
@@ -99,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
+
+
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.accent_color);
+        mSwipeRefreshLayout.setEnabled(false);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         FloatingActionButton fabstatus = (FloatingActionButton) findViewById(R.id.set_status);
@@ -268,7 +276,8 @@ public class MainActivity extends AppCompatActivity {
             //endregion
         }else{
 //            addClassData();
-
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.setRefreshing(true);
             new RefreshRoomData().execute();
         }
     }
@@ -287,6 +296,8 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_refresh){
 //            server_request test = new server_request();
 //            test.LabData(found_array1);
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.setRefreshing(true);
             new RefreshRoomData().execute();
 
         }else if(id == R.id.action_logout){
@@ -547,6 +558,7 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (IOException e1) {
                 System.out.println("\n\nTHERE WAS AN ERROR");
+
                 e1.printStackTrace();
             }
             counter = 0;
@@ -555,40 +567,49 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s[]){
-            data.clear();
-            cap.clear();
-            for(int i = 0; i<s.length-1; i++){
-                if(s[i].length() > 2){
+            if(s.length == 0){
+                Toast.makeText(context, "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setEnabled(false);
+            }else{
+                data.clear();
+                cap.clear();
+                for(int i = 0; i<s.length-1; i++){
+                    if(s[i].length() > 2){
 
-                    Log.e("s=","'"+s[i]+"'s.length="+s[i].length());
-                    String[] parts = s[i].split(" : ");
+                        Log.e("s=","'"+s[i]+"'s.length="+s[i].length());
+                        String[] parts = s[i].split(" : ");
 
-                    Log.e("parts.length", parts.length+"");
-                    parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
-                    parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
-                    parts[1] = parts[1].replaceAll("[^0-9]","");
-                    if(parts[0].equals("LWSN B131")){
-                        parts[1] = parts[1]+"/"+"?? Comptuers";
-                    }else if(parts[0].equals("LWSN B146")){
-                        parts[1] = parts[1]+"/"+"24 Comptuers";
-                    }else if(parts[0].equals("LWSN B148")){
-                        parts[1] = parts[1]+"/"+"25 Comptuers";
-                    }else if(parts[0].equals("LWSN B158")){
-                        parts[1] = parts[1]+"/"+"24 Comptuers";
-                    }else if(parts[0].equals("HAAS G56")){
-                        parts[1] = parts[1]+"/"+"24 Comptuers";
-                    }else if(parts[0].equals("LWSN B160")){
-                        parts[1] = parts[1]+"/"+"25 Comptuers";
-                    }else if(parts[0].equals("HAAS G40")){
-                        parts[1] = parts[1]+"/"+"24 Comptuers";
-                    }else if(parts[0].equals("HAAS 257")){
-                        parts[1] = parts[1]+"/"+"21 Comptuers";
+                        Log.e("parts.length", parts.length+"");
+                        parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
+                        parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
+                        parts[1] = parts[1].replaceAll("[^0-9]","");
+                        if(parts[0].equals("LWSN B131")){
+                            parts[1] = parts[1]+"/"+"?? Computers";
+                        }else if(parts[0].equals("LWSN B146")){
+                            parts[1] = parts[1]+"/"+"24 Computers";
+                        }else if(parts[0].equals("LWSN B148")){
+                            parts[1] = parts[1]+"/"+"25 Computers";
+                        }else if(parts[0].equals("LWSN B158")){
+                            parts[1] = parts[1]+"/"+"24 Computers";
+                        }else if(parts[0].equals("HAAS G56")){
+                            parts[1] = parts[1]+"/"+"24 Computers";
+                        }else if(parts[0].equals("LWSN B160")){
+                            parts[1] = parts[1]+"/"+"25 Computers";
+                        }else if(parts[0].equals("HAAS G40")){
+                            parts[1] = parts[1]+"/"+"24 Computers";
+                        }else if(parts[0].equals("HAAS 257")){
+                            parts[1] = parts[1]+"/"+"21 Computers";
+                        }
+                        data.add(parts[0]);
+                        cap.add(parts[1]);
                     }
-                    data.add(parts[0]);
-                    cap.add(parts[1]);
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setEnabled(false);
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
+
         }
     }
     public void populateDB(){
