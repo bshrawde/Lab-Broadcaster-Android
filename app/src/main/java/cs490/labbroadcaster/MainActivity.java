@@ -468,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             fabstatus.setVisibility(View.VISIBLE);
         }
-        System.out.println("FINAL STIRNG FOUND: "+found);
+//        System.out.println("FINAL STIRNG FOUND: "+found);
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String,?> all = preferences.getAll();
 
@@ -502,10 +502,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String[] doInBackground(String[]... params) {
             Log.e("Thread running","");
-            InputStream in= null;
-            HttpURLConnection con = null;
+            InputStream in;
+            HttpURLConnection con;
 
-
+            found = "";
             Message msg = Message.obtain();
             msg.what = 1;
             String[] found_array1= new String[10];
@@ -522,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
                 //InputStream in = new BufferedReader(con.getInputStream());
 
                 int t = in.available();
-                //System.out.println("avaliable: "+t);
+//                Log.e("avaliable: ",t+"");
                 char d = (char)in.read();
                 char c='a';
                 found+=d;
@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity {
                     for(int i=0;i<found.length();i++){
                         char b = found.charAt(i);
                         temp +=b;
-                        if(b=='\n' && counter<found_array1.length-1){
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
                             Log.e("COUNTER=",counter+"");
                             found_array1[counter] = temp;
                             Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
@@ -562,6 +562,7 @@ public class MainActivity extends AppCompatActivity {
                 e1.printStackTrace();
             }
             counter = 0;
+            Log.e("found length=",found.length()+"");
             return found_array1;
         }
 
