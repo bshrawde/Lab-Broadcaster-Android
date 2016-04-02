@@ -475,7 +475,9 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,?> entry : all.entrySet()){
             Log.d("values:",entry.getKey() + ": "+entry.getValue().toString());
         }
-
+//        mSwipeRefreshLayout.setEnabled(true);
+//        mSwipeRefreshLayout.setRefreshing(true);
+//        new RefreshRoomData().execute();
         //new server_request().execute("username","password");
         //test.tester();
 
@@ -575,10 +577,12 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 data.clear();
                 cap.clear();
+//                adapter.notifyDataSetChanged();
+                Log.e("s.length=",s.length+"");
                 for(int i = 0; i<s.length-1; i++){
                     if(s[i].length() > 2){
 
-                        Log.e("s=","'"+s[i]+"'s.length="+s[i].length());
+                        Log.e("s[i]=","'"+s[i]+"'s.length="+s[i].length());
                         String[] parts = s[i].split(" : ");
 
                         Log.e("parts.length", parts.length+"");
@@ -586,7 +590,7 @@ public class MainActivity extends AppCompatActivity {
                         parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
                         parts[1] = parts[1].replaceAll("[^0-9]","");
                         if(parts[0].equals("LWSN B131")){
-                            parts[1] = parts[1]+"/"+"?? Computers";
+                            parts[1] = parts[1]+"/"+"24 Computers";
                         }else if(parts[0].equals("LWSN B146")){
                             parts[1] = parts[1]+"/"+"24 Computers";
                         }else if(parts[0].equals("LWSN B148")){
