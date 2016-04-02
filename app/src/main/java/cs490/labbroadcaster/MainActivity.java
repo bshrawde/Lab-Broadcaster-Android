@@ -47,6 +47,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public String password;
     Context context = this;
     ArrayList<String> data = new ArrayList<>();
+
     ArrayList<String> cap = new ArrayList<>();
     DataWrap base = new DataWrap(this);
     private RecyclerView recyclerView;
@@ -475,9 +477,7 @@ public class MainActivity extends AppCompatActivity {
         for(Map.Entry<String,?> entry : all.entrySet()){
             Log.d("values:",entry.getKey() + ": "+entry.getValue().toString());
         }
-//        mSwipeRefreshLayout.setEnabled(true);
-//        mSwipeRefreshLayout.setRefreshing(true);
-//        new RefreshRoomData().execute();
+
         //new server_request().execute("username","password");
         //test.tester();
 
@@ -535,6 +535,7 @@ public class MainActivity extends AppCompatActivity {
                     //System.out.println("CHARS FROM REDER: "+c);
 
                 }
+                Log.e("found=",found);
                 if(c =='}'){
                     String temp = "";
                     in.close();
@@ -575,6 +576,13 @@ public class MainActivity extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
+                Log.e("s=", Arrays.toString(s));
+                String temp = s[5];
+                String temp2 = s[7];
+                s[5] = s[6];
+                s[7] = temp;
+                s[6] = temp2;
+                Log.e("s after swap=", Arrays.toString(s));
                 data.clear();
                 cap.clear();
 //                adapter.notifyDataSetChanged();
