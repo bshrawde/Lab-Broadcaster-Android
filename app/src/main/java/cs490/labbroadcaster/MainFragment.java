@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.json.JSONObject;
 
@@ -116,8 +117,11 @@ public class MainFragment extends Fragment {
 //                    f.changeText(data.get(position).toString(), cap.get(position).toString());
                     TextView a = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.toolbar_title);
                     TextView b = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.capacity);
+                    FloatingActionsMenu f = (FloatingActionsMenu) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.fab);
+
                     a.setText(data.get(position).toString());
                     b.setText(cap.get(position).toString());
+                    f.setVisibility(View.VISIBLE);
                 }else{
                     Intent intent = new Intent(getActivity(), ViewLabActivity.class);
                     intent.putExtra("labRoom", data.get(position).toString());
@@ -292,7 +296,7 @@ public class MainFragment extends Fragment {
                         editor.commit();
                         dialog.dismiss();
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
-                        InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
                         addClassData();
                     }
@@ -466,39 +470,7 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if(id == R.id.action_refresh){
-//            server_request test = new server_request();
-//            test.LabData(found_array1);
-            mSwipeRefreshLayout.setEnabled(true);
-            mSwipeRefreshLayout.setRefreshing(true);
-            new RefreshRoomData().execute();
-
-        }else if(id == R.id.action_logout){
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.clear();
-            editor.commit();
-            Intent i = new Intent(getActivity(), MainActivity.class);
-            startActivity(i);
-            getActivity().finish();
-        }else if(id == R.id.action_user_preferences){
-//            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(getActivity(), UserPreferences.class);
-            startActivity(i);
-
-        }
-
-        return true;
-    }
     public void addClassData(){
 //        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
         data.add(new String("LWSN B160"));
@@ -556,5 +528,40 @@ public class MainFragment extends Fragment {
 //        //curr_classes      current classes
 //        //pref_classes      older classes
 //        //TA                classes TA for
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_refresh){
+//            server_request test = new server_request();
+//            test.LabData(found_array1);
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.setRefreshing(true);
+            new RefreshRoomData().execute();
+
+        }else if(id == R.id.action_logout){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.clear();
+            editor.commit();
+//            Intent i = new Intent(getActivity(), MainActivity.class);
+//            startActivity(i);
+//            getActivity().finish();
+            getActivity().recreate();
+        }else if(id == R.id.action_user_preferences){
+//            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(getActivity(), UserPreferences.class);
+            startActivity(i);
+
+        }
+
+        return true;
     }
 }

@@ -71,6 +71,13 @@ public class ViewLabFragment extends Fragment {
         FloatingActionButton fabcalendar = (FloatingActionButton) view.findViewById(R.id.fab_calendar);
         FloatingActionButton fabwebcam = (FloatingActionButton) view.findViewById(R.id.fab_webcam);
 
+        FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
+
+        if(mTitle.getText().equals("")){
+            fab.setVisibility(View.GONE);
+        }else{
+            fab.setVisibility(View.VISIBLE);
+        }
         fabwebcam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
