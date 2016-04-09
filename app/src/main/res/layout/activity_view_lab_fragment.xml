@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="?attr/background"
+                tools:context="cs490.labbroadcaster.ViewLabActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="?attr/android:popupTheme" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text=""
+            android:textAllCaps="true"
+            android:id="@+id/toolbar_title" />
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:id="@+id/capacity"
+        android:text="15/20 Computers"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        fab:fab_addButtonColorNormal="@color/accent_color"
+        fab:fab_addButtonColorPressed="@color/accent_color"
+        android:layout_gravity="bottom|right"
+        fab:fab_expandDirection="up"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/accent_color"
+            fab:fab_colorPressed="@color/accent_color"
+            fab:fab_title="Calendar"
+            fab:fab_icon="@drawable/ic_date_range_white_24dp"
+            fab:fab_size="mini"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_webcam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/accent_color"
+            fab:fab_colorPressed="@color/accent_color"
+            fab:fab_size="mini"
+            fab:fab_icon="@drawable/ic_videocam_white_24dp"
+            fab:fab_title="Webcam"/>
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</RelativeLayout>

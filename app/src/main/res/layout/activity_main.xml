@@ -7,52 +7,10 @@
                 android:orientation="vertical"
                 android:background="?attr/background"
                 tools:context="cs490.labbroadcaster.MainActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
+    <fragment class="cs490.labbroadcaster.MainFragment"
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        app:popupTheme="?attr/android:popupTheme" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/app_name"
-            android:textAllCaps="true"
-            android:id="@+id/toolbar_title" />
-    </android.support.v7.widget.Toolbar>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:scrollbars="vertical"
-            android:layout_below="@id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/set_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_icon="@drawable/ic_chat_bubble_outline_white_24dp"
-        fab:fab_colorNormal="@color/accent_color"
-        fab:fab_colorPressed="@color/accent_color"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="16dp">
-
-    </com.getbase.floatingactionbutton.FloatingActionButton>
-
+        android:layout_height="match_parent"
+              android:id="@+id/main1"
+              tools:layout="@layout/activity_main_fragment"
+              />
 </RelativeLayout>
