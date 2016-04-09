@@ -518,16 +518,18 @@ public class MainFragment extends Fragment {
         Set<String> class_help = preferences.getStringSet("classes_help",null); //classes need help on
         String helper = preferences.getString("pref_status",null);              // what you can help with
         Boolean broadcast = preferences.getBoolean("pref_broadcast",false);
-//
-//        //KEYS
-//        //classes_help      what classes you need help with
-//        //pref_status       what your willing to help on
-//        //pw                password
-//        //email             email/username
-//        //pref_languages    languages you know
-//        //curr_classes      current classes
-//        //pref_classes      older classes
-//        //TA                classes TA for
+
+        /*
+        KEYS
+        classes_help      what classes you need help with
+        pref_status       what your willing to help on
+        pw                password
+        email             email/username
+        pref_languages    languages you know
+        curr_classes      current classes
+        pref_classes      older classes
+        TA                classes TA for
+        */
     }
 
     @Override
