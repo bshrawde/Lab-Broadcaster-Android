@@ -26,7 +26,7 @@
             android:textAllCaps="true"
             android:id="@+id/toolbar_title" />
     </android.support.v7.widget.Toolbar>
-    <TextView
+<!--    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
@@ -35,7 +35,35 @@
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
         android:id="@+id/capacity"
-        android:text="15/20 Computers"/>
+        android:text="15/20 Computers"/>-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/groupimage"
+        android:layout_marginTop="20dp"
+        android:paddingTop="2dp"
+        android:paddingLeft="16dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/currentusers"
+        android:textSize="18sp"
+        android:paddingTop="2dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="30dp"
+        android:layout_toRightOf="@+id/groupimage"
+        android:text=""
+        android:textAllCaps="true"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:scrollbars="vertical"
+        android:layout_below="@id/currentusers"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"

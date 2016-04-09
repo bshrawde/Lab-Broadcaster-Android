@@ -64,14 +64,13 @@ public class ViewLabsRecyclerAdapter extends RecyclerView.Adapter<ViewLabsRecycl
         holder.username.setText(username);
         holder.status.setText(status);
         holder.username.setTypeface(robotoMono);
-        holder.status.setTypeface(robotoMono);
+/*        holder.status.setTypeface(robotoMono);*/
     }
 
     @Override
     public int getItemCount() {
         return usernames.size();
     }
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 

@@ -1,6 +1,7 @@
 package cs490.labbroadcaster;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +65,7 @@ import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
+import cs490.labbroadcaster.adapters.ViewLabsRecyclerAdapter;
 
 public class MainFragment extends Fragment {
     public SharedPreferences sharedPref;
@@ -115,13 +118,62 @@ public class MainFragment extends Fragment {
                 if(isDual){
 //                    ViewLabFragment f = new ViewLabFragment();
 //                    f.changeText(data.get(position).toString(), cap.get(position).toString());
-                    TextView a = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.toolbar_title);
-                    TextView b = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.capacity);
+                    TextView title = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.toolbar_title);
+                    TextView currentusers = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.currentusers);
+                    ImageView groupimage = (ImageView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.groupimage);
+                    RecyclerView rv = (RecyclerView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.recycler_view);
+
                     FloatingActionsMenu f = (FloatingActionsMenu) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.fab);
 
-                    a.setText(data.get(position).toString());
-                    b.setText(cap.get(position).toString());
+
+                    title.setText(data.get(position).toString());
                     f.setVisibility(View.VISIBLE);
+
+
+                    if(cap.get(position).toString().charAt(0) == '0'){
+                        groupimage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_people_outline_white_24dp));
+                        currentusers.setText(cap.get(position).toString().substring(0,cap.get(position).toString().indexOf('C'))+ "Current Users");
+                    }else if(cap.get(position).toString().charAt(0) == '1' && cap.get(position).toString().charAt(1) == '/'){
+                        groupimage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_person_white_24dp));
+                        currentusers.setText(cap.get(position).toString().substring(0,cap.get(position).toString().indexOf('C'))+ "Current User");
+                    }else{
+                        groupimage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_group_white_24dp));
+                        currentusers.setText(cap.get(position).toString().substring(0,cap.get(position).toString().indexOf('C'))+ "Current Users");
+                    }
+                    String t = "";
+                    if(cap.get(position).toString().charAt(1) != '/'){ //double digit number
+                        t = cap.get(position).toString().substring(0,2);
+                    }else{
+                        t = cap.get(position).toString().substring(0,1);
+                    }
+                    int currentcap = Integer.parseInt(t);
+                    ArrayList<String> username = new ArrayList<>();
+                    ArrayList<String> status = new ArrayList<>();
+                    for(int i = 0; i<currentcap; i++){
+                        username.add("nmoorthy");
+                        status.add("I need help with eating cookies");
+                    }
+
+                    rv.setVisibility(View.VISIBLE);
+
+                    final LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
+                    rv.setLayoutManager(layoutManager1);
+                    ViewLabsRecyclerAdapter adapter2 = new ViewLabsRecyclerAdapter(getActivity(), username, status, new CustomItemClickListener() {
+                        @Override
+                        public void onItemClick(View v, int position) {
+                            Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
+                            View labView = getActivity().findViewById(R.id.viewlab);
+                            boolean isDual = labView != null && labView.getVisibility() == View.VISIBLE;
+                            if(isDual){
+
+                            }else{
+
+                            }
+                        }
+                    });
+                    rv.setAdapter(adapter2);
+
+
                 }else{
                     Intent intent = new Intent(getActivity(), ViewLabActivity.class);
                     intent.putExtra("labRoom", data.get(position).toString());
@@ -437,7 +489,7 @@ public class MainFragment extends Fragment {
                         parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
                         parts[1] = parts[1].replaceAll("[^0-9]","");
                         if(parts[0].equals("LWSN B131")){
-                            parts[1] = parts[1]+"/"+"24 Computers";
+                            parts[1] = parts[1]+"/"+"24? Computers";
                         }else if(parts[0].equals("LWSN B146")){
                             parts[1] = parts[1]+"/"+"24 Computers";
                         }else if(parts[0].equals("LWSN B148")){
