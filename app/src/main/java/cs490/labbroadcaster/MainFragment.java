@@ -307,7 +307,10 @@ public class MainFragment extends Fragment {
                             dialog.dismiss();
                             InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
-                            addClassData();
+//                            addClassData();
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mSwipeRefreshLayout.setRefreshing(true);
+                            new RefreshRoomData().execute();
                         }
                     }
                 }
@@ -338,7 +341,10 @@ public class MainFragment extends Fragment {
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
                             InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
-                            addClassData();
+//                            addClassData();
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mSwipeRefreshLayout.setRefreshing(true);
+                            new RefreshRoomData().execute();
                         }
                     }else{
                         CAS_check authent = new CAS_check(email,password);
@@ -350,7 +356,11 @@ public class MainFragment extends Fragment {
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
-                        addClassData();
+//                        addClassData();
+                        mSwipeRefreshLayout.setEnabled(true);
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        new RefreshRoomData().execute();
+
                     }
 
                     //TODO make an area to check both username and password with CAS
@@ -358,7 +368,6 @@ public class MainFragment extends Fragment {
             });
             //endregion
         }else{
-//            addClassData();
             mSwipeRefreshLayout.setEnabled(true);
             mSwipeRefreshLayout.setRefreshing(true);
             new RefreshRoomData().execute();
