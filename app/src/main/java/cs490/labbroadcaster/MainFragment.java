@@ -141,18 +141,23 @@ public class MainFragment extends Fragment {
                         currentusers.setText(cap.get(position).toString().substring(0,cap.get(position).toString().indexOf('C'))+ "Current Users");
                     }
                     String t = "";
-                    if(cap.get(position).toString().charAt(1) != '/'){ //double digit number
-                        t = cap.get(position).toString().substring(0,2);
-                    }else{
-                        t = cap.get(position).toString().substring(0,1);
-                    }
-                    int currentcap = Integer.parseInt(t);
                     final ArrayList<String> username = new ArrayList<>();
                     final ArrayList<String> status = new ArrayList<>();
-                    for(int i = 0; i<currentcap; i++){
-                        username.add("nmoorthy");
-                        status.add("I need help with eating cookies");
+                    if(cap.get(position).toString().charAt(0) != '?'){
+                        if(cap.get(position).toString().charAt(1) != '/'){ //double digit number
+                            t = cap.get(position).toString().substring(0,2);
+                        }else{
+                            t = cap.get(position).toString().substring(0,1);
+
+                        }
+                        int currentcap = Integer.parseInt(t);
+
+                        for(int i = 0; i<currentcap; i++){
+                            username.add("nmoorthy");
+                            status.add("I need help with eating cookies");
+                        }
                     }
+
 
                     rv.setVisibility(View.VISIBLE);
 
@@ -493,35 +498,61 @@ public class MainFragment extends Fragment {
                 cap.clear();
 //                adapter.notifyDataSetChanged();
                 Log.e("s.length=",s.length+"");
+
                 for(int i = 0; i<s.length-1; i++){
-                    if(s[i].length() > 2){
+                    if(s[i] != null){
+                        if(s[i].length() > 2){
 
-                        Log.e("s[i]=","'"+s[i]+"'s.length="+s[i].length());
-                        String[] parts = s[i].split(" : ");
+                            Log.e("s[i]=","'"+s[i]+"'s.length="+s[i].length());
+                            String[] parts = s[i].split(" : ");
 
-                        Log.e("parts.length", parts.length+"");
-                        parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
-                        parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
-                        parts[1] = parts[1].replaceAll("[^0-9]","");
-                        if(parts[0].equals("LWSN B131")){
-                            parts[1] = parts[1]+"/"+"24? Computers";
-                        }else if(parts[0].equals("LWSN B146")){
-                            parts[1] = parts[1]+"/"+"24 Computers";
-                        }else if(parts[0].equals("LWSN B148")){
-                            parts[1] = parts[1]+"/"+"25 Computers";
-                        }else if(parts[0].equals("LWSN B158")){
-                            parts[1] = parts[1]+"/"+"24 Computers";
-                        }else if(parts[0].equals("HAAS G56")){
-                            parts[1] = parts[1]+"/"+"24 Computers";
-                        }else if(parts[0].equals("LWSN B160")){
-                            parts[1] = parts[1]+"/"+"25 Computers";
-                        }else if(parts[0].equals("HAAS G40")){
-                            parts[1] = parts[1]+"/"+"24 Computers";
-                        }else if(parts[0].equals("HAAS 257")){
-                            parts[1] = parts[1]+"/"+"21 Computers";
+                            Log.e("parts.length", parts.length+"");
+                            parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
+                            parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
+                            parts[1] = parts[1].replaceAll("[^0-9]","");
+                            if(parts[0].equals("LWSN B131")){
+                                parts[1] = parts[1]+"/"+"24? Computers";
+                            }else if(parts[0].equals("LWSN B146")){
+                                parts[1] = parts[1]+"/"+"24 Computers";
+                            }else if(parts[0].equals("LWSN B148")){
+                                parts[1] = parts[1]+"/"+"25 Computers";
+                            }else if(parts[0].equals("LWSN B158")){
+                                parts[1] = parts[1]+"/"+"24 Computers";
+                            }else if(parts[0].equals("HAAS G56")){
+                                parts[1] = parts[1]+"/"+"24 Computers";
+                            }else if(parts[0].equals("LWSN B160")){
+                                parts[1] = parts[1]+"/"+"25 Computers";
+                            }else if(parts[0].equals("HAAS G40")){
+                                parts[1] = parts[1]+"/"+"24 Computers";
+                            }else if(parts[0].equals("HAAS 257")){
+                                parts[1] = parts[1]+"/"+"21 Computers";
+                            }
+                            data.add(parts[0]);
+                            cap.add(parts[1]);
                         }
-                        data.add(parts[0]);
-                        cap.add(parts[1]);
+                    }else{
+                        if(i+1==s.length-1){
+                            data.add("LWSN B131");
+                            cap.add("?/"+"24? Computers");
+                            data.add("LWSN B146");
+                            cap.add("?/"+"24 Computers");
+                            data.add("LWSN B148");
+                            cap.add("?/"+"25 Computers");
+                            data.add("LWSN B158");
+                            cap.add("?/"+"24 Computers");
+                            data.add("LWSN B160");
+                            cap.add("?/"+"25 Computers");
+                            data.add("HAAS G40");
+                            cap.add("?/"+"24 Computers");
+                            data.add("HAAS G56");
+                            cap.add("?/"+"24 Computers");
+                            data.add("HAAS 257");
+                            cap.add("?/"+"21 Computers");
+
+
+
+                            Toast.makeText(getActivity(), "Error retrieving room capacities", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
