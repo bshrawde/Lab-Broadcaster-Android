@@ -117,8 +117,12 @@ public class ViewLabFragment extends Fragment {
         adapter = new ViewLabsRecyclerAdapter(getActivity(), username,status, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
                 View labView = getActivity().findViewById(R.id.viewlab);
+                Intent intent = new Intent(getActivity(), ViewUserProfile.class);
+                intent.putExtra("user", username.get(position));
+                intent.putExtra("status", status.get(position));
+                startActivity(intent);
                 boolean isDual = labView != null && labView.getVisibility() == View.VISIBLE;
                 if(isDual){
 

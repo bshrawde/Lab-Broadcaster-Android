@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background"
+    tools:context="cs490.labbroadcaster.ViewUserProfile">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="?attr/android:popupTheme" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="nmoorthy"
+        android:id="@+id/toolbar_title" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:textSize="17sp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
+        android:id="@+id/statusw"
+        android:text="STATUS: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp"
+        android:layout_below="@id/statusw"
+        android:paddingLeft="20dp"
+        android:text="I need help"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status"
+        android:text="COURSES TAKEN:"
+        android:textSize="17sp"
+        android:id="@+id/coursesw"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/coursesw"
+        android:layout_marginTop="5dp"
+        android:id="@+id/coursestaken"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:maxLines="4"
+        android:text="CS180, CS182, CS240, CS250, CS251, CS252, CS 307, CS348, CS381, CS408"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/coursesw"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:id="@+id/rvcoursestaken"-->
+        <!--&gt;-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/coursestaken"
+        android:text="CURRENT COURSES:"
+        android:textSize="17sp"
+        android:id="@+id/ccoursesw"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"/>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/ccoursesw"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:id="@+id/rvcurrent"-->
+        <!--&gt;-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ccoursesw"
+        android:layout_marginTop="5dp"
+        android:id="@+id/currentcourses"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:maxLines="4"
+        android:text="CS354, CS490"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentcourses"
+        android:text="COURSES I NEED HELP WITH:"
+        android:textSize="17sp"
+        android:id="@+id/chelp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chelp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/courseshelp"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:maxLines="4"
+        android:text="CS354"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/courseshelp"
+        android:text="KNOWN LANGUAGES:"
+        android:textSize="17sp"
+        android:id="@+id/lang"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lang"
+        android:layout_marginTop="5dp"
+        android:id="@+id/langlist"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:maxLines="4"
+        android:text="Java"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/langlist"
+        android:text="TA FOR:"
+        android:textSize="17sp"
+        android:id="@+id/tafor"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tafor"
+        android:layout_marginTop="5dp"
+        android:id="@+id/talist"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:maxLines="4"
+        android:text="EVERYTHING"/>
+
+
+</RelativeLayout>

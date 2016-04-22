@@ -60,7 +60,7 @@ public class ViewLabsRecyclerAdapter extends RecyclerView.Adapter<ViewLabsRecycl
         Typeface robotoMono = Typeface.createFromAsset(mcontext.getAssets(), "fonts/roboto-mono-regular.ttf");
         String username = usernames.get(position);
         String status = statuses.get(position);
-        //TODO able to change capactiy string to reflect current status of labs
+
         holder.username.setText(username);
         holder.status.setText(status);
         holder.username.setTypeface(robotoMono);
