@@ -65,7 +65,7 @@
         android:paddingLeft="20dp"
         android:maxLines="4"
         android:lineSpacingExtra="5dp"
-        android:text="CS 180, CS 182, CS 240, CS250, CS 251, CS 252, CS 307, CS 348, CS 381, CS 408"/>
+        android:text="CS 180, CS 182, CS 240, CS 250, CS 251, CS 252, CS 307, CS 348, CS 381, CS 408"/>
     <!--<android.support.v7.widget.RecyclerView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
