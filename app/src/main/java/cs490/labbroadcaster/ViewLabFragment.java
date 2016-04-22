@@ -94,15 +94,17 @@ public class ViewLabFragment extends Fragment {
                 groupimage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_group_white_24dp));
                 mCapacity.setText(capacity.substring(0,capacity.indexOf('C'))+ "Current Users");
             }
-            if(capacity.charAt(1) != '/'){ //double digit number
-                t = capacity.substring(0,2);
-            }else{
-                t = capacity.substring(0,1);
-            }
-            int currentcap = Integer.parseInt(t);
-            for(int i = 0; i<currentcap; i++){
-                username.add("nmoorthy");
-                status.add("I need help with eating cookies");
+            if(capacity.charAt(0)!='?'){
+                if(capacity.charAt(1) != '/'){ //double digit number
+                    t = capacity.substring(0,2);
+                }else{
+                    t = capacity.substring(0,1);
+                }
+                int currentcap = Integer.parseInt(t);
+                for(int i = 0; i<currentcap; i++){
+                    username.add("nmoorthy");
+                    status.add("I need help with eating cookies");
+                }
             }
         }
 
