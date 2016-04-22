@@ -135,6 +135,8 @@ public class ViewLabFragment extends Fragment {
 
         FloatingActionButton fabcalendar = (FloatingActionButton) view.findViewById(R.id.fab_calendar);
         FloatingActionButton fabwebcam = (FloatingActionButton) view.findViewById(R.id.fab_webcam);
+        FloatingActionButton fabusage = (FloatingActionButton) view.findViewById(R.id.fab_usage);
+
 
         FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
 
@@ -200,8 +202,18 @@ public class ViewLabFragment extends Fragment {
                 intent.launchUrl(getActivity(), Uri.parse(linkText));
             }
         });
+
+        fabusage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Todo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
+
+
 
     public void changeText(String room, String cap){
         TextView mTitle = (TextView) getView().findViewById(R.id.toolbar_title);

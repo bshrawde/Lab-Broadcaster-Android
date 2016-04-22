@@ -61,10 +61,11 @@
         android:layout_below="@+id/coursesw"
         android:layout_marginTop="5dp"
         android:id="@+id/coursestaken"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:paddingLeft="20dp"
         android:maxLines="4"
-        android:text="CS180, CS182, CS240, CS250, CS251, CS252, CS 307, CS348, CS381, CS408"/>
+        android:lineSpacingExtra="5dp"
+        android:text="CS 180, CS 182, CS 240, CS250, CS 251, CS 252, CS 307, CS 348, CS 381, CS 408"/>
     <!--<android.support.v7.widget.RecyclerView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -101,10 +102,11 @@
         android:layout_below="@+id/ccoursesw"
         android:layout_marginTop="5dp"
         android:id="@+id/currentcourses"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:paddingLeft="20dp"
         android:maxLines="4"
-        android:text="CS354, CS490"/>
+        android:lineSpacingExtra="5dp"
+        android:text="CS 354, CS 490"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -122,10 +124,11 @@
         android:layout_below="@+id/chelp"
         android:layout_marginTop="5dp"
         android:id="@+id/courseshelp"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:paddingLeft="20dp"
         android:maxLines="4"
-        android:text="CS354"/>
+        android:lineSpacingExtra="5dp"
+        android:text="CS 354"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -143,10 +146,11 @@
         android:layout_below="@+id/lang"
         android:layout_marginTop="5dp"
         android:id="@+id/langlist"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:paddingLeft="20dp"
         android:maxLines="4"
-        android:text="Java"/>
+        android:lineSpacingExtra="5dp"
+        android:text="EVERYTHING"/>
 
 
     <TextView
@@ -165,9 +169,10 @@
         android:layout_below="@+id/tafor"
         android:layout_marginTop="5dp"
         android:id="@+id/talist"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:paddingLeft="20dp"
         android:maxLines="4"
+        android:lineSpacingExtra="5dp"
         android:text="EVERYTHING"/>
 
 
