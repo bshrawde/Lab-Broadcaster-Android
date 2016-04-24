@@ -51,6 +51,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -58,11 +60,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 import cs490.labbroadcaster.adapters.ViewLabsRecyclerAdapter;
@@ -417,8 +430,112 @@ public class MainFragment extends Fragment {
             Log.e("Thread running","");
             InputStream in;
             HttpURLConnection con;
-
             found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            Certificate ca = null;
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                caInput = new BufferedInputStream(new FileInputStream("server.cer"));
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            }finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/status");
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+//                URLConnection urlConnection = url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("avaliable: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8");
+                e.printStackTrace();
+            }
+
+
+
+
+
+
+
+
+
+           /* found = "";
             Message msg = Message.obtain();
             msg.what = 1;
             String[] found_array1= new String[10];
@@ -426,7 +543,7 @@ public class MainFragment extends Fragment {
             try {
 
 //                URL tt = new URL(url);
-                con = (HttpURLConnection) new URL("http://mc15.cs.purdue.edu:5000").openConnection();
+                con = (HttpURLConnection) new URL("https://mc15.cs.purdue.edu:5000/status").openConnection();
 
                 int status = con.getResponseCode();
                 System.out.println("URL RESPONSE CODE: "+status);
@@ -454,7 +571,7 @@ public class MainFragment extends Fragment {
                     for(int i=0;i<found.length();i++){
                         char b = found.charAt(i);
                         temp +=b;
-                        if(b=='\n'/* && counter<found_array1.length-1*/){
+                        if(b=='\n'*//* && counter<found_array1.length-1*//*){
                             Log.e("COUNTER=",counter+"");
                             found_array1[counter] = temp;
                             Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
@@ -474,7 +591,7 @@ public class MainFragment extends Fragment {
                 System.out.println("\n\nTHERE WAS AN ERROR");
 
                 e1.printStackTrace();
-            }
+            }*/
             counter = 0;
             Log.e("found length=",found.length()+"");
             return found_array1;
@@ -531,7 +648,7 @@ public class MainFragment extends Fragment {
                             cap.add(parts[1]);
                         }
                     }else{
-                        if(i+1==s.length-1){
+                        if(i+1==s.length-1 && data.size() == 0){
                             data.add("LWSN B131");
                             cap.add("?/"+"24? Computers");
                             data.add("LWSN B146");

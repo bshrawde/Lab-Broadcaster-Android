@@ -152,7 +152,7 @@ public class ViewLabFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String linkText = "";
-                if("LWSN B146".equals(mTitle.getText())){
+                /*if("LWSN B146".equals(mTitle.getText())){
                     linkText = "http://lwsnb146-cam.cs.purdue.edu/view/index.shtml";
                 }else if("LWSN B148".equals(mTitle.getText())){
                     linkText = "http://lwsnb148-cam.cs.purdue.edu/view/index.shtml";
@@ -169,6 +169,24 @@ public class ViewLabFragment extends Fragment {
                 } else if ("HAAS G56".equals((mTitle.getText()))) {
 
                     linkText = "http://haasg056-cam.cs.purdue.edu/view/index.shtml";
+                }*/
+                if("LWSN B146".equals(mTitle.getText())){
+                    linkText = "http://lwsnb146-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("LWSN B148".equals(mTitle.getText())){
+                    linkText = "http://lwsnb148-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("LWSN B158".equals(mTitle.getText())){
+                    linkText = "http://lwsnb158-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("HAAS 257".equals(mTitle.getText())){
+                    linkText = "http://haas257-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("LWSN B160".equals((mTitle.getText()))){
+                    linkText = "http://lwsnb160-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("LWSN B131".equals((mTitle.getText()))){
+                    linkText = "http://lwsnb131-cam.cs.purdue.edu/mjpg/video.mjpg";
+                }else if("HAAS G40".equals((mTitle.getText()))){
+                    linkText = "http://haasg040-cam.cs.purdue.edu/mjpg/video.mjpg";
+                } else if ("HAAS G56".equals((mTitle.getText()))) {
+
+                    linkText = "http://haasg056-cam.cs.purdue.edu/mjpg/video.mjpg";
                 }
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
