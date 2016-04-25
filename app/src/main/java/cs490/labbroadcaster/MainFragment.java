@@ -1,5 +1,6 @@
 package cs490.labbroadcaster;
 
+import android.content.res.AssetManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -433,10 +434,18 @@ public class MainFragment extends Fragment {
             found = "";
             String[] found_array1= new String[10];
             InputStream caInput = null;
+            InputStream is = null;
+
             Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
             try {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                caInput = new BufferedInputStream(new FileInputStream("server.cer"));
+
+                is = assManager.open("server.cer");
+                caInput = new BufferedInputStream(is);
+//                caInput = new BufferedInputStream(new FileInputStream("server.cer"));
+
+
 
                 ca = cf.generateCertificate(caInput);
             } catch (CertificateException e) {
@@ -445,7 +454,9 @@ public class MainFragment extends Fragment {
             } catch (FileNotFoundException e) {
                 System.out.println("\n\nTHERE WAS AN ERROR2");
                 e.printStackTrace();
-            }finally {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
                 try {
                     caInput.close();
                 } catch (IOException e) {
