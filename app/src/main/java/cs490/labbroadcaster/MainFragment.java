@@ -441,11 +441,8 @@ public class MainFragment extends Fragment {
             try {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
-                is = assManager.open("server.cer");
+                is = assManager.open("mc15.cs.purdue.edu.cer");
                 caInput = new BufferedInputStream(is);
-//                caInput = new BufferedInputStream(new FileInputStream("server.cer"));
-
-
 
                 ca = cf.generateCertificate(caInput);
             } catch (CertificateException e) {
@@ -639,7 +636,7 @@ public class MainFragment extends Fragment {
                             parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
                             parts[1] = parts[1].replaceAll("[^0-9]","");
                             if(parts[0].equals("LWSN B131")){
-                                parts[1] = parts[1]+"/"+"24? Computers";
+                                parts[1] = parts[1]+"/"+"24 Computers";
                             }else if(parts[0].equals("LWSN B146")){
                                 parts[1] = parts[1]+"/"+"24 Computers";
                             }else if(parts[0].equals("LWSN B148")){
@@ -661,7 +658,7 @@ public class MainFragment extends Fragment {
                     }else{
                         if(i+1==s.length-1 && data.size() == 0){
                             data.add("LWSN B131");
-                            cap.add("?/"+"24? Computers");
+                            cap.add("?/"+"24 Computers");
                             data.add("LWSN B146");
                             cap.add("?/"+"24 Computers");
                             data.add("LWSN B148");
