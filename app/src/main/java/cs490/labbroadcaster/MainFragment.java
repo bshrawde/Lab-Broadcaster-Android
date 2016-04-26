@@ -356,8 +356,6 @@ public class MainFragment extends Fragment {
                         }else if(password.equals("")){
                             Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
                         } else{
-                            CAS_check authent = new CAS_check(email,password);
-
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("email", email);
                             editor.putString("pw", password);
@@ -372,7 +370,6 @@ public class MainFragment extends Fragment {
                             new RefreshRoomData().execute();
                         }
                     }else{
-                        CAS_check authent = new CAS_check(email,password);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("email", email);
                         editor.putString("pw", password);

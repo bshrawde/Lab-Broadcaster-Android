@@ -54,6 +54,9 @@ import java.util.concurrent.SynchronousQueue;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 
+/**
+ * the Main Activity
+ */
 public class MainActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
     public String email;

@@ -11,6 +11,11 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+
+/**
+ * created by Brian Shrawder on idk date
+ * used to create and change the database if needed
+ */
 public class DBHelpler extends SQLiteOpenHelper {
 
     public static final String DB_Name = "broadcater_db";

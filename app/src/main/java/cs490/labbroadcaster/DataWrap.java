@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import cs490.labbroadcaster.DBHelpler;
 
 /**
- * Created by Purdue on 3/29/2016.
+ * Created by Brian Shrawder on 3/29/2016.
+ * used to insert update and delete the database
  */
 public class DataWrap {
     private DBHelpler dbHelper;
