@@ -135,6 +135,8 @@ public class UserPreferences extends AppCompatActivity {
 //endregion
             broadcast.setOnPreferenceChangeListener(listener1);
 
+
+
             Preference pref = (Preference) findPreference("pref_classes");
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());

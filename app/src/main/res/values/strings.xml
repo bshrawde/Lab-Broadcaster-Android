@@ -197,18 +197,12 @@
         <item>HTML-checked</item>
     </string-array>
     <string-array name="times">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>Hourly</item>
         <item>Manual</item>
+        <item>Hourly</item>
     </string-array>
     <string-array name="timeschecked">
-        <item>5 minutes-checked</item>
-        <item>10 minutes-checked</item>
-        <item>15 minutes-checked</item>
-        <item>hourly-checked</item>
         <item>manual-checked</item>
+        <item>hourly-checked</item>
 
     </string-array>
     <string-array name="empty_array"/>

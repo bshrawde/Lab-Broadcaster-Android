@@ -393,8 +393,15 @@ public class MainFragment extends Fragment {
             });
             //endregion
         }else{
+            System.out.println("Refreshing...");
             mSwipeRefreshLayout.setEnabled(true);
-            mSwipeRefreshLayout.setRefreshing(true);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                }
+            });
+//            mSwipeRefreshLayout.setRefreshing(true);
             new RefreshRoomData().execute();
         }
 
@@ -428,7 +435,7 @@ public class MainFragment extends Fragment {
     public class RefreshRoomData extends AsyncTask<String[], Void, String[]> {
         @Override
         protected String[] doInBackground(String[]... params) {
-            Log.e("Thread running","");
+            Log.e("AsyncTask running","");
             InputStream in;
             HttpURLConnection con;
             found = "";
@@ -492,14 +499,14 @@ public class MainFragment extends Fragment {
                 char d = (char)in.read();
                 char c='a';
                 found+=d;
-                System.out.println("FIRST CHAR: "+d);
+//                System.out.println("FIRST CHAR: "+d);
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
-                Log.e("found=",found);
+//                Log.e("found=",found);
                 if(c =='}'){
                     String temp = "";
                     in.close();
@@ -507,9 +514,9 @@ public class MainFragment extends Fragment {
                         char b = found.charAt(i);
                         temp +=b;
                         if(b=='\n'/* && counter<found_array1.length-1*/){
-                            Log.e("COUNTER=",counter+"");
+//                            Log.e("COUNTER=",counter+"");
                             found_array1[counter] = temp;
-                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
                             temp ="";
                             counter++;
                         }

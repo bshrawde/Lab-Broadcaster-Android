@@ -22,6 +22,7 @@
         android:summary = "Choose your refresh rate"
         android:entries="@array/times"
         android:entryValues="@array/timeschecked"
+        android:defaultValue="manual-checked"
         ></ListPreference>
     <MultiSelectListPreference
         android:title="TA for courses"
