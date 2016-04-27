@@ -55,7 +55,8 @@ public class UserPreferences extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //VERY FIST THING
+        //new GetUserPrefs().execute();
 
         setContentView(R.layout.activity_userprefs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,6 +76,7 @@ public class UserPreferences extends AppCompatActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
+
             addPreferencesFromResource(R.xml.userpreferences);
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //region courses need help on
@@ -192,6 +194,143 @@ public class UserPreferences extends AppCompatActivity {
         }
     }
     public class SaveUserPrefs extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = context.getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/user/preferences");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");
+
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+
+                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public class GetUserPrefs extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
             SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
