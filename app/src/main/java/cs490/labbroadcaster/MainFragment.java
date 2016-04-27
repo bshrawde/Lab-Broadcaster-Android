@@ -319,13 +319,16 @@ public class MainFragment extends Fragment {
                     }else{
                         //authentication check
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("email",email);
+
+
+                        int f = email.indexOf('@');
+                        String u_name = email.substring(0,f);
+                        editor.putString("email",u_name);
                         editor.putString("pw",password);
                         editor.commit();
                         new Register().execute();
-                        int f = email.indexOf('@');
-                        String u_name = email.substring(0,f);
-                        boolean result = base.insertUser(u_name,password);
+                        //boolean result = base.insertUser(u_name,password);
+                        boolean result = true;
                         if(result==false) {
                             Toast.makeText(getActivity(),"User already exists",Toast.LENGTH_SHORT).show();
                         }else{
@@ -631,6 +634,9 @@ public class MainFragment extends Fragment {
     public class Register extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String uname = logger.getString("email","");
+            String pass = logger.getString("pw","");
             Log.e("AsyncTask running","WTF");
             InputStream in;
             HttpURLConnection con;
@@ -692,7 +698,7 @@ public class MainFragment extends Fragment {
                 urlConnection.setRequestMethod("PUT");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
 
-                out.write("{\"username\" : "+"\"bshrawde\",  "+"\"password\" : "+"\"password\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -765,6 +771,7 @@ public class MainFragment extends Fragment {
     public class LoginAuth extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Log.e("AsyncTask running","WTF");
             InputStream in;
             HttpURLConnection con;
@@ -825,8 +832,10 @@ public class MainFragment extends Fragment {
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestMethod("PUT");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");
 
-                out.write("{\"username\" : "+"\"bshrawde\",  "+"\"password\" : "+"\"password\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
