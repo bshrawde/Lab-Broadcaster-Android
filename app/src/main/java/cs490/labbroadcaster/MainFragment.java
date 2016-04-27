@@ -99,6 +99,7 @@ public class MainFragment extends Fragment {
     String found = "";
     String[] found_array= new String[15];
     private boolean populate = false;
+    protected boolean loginvalid =false;
     int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
 
     @Override
@@ -850,6 +851,7 @@ public class MainFragment extends Fragment {
 
                 out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
                 out.close();
+                int response = urlConnection.getResponseCode();
                 in = urlConnection.getInputStream();
 
                 int t = in.available();
@@ -915,7 +917,10 @@ public class MainFragment extends Fragment {
             }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setEnabled(false);
-            adapter.notifyDataSetChanged();
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("sessionID", s);
+            editor.commit();
+
         }
     }
     public void onCreate(Bundle savedInstanceState) {
