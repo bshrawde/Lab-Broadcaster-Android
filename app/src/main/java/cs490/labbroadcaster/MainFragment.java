@@ -57,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -130,8 +131,6 @@ public class MainFragment extends Fragment {
                 View labView = getActivity().findViewById(R.id.viewlab);
                 boolean isDual = labView != null && labView.getVisibility() == View.VISIBLE;
                 if(isDual){
-//                    ViewLabFragment f = new ViewLabFragment();
-//                    f.changeText(data.get(position).toString(), cap.get(position).toString());
                     TextView title = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.toolbar_title);
                     TextView currentusers = (TextView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.currentusers);
                     ImageView groupimage = (ImageView) getFragmentManager().findFragmentById(R.id.viewlab).getView().findViewById(R.id.groupimage);
@@ -240,7 +239,7 @@ public class MainFragment extends Fragment {
                 final EditText status = new EditText(getActivity());
                 status.setText(currentStatus);
                 status.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
                 builder.setView(status);
@@ -255,14 +254,14 @@ public class MainFragment extends Fragment {
                         //todo dont leave this here
                         //serverTest();
 
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
                         dialog.cancel();
                     }
@@ -285,21 +284,21 @@ public class MainFragment extends Fragment {
             final EditText input2 = (EditText) v.findViewById(R.id.password);
 
             input.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
             builder.setCancelable(false);
             builder.setNeutralButton("Create Account",new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which){
-
+                    //create_account_area
                 }
 
             });
             builder.setPositiveButton("Login",new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which){
-
+                    //login_area
                 }
             });
             final AlertDialog dialog = builder.create();
@@ -314,23 +313,24 @@ public class MainFragment extends Fragment {
                     email = input.getText().toString();
                     password = input2.getText().toString();
                     if((!email.contains(("@purdue.edu")))){
-                        Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
                     }else if(password.equals("")){
-                        Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Invalid password", Toast.LENGTH_SHORT).show();
                     }else{
                         //authentication check
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("email",email);
                         editor.putString("pw",password);
                         editor.commit();
+                        new Register().execute();
                         int f = email.indexOf('@');
                         String u_name = email.substring(0,f);
                         boolean result = base.insertUser(u_name,password);
                         if(result==false) {
-                            Toast.makeText(context,"User already exists",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),"User already exists",Toast.LENGTH_SHORT).show();
                         }else{
                             dialog.dismiss();
-                            InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
 //                            addClassData();
                             mSwipeRefreshLayout.setEnabled(true);
@@ -350,19 +350,21 @@ public class MainFragment extends Fragment {
                     email = input.getText().toString();
                     password = input2.getText().toString();
 
-                    if(debug == 1){
+                    if(debug == 0){
                         if((!email.contains("@purdue.edu"))){
-                            Toast.makeText(context, email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), email+" is not a vaild purdue.edu address", Toast.LENGTH_SHORT).show();
                         }else if(password.equals("")){
-                            Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Invalid password", Toast.LENGTH_SHORT).show();
                         } else{
+
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("email", email);
                             editor.putString("pw", password);
                             editor.commit();
+                            new LoginAuth().execute();
                             dialog.dismiss();
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
-                            InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
 //                            addClassData();
                             mSwipeRefreshLayout.setEnabled(true);
@@ -376,7 +378,7 @@ public class MainFragment extends Fragment {
                         editor.commit();
                         dialog.dismiss();
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
 //                        addClassData();
                         mSwipeRefreshLayout.setEnabled(true);
@@ -538,72 +540,6 @@ public class MainFragment extends Fragment {
                 System.out.println("\n\nTHERE WAS AN ERROR8");
                 e.printStackTrace();
             }
-
-
-
-
-
-
-
-
-
-           /* found = "";
-            Message msg = Message.obtain();
-            msg.what = 1;
-            String[] found_array1= new String[10];
-            int counter = 0;
-            try {
-
-//                URL tt = new URL(url);
-                con = (HttpURLConnection) new URL("https://mc15.cs.purdue.edu:5000/status").openConnection();
-
-                int status = con.getResponseCode();
-                System.out.println("URL RESPONSE CODE: "+status);
-
-                in = new BufferedInputStream(con.getInputStream());
-                //InputStream in = new BufferedReader(con.getInputStream());
-
-                int t = in.available();
-//                Log.e("avaliable: ",t+"");
-                char d = (char)in.read();
-                char c='a';
-                found+=d;
-                //System.out.println("FIRST CHAR: "+d);
-                while(in.available()>0){
-                    c = (char)in.read();
-                    found+=c;
-                    //System.out.println("CHARS FROM REDER: "+c);
-
-                }
-                Log.e("found=",found);
-                if(c =='}'){
-                    String temp = "";
-                    in.close();
-                    con.disconnect();
-                    for(int i=0;i<found.length();i++){
-                        char b = found.charAt(i);
-                        temp +=b;
-                        if(b=='\n'*//* && counter<found_array1.length-1*//*){
-                            Log.e("COUNTER=",counter+"");
-                            found_array1[counter] = temp;
-                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
-                            temp ="";
-                            counter++;
-                        }
-                    }
-
-                    in.close();
-                    con.disconnect();
-                }
-
-                //in.close();
-                //con.disconnect();
-            }
-            catch (IOException e1) {
-                System.out.println("\n\nTHERE WAS AN ERROR");
-
-                e1.printStackTrace();
-            }*/
             counter = 0;
             Log.e("found length=",found.length()+"");
             return found_array1;
@@ -612,7 +548,7 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s[]){
             if(s.length == 0){
-                Toast.makeText(context, "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
@@ -692,32 +628,279 @@ public class MainFragment extends Fragment {
         }
     }
 
+    public class Register extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/user/registration");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("PUT");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+
+                out.write("{\"username\" : "+"\"bshrawde\",  "+"\"password\" : "+"\"password\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+//                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setEnabled(false);
+            }else{
+                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setEnabled(false);
+                adapter.notifyDataSetChanged();
+            }
+    }
+    public class LoginAuth extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/user/login");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("PUT");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+
+                out.write("{\"username\" : "+"\"bshrawde\",  "+"\"password\" : "+"\"password\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+//                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setEnabled(false);
+            }else{
+                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            }
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setEnabled(false);
+            adapter.notifyDataSetChanged();
+        }
+    }
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
-
-    public void addClassData(){
-//        Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
-        data.add(new String("LWSN B160"));
-        cap.add(new String("X/25 Computers"));
-        data.add(new String("LWSN B158"));
-        cap.add(new String("X/24 Computers"));
-        data.add(new String("LWSN B148"));
-        cap.add(new String("X/25 Computers"));
-        data.add(new String("LWSN B146"));
-        cap.add(new String("X/24 Computers"));
-        data.add(new String("LWSN B131"));
-        cap.add(new String("X/?? Computers"));
-        data.add(new String("HAAS G56"));
-        cap.add(new String("X/24 Computers"));
-        data.add(new String("HAAS G40"));
-        cap.add(new String("X/24 Computers"));
-        data.add(new String("HAAS 257"));
-        cap.add(new String("X/21 Computers"));
-        adapter.notifyDataSetChanged();
-    }
     @Override
         public void onResume(){
         super.onResume();
