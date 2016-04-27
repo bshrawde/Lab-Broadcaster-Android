@@ -361,8 +361,10 @@ public class MainFragment extends Fragment {
                         } else{
 
                             SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("email", email);
-                            editor.putString("pw", password);
+                            int f = email.indexOf('@');
+                            String u_name = email.substring(0,f);
+                            editor.putString("email",u_name);
+                            editor.putString("pw",password);
                             editor.commit();
                             new LoginAuth().execute();
                             dialog.dismiss();
@@ -695,69 +697,80 @@ public class MainFragment extends Fragment {
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("PUT");
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+                urlConnection.setRequestProperty("Accept","​/​");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
 
                 out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
                 out.close();
-                in = urlConnection.getInputStream();
+                Log.e("before input stream:","BLAH");
+                int status = urlConnection.getResponseCode();
+                Log.e("response code",status+"");
+                if(status>300){
+                    return "";
+                }
+                    in = urlConnection.getInputStream();
 
-                int t = in.available();
-                Log.e("Login available: ",t+"");
-                char d = (char)in.read();
-                char c='a';
-                found+=d;
+                    Log.e("After input stream:","OREOS");
+
+                    int t = in.available();
+                    Log.e("Login available: ",t+"");
+                    char d = (char)in.read();
+                    char c='a';
+                    found+=d;
 //                System.out.println("FIRST CHAR: "+d);
-                while(in.available()>0){
-                    c = (char)in.read();
-                    found+=c;
-//                    System.out.println("CHARS FROM READER: "+c);
+                 while(in.available()>0){
+                        c = (char)in.read();
+                        found+=c;
+                        System.out.println("CHARS FROM READER: "+c);
 
-                }
-                Log.e("Login found=",found);
-                if(c =='}'){
-                    String temp = "";
-                    in.close();
-                    for(int i=0;i<found.length();i++){
-                        char b = found.charAt(i);
-                        temp +=b;
-                        if(b=='\n'/* && counter<found_array1.length-1*/){
-//                            Log.e("COUNTER=",counter+"");
-                            found_array1[counter] = temp;
-//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
-                            temp ="";
-                            counter++;
-                        }
                     }
-                    in.close();
-                    urlConnection.disconnect();
-                }
+                    Log.e("Login found=",found);
+                    if(c =='}'){
+                        String temp = "";
+                        in.close();
+                        for(int i=0;i<found.length();i++){
+                            char b = found.charAt(i);
+                            temp +=b;
+                            if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                                found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                                temp ="";
+                                counter++;
+                            }
+                        }
+                        in.close();
+                        urlConnection.disconnect();
+                    }
 
-            } catch (KeyStoreException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR5");
-                e.printStackTrace();
-            } catch (CertificateException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR6");
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR7");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
-                e.printStackTrace();
+                } catch (KeyStoreException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR5");
+                    e.printStackTrace();
+                } catch (CertificateException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR6");
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR7");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                    e.printStackTrace();
+               } catch (KeyManagementException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                    e.printStackTrace();
+                }
+                counter = 0;
+                Log.e("found length=",found.length()+"");
+                return found;
             }
-            counter = 0;
-            Log.e("found length=",found.length()+"");
-            return found;
-        }
+
 
         @Override
         protected void onPostExecute(String s){
-            if(s.length() == 0){
-                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+            if(s.length() == 0 || s.equals("")){
+                Toast.makeText(getActivity(), "There was an error creating account", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
@@ -830,7 +843,7 @@ public class MainFragment extends Fragment {
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("PUT");
+                urlConnection.setRequestMethod("POST");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
@@ -848,7 +861,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-//                    System.out.println("CHARS FROM READER: "+c);
+                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("Login found=",found);
