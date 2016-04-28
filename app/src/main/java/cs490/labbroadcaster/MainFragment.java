@@ -95,6 +95,7 @@ public class MainFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     private MainRecyclerAdapter adapter;
     public SharedPreferences preferences;
+     AlertDialog dialog =null;
 
     String found = "";
     String[] found_array= new String[15];
@@ -303,7 +304,7 @@ public class MainFragment extends Fragment {
                     //login_area
                 }
             });
-            final AlertDialog dialog = builder.create();
+            dialog = builder.create();
             dialog.show();
             //endregion
 
@@ -366,11 +367,12 @@ public class MainFragment extends Fragment {
                             editor.putString("pw",password);
                             editor.commit();
                             new LoginAuth().execute();
+                            loginvalid = true;
                             if(loginvalid==false){
                                 Toast.makeText(getActivity(),"Error username or password incorrect",Toast.LENGTH_SHORT).show();
 
                             }else {
-                                dialog.dismiss();
+                                //dialog.dismiss();
                                 //new GetUserPrefs().execute();
                         /*TODO: Keyboard not hiding automatically for some reason WTF*/
                                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
@@ -378,7 +380,7 @@ public class MainFragment extends Fragment {
 //                            addClassData();
                                 mSwipeRefreshLayout.setEnabled(true);
                                 mSwipeRefreshLayout.setRefreshing(true);
-                                new RefreshRoomData().execute();
+
                             }
                         }
                     }else{
@@ -917,7 +919,7 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s){
             if(s.length() == 0||s.equals("")){
-                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Invalid Login", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 loginvalid = false;
@@ -927,6 +929,8 @@ public class MainFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("sessionID", s);
                 editor.commit();
+                dialog.dismiss();
+                new RefreshRoomData().execute();
             }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setEnabled(false);
@@ -1208,7 +1212,6 @@ public class MainFragment extends Fragment {
             }
         }
     }
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
