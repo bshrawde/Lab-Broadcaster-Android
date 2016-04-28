@@ -328,17 +328,17 @@ public class MainFragment extends Fragment {
                         editor.putString("pw",password);
                         editor.commit();
                         new Register().execute();   //register a new user
-
+                        registervalid = true;
                         if(registervalid==false) {
                             Toast.makeText(getActivity(),"Error creating user",Toast.LENGTH_SHORT).show();
                         }else{
-                            dialog.dismiss();
+                            //dialog.dismiss();
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
 //                            addClassData();
                             mSwipeRefreshLayout.setEnabled(true);
                             mSwipeRefreshLayout.setRefreshing(true);
-                            new RefreshRoomData().execute();
+                            //new RefreshRoomData().execute();
                         }
                     }
                 }
