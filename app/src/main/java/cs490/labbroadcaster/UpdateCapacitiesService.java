@@ -176,6 +176,7 @@ public class UpdateCapacitiesService extends Service {
         @Override
         protected void onPostExecute(String s[]) {
             super.onPostExecute(s);
+            Toast.makeText(context, "BRUH", Toast.LENGTH_SHORT).show();
             if(s.length == 0){
 
             }else{
@@ -303,7 +304,7 @@ public class UpdateCapacitiesService extends Service {
                         }
                     }
                 }
-                if(count > 0){
+                if(count >= 0){
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
                         builder.setSmallIcon(R.drawable.ic_domain_white_24dp);
                         builder.setContentTitle("Lab Broadcaster");

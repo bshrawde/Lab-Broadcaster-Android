@@ -1,6 +1,8 @@
 package cs490.labbroadcaster;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -168,6 +170,17 @@ public class UserPreferences extends AppCompatActivity {
             Preference.OnPreferenceChangeListener listener2 = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Log.e("selected: ", newValue.toString());
+                    if(newValue.equals("manual-checked")){
+//                        Toast.makeText(getActivity(), "Maunal", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
+                        PendingIntent.getBroadcast(getActivity(), 0, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+                    }else{
+//                        Toast.makeText(getActivity(), "Hourly", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
+                        new AlarmReciever().onReceive(getActivity(), intent);
+                    }
 
                     return true;
                 }
