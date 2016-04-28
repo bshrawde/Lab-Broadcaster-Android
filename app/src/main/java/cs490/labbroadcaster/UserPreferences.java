@@ -180,7 +180,7 @@ public class UserPreferences extends AppCompatActivity {
         // your code.
         super.onPause();
         Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
-        //new SaveUserPrefs().execute();
+        new SaveUserPrefs().execute();
         new GetUserPrefs().execute();
     }
     @Override
@@ -258,7 +258,7 @@ public class UserPreferences extends AppCompatActivity {
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestMethod("PUT");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
@@ -412,15 +412,17 @@ public class UserPreferences extends AppCompatActivity {
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("GET");
-                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                urlConnection.setRequestMethod("POST");
+
+                    OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
-                String sesstion = logger.getString("session","");
+                String session = logger.getString("sessionID","");
+                Log.e("Sessino id:",session+"");
 
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"session\" : "+"\""+pass+"\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"session\" : "+"\""+session+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
