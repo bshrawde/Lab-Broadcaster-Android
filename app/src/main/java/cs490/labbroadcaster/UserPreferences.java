@@ -180,7 +180,8 @@ public class UserPreferences extends AppCompatActivity {
         // your code.
         super.onPause();
         Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
-        new SaveUserPrefs().execute();
+        //new SaveUserPrefs().execute();
+        new GetUserPrefs().execute();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -264,7 +265,24 @@ public class UserPreferences extends AppCompatActivity {
 
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
+                //username : string, courses : string, current : string,  languages : string
+                ///public SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String u_name = logger.getString("email","");
+                Set<String> curr_classes = logger.getStringSet("curr_classes",null);
+                Set<String> classes_taken = logger.getStringSet("pref_classes",null);
+                Set<String> Lang = logger.getStringSet("pref_languages",null);
+                String session = logger.getString("sessionID",null);
+                String curr=curr_classes.toString();
+                String past = classes_taken.toString();
+                String lang = Lang.toString();
+                lang = lang.replace("[","");
+                lang = lang.replace("]","");
+                past = past.replace("[","");
+                past = past.replace("]","");
+                curr = curr.replace("[","");
+                curr = curr.replace("]","");
+                //,  "+"\"courses\" : "+"\""+pass+""
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"courses\" : "+"\""+past+"\", "+"\"current\" : "+"\""+curr+"\", "+"\"languages\" : "+"\""+lang+"\" , "+"\"session\" : "+"\""+session+"\" }");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -394,14 +412,15 @@ public class UserPreferences extends AppCompatActivity {
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestMethod("GET");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
+                String sesstion = logger.getString("session","");
 
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"session\" : "+"\""+pass+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 

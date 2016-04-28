@@ -927,6 +927,8 @@ public class MainFragment extends Fragment {
                 Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 loginvalid = true;
                 SharedPreferences.Editor editor = sharedPref.edit();
+                s=s.substring(13,s.length()-2);
+                Log.e("session",s+"");
                 editor.putString("sessionID", s);
                 editor.commit();
                 dialog.dismiss();
