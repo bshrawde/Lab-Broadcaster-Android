@@ -562,7 +562,7 @@ public class MainFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
-                Log.e("s=", Arrays.toString(s));
+//                Log.e("s=", Arrays.toString(s));
                 String temp = s[5];
                 String temp2 = s[7];
                 s[5] = s[6];
@@ -578,10 +578,10 @@ public class MainFragment extends Fragment {
                     if(s[i] != null){
                         if(s[i].length() > 2){
 
-                            Log.e("s[i]=","'"+s[i]+"'s.length="+s[i].length());
+//                            Log.e("s[i]=","'"+s[i]+"'s.length="+s[i].length());
                             String[] parts = s[i].split(" : ");
 
-                            Log.e("parts.length", parts.length+"");
+//                            Log.e("parts.length", parts.length+"");
                             parts[0] = parts[0].replaceAll("[^a-zA-Z0-9]","");
                             parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
                             parts[1] = parts[1].replaceAll("[^0-9]","");

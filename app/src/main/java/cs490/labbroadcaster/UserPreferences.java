@@ -162,6 +162,20 @@ public class UserPreferences extends AppCompatActivity {
             broadcast.setOnPreferenceChangeListener(listener1);
 
 
+//            ListPreference refreshrate = (ListPreference) findPreference("refresh_rate");
+//
+////region broadcast status changer
+//            Preference.OnPreferenceChangeListener listener2 = new Preference.OnPreferenceChangeListener() {
+//                @Override
+//                public boolean onPreferenceChange(Preference preference, Object newValue) {
+//
+//                    return true;
+//                }
+//            };
+////endregion
+//            refreshrate.setOnPreferenceChangeListener(listener2);
+
+
 
             Preference pref = (Preference) findPreference("pref_classes");
 
