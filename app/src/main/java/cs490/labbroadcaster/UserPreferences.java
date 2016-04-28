@@ -171,17 +171,11 @@ public class UserPreferences extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Log.e("selected: ", newValue.toString());
-                    if(newValue.equals("manual-checked")){
-//                        Toast.makeText(getActivity(), "Maunal", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
-                        PendingIntent.getBroadcast(getActivity(), 0, intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT).cancel();
-                    }else{
-//                        Toast.makeText(getActivity(), "Hourly", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
-                        new AlarmReciever().onReceive(getActivity(), intent);
-                    }
 
+
+                    Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
+                    intent.putExtra("refresh", newValue.toString());
+                    new AlarmReciever().onReceive(getActivity(), intent);
                     return true;
                 }
             };

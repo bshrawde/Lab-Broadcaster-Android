@@ -38,6 +38,9 @@
         <activity android:name=".ViewUserProfile"
                   android:parentActivityName=".ViewLabActivity">
         </activity>
+        <service android:name=".UpdateCapacitiesService"
+            android:enabled="true"/>
+        <receiver android:name=".AlarmReciever"
+            />
     </application>
-
 </manifest>
