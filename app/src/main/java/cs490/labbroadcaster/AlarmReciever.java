@@ -37,8 +37,8 @@ public class AlarmReciever extends BroadcastReceiver{
         //Create
         Intent intent = new Intent(context, UpdateCapacitiesService.class);
 
-//        Intent downloader = new Intent(context, AlarmReciever.class);
         PendingIntent recurringDownload = PendingIntent.getService(context,0,intent, 0);
+
 //        PendingIntent recurringDownload = PendingIntent.getBroadcast(context,0,downloader, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_HOUR,recurringDownload);

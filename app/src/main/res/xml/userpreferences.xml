@@ -19,7 +19,7 @@
     <ListPreference
         android:key = "refresh_rate"
         android:title = "Refresh Rate"
-        android:summary = "Choose your refresh rate to monitor whether a lab has more than 50% computers available"
+        android:summary = "Choose your refresh rate to monitor whether a lab has more than 50 percent computers available"
         android:entries="@array/times"
         android:entryValues="@array/timeschecked"
         android:defaultValue="manual-checked"
