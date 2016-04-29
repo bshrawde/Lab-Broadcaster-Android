@@ -17,6 +17,28 @@
     <string name="H257">HAAS 257</string>
     <string name="status_summary">Set whether you are looking for help or are willing to help others.</string>
 
+    <string-array name="rooms">
+        <item>LWSN B131</item>
+        <item>LWSN B146</item>
+        <item>LWSN B148</item>
+        <item>LWSN B158</item>
+        <item>LWSN B160</item>
+        <item>HAAS G40</item>
+        <item>HAAS G56</item>
+        <item>HAAS 257</item>
+    </string-array>
+
+    <string-array name="roomschecked">
+        <item>LWSN B131-checked</item>
+        <item>LWSN B146-checked</item>
+        <item>LWSN B148-checked</item>
+        <item>LWSN B158-checked</item>
+        <item>LWSN B160-checked</item>
+        <item>HAAS G40-checked</item>
+        <item>HAAS G56-checked</item>
+        <item>HAAS 257-checked</item>
+    </string-array>
+
     <string-array name="courses">
         <item>CS 110: Introduction to Computers</item>
         <item>CS 158: C Programming</item>

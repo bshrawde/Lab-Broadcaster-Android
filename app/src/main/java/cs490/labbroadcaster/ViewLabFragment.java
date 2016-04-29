@@ -1,7 +1,11 @@
 package cs490.labbroadcaster;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +35,25 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import cs490.labbroadcaster.adapters.MainRecyclerAdapter;
 import cs490.labbroadcaster.adapters.ViewLabsRecyclerAdapter;
@@ -45,8 +67,8 @@ public class ViewLabFragment extends Fragment {
     ImageView groupimage;
     private String capacity;
     RecyclerView recyclerView;
-    ArrayList<String> username = new ArrayList<>();
-    ArrayList<String> status = new ArrayList<>();
+    ArrayList<String> bun = new ArrayList<>();
+    ArrayList<String> bstatus = new ArrayList<>();
     private ViewLabsRecyclerAdapter adapter;
 
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
@@ -101,10 +123,6 @@ public class ViewLabFragment extends Fragment {
                     t = capacity.substring(0,1);
                 }
                 int currentcap = Integer.parseInt(t);
-                for(int i = 0; i<currentcap; i++){
-                    username.add("nmoorthy");
-                    status.add("I need help with eating cookies");
-                }
             }
         }
 
@@ -116,15 +134,15 @@ public class ViewLabFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ViewLabsRecyclerAdapter(getActivity(), username,status, new CustomItemClickListener() {
+        adapter = new ViewLabsRecyclerAdapter(getActivity(), bun,bstatus, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
+//                //Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
                 View labView = getActivity().findViewById(R.id.viewlab);
-                Intent intent = new Intent(getActivity(), ViewUserProfile.class);
+                /*Intent intent = new Intent(getActivity(), ViewUserProfile.class);
                 intent.putExtra("user", username.get(position));
                 intent.putExtra("status", status.get(position));
-                startActivity(intent);
+                startActivity(intent);*/
                 boolean isDual = labView != null && labView.getVisibility() == View.VISIBLE;
                 if(isDual){
 
@@ -134,6 +152,7 @@ public class ViewLabFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
+        new GetBroadcasters().execute();
 
         FloatingActionButton fabcalendar = (FloatingActionButton) view.findViewById(R.id.fab_calendar);
         FloatingActionButton fabwebcam = (FloatingActionButton) view.findViewById(R.id.fab_webcam);
@@ -226,7 +245,7 @@ public class ViewLabFragment extends Fragment {
         fabusage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Todo", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Todo", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -234,12 +253,166 @@ public class ViewLabFragment extends Fragment {
     }
 
 
+    public class GetBroadcasters extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
 
-    public void changeText(String room, String cap){
-        TextView mTitle = (TextView) getView().findViewById(R.id.toolbar_title);
-        mTitle.setText(room);
-        TextView mCapacity = (TextView) getView().findViewById(R.id.capacity);
-        mCapacity.setText(cap);
+            Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                /*String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");*/
+
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String r = sharedPrefs.getString("selectedRoom", "LWSN B148");
+                String s = sharedPrefs.getString("pref_status", "I need help on CS 240");
+//                r = r.substring(0, r.length()-8);
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"room\" : "+"\""+r+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("GetBroadcaster ",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+
+                s = s.substring(1, s.length()-2);
+                int c = 0;
+                String[] dat = s.split("[}]");
+                Log.e("dat size", dat.length+"");
+                bstatus.clear();
+                bun.clear();
+                for(int i  = 0; i< dat.length; i++){
+                    dat[i] = dat[i].replace("{", "");
+                    dat[i] = dat[i].replace("}", "");
+//                    Log.e("dat ", "'"+dat[i]+"'");
+                    String [] temp = dat[i].split("\n");
+
+                    String unam = temp[1].substring(16, temp[1].length()-2);
+                    Log.e("uname", unam);
+                    bun.add(unam);
+                    String stat = temp[3].substring(15, temp[3].length()-2);
+                    Log.e("status", stat);
+                    bstatus.add(stat);
+                }
+                //skip 0,1,5
+                adapter.notifyDataSetChanged();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

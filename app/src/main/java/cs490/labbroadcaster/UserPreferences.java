@@ -56,9 +56,11 @@ import javax.net.ssl.TrustManagerFactory;
  */
 public class UserPreferences extends AppCompatActivity {
     public Context context = this;
+    static boolean doibroadcast = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //VERY FIST THING
         //new GetUserPrefs().execute();
         //new GetUserPrefs().execute();
@@ -102,17 +104,21 @@ public class UserPreferences extends AppCompatActivity {
 //                String[] selected = selections.toArray(new String[] {});
                 Log.e("SELECTED LENGTH",selected.length+"");
                 String[] help = new String[selected.length];
-                for(int i = 0; i< selected.length-1; i++){
+                for(int i = 0; i< selected.length; i++){
                     Log.e("in FOR",i+"");
                     Log.e("data",selected[i]+"");
+                    if(selected[i].length() - 8 <= 0){
+                        continue;
+                    }
                     help[i] = selected[i].substring(0, selected[i].length()-8);
+
                     Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                 }
                 lp.setEntries(help);
                 lp.setEntryValues(selected);
 
             }
-            //endregion
+            //endregionb2
 //region brodcast status
             if(sharedPrefs.getBoolean("pref_broadcast", true) == true){
                 EditTextPreference status = (EditTextPreference) findPreference("pref_status");
@@ -156,6 +162,7 @@ public class UserPreferences extends AppCompatActivity {
             taking_classes.setOnPreferenceChangeListener(listener);
 
             SwitchPreference broadcast = (SwitchPreference) findPreference("pref_broadcast");
+            final ListPreference room = (ListPreference) findPreference("pref_room");
 
 //region broadcast status changer
             Preference.OnPreferenceChangeListener listener1 = new Preference.OnPreferenceChangeListener() {
@@ -166,9 +173,13 @@ public class UserPreferences extends AppCompatActivity {
                     EditTextPreference status = (EditTextPreference) findPreference("pref_status");
                     SharedPreferences sharedPrefs1 = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     if(/*sharedPrefs1.getBoolean("pref_broadcast", true) == true*/ ischecked){
+                        doibroadcast = true;
                         status.setEnabled(true);
+                        room.setEnabled(true);
                     }else{
                         status.setEnabled(false);
+                        room.setEnabled(false);
+                        doibroadcast = false;
                     }
                     return true;
                 }
@@ -213,8 +224,14 @@ public class UserPreferences extends AppCompatActivity {
     public void onPause() {
         // your code.
         super.onPause();
-        Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
+//        //Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
         new SaveUserPrefs().execute();
+        new DeleteBroadcasters().execute();
+
+
+
+
+
 
     }
     @Override
@@ -222,7 +239,7 @@ public class UserPreferences extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_save:
-//                Toast.makeText(UserPreferences.this, "Saving...", Toast.LENGTH_SHORT).show();
+//                //Toast.makeText(UserPreferences.this, "Saving...", Toast.LENGTH_SHORT).show();
                 recreate();
                 return true;
             default:
@@ -425,7 +442,293 @@ public class UserPreferences extends AppCompatActivity {
 
             }else{
 
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public class SetBroadcasters extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = context.getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("PUT");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");
+
+//                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String r = logger.getString("pref_room", "LWSN B148-checked");
+                String s = logger.getString("pref_status", "I need help on CS 240");
+                r = r.substring(0, r.length()-8);
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"room\" : "+"\""+r+"\", "+"\"courses\" : "+"\""+s+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+
+                //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public class DeleteBroadcasters extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = context.getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("DELETE");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");
+
+
+
+                String r = logger.getString("pref_room", "LWSN B148-checked");
+                String s = logger.getString("pref_status", "I need help on CS 240");
+                r = r.substring(0, r.length()-8);
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"username\" : "+"\""+uname+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+                if(doibroadcast == true){
+                    new SetBroadcasters().execute();
+                }
+
+                //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
             }
         }
     }

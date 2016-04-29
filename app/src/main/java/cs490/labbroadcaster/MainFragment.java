@@ -1,5 +1,6 @@
 package cs490.labbroadcaster;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -91,6 +92,10 @@ public class MainFragment extends Fragment {
     ArrayList<String> data = new ArrayList<>();
 
     ArrayList<String> cap = new ArrayList<>();
+
+    ArrayList<String> bun = new ArrayList<>();
+
+    ArrayList<String> bstatus = new ArrayList<>();
     DataWrap base = new DataWrap(getActivity());
     private RecyclerView recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -104,6 +109,7 @@ public class MainFragment extends Fragment {
     protected boolean loginvalid =false;
     protected boolean registervalid = false;
     protected boolean pullingprefs = false;
+    public ViewLabsRecyclerAdapter adapter2;
     int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
 
     @Override
@@ -111,6 +117,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_main_fragment, container, false);
         Toolbar toolbar =  (Toolbar) view.findViewById(R.id.toolbar);
 
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
@@ -145,6 +152,10 @@ public class MainFragment extends Fragment {
 
 
                     title.setText(data.get(position).toString());
+                    SharedPreferences.Editor reditor = sharedPref.edit();
+                    reditor.putString("selectedRoom", data.get(position).toString());
+                    reditor.commit();
+                    new GetBroadcasters().execute();
                     f.setVisibility(View.VISIBLE);
 
 
@@ -183,14 +194,14 @@ public class MainFragment extends Fragment {
 
                     final LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
                     rv.setLayoutManager(layoutManager1);
-                    ViewLabsRecyclerAdapter adapter2 = new ViewLabsRecyclerAdapter(getActivity(), username, status, new CustomItemClickListener() {
+                    adapter2 = new ViewLabsRecyclerAdapter(getActivity(), bun, bstatus, new CustomItemClickListener() {
                         @Override
                         public void onItemClick(View v, int position) {
-//                            Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), ViewUserProfile.class);
+//                            //Toast.makeText(getActivity(), "View Profile TODO", Toast.LENGTH_SHORT).show();
+                            /*Intent intent = new Intent(getActivity(), ViewUserProfile.class);
                             intent.putExtra("user", username.get(position));
                             intent.putExtra("status", status.get(position));
-                            startActivity(intent);
+                            startActivity(intent);*/
 
 
                             View labView = getActivity().findViewById(R.id.viewlab);
@@ -255,12 +266,47 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SharedPreferences.Editor editor = preferences.edit();
+                        final SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("pref_status", status.getText().toString());
                         editor.commit();
 
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(status.getWindowToken(), 0);
+
+                        AlertDialog.Builder room =new AlertDialog.Builder(getActivity());
+                        room.setTitle("Choose current room")
+                                .setItems(R.array.rooms, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+//                                        //Toast.makeText(getActivity(), which+"", Toast.LENGTH_SHORT).show();
+                                        String croom ="LWSN B148-checked";
+                                        if(which == 0){
+                                            croom = "LWSN B131-checked";
+                                        }else if(which == 1){
+                                            croom = "LWSN B146-checked";
+                                        }else if(which == 2){
+                                            croom = "LWSN B148-checked";
+                                        }else if(which == 3){
+                                            croom = "LWSN B158-checked";
+                                        }else if(which == 4){
+                                            croom = "LWSN B160-checked";
+                                        }else if(which == 5){
+                                            croom = "HAAS G40-checked";
+                                        }else if(which == 6){
+                                            croom = "HAAS G56-checked";
+                                        }else if(which == 7){
+                                            croom = "HAAS 257-checked";
+                                        }
+                                        //Toast.makeText(getActivity(), croom, Toast.LENGTH_SHORT).show();
+                                        editor.putString("pref_room", croom);
+                                        editor.commit();
+                                        new DeleteBroadcasters().execute();
+                                    }
+                                });
+                        room.setCancelable(false);
+//                        room.show();
+                        AlertDialog aRoom = room.create();
+                        aRoom.show();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -560,7 +606,7 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s[]){
             if(s.length == 0){
-                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
@@ -628,7 +674,7 @@ public class MainFragment extends Fragment {
 
 
 
-                            Toast.makeText(getActivity(), "Error retrieving room capacities", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "Error retrieving room capacities", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -777,13 +823,18 @@ public class MainFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s){
+            Log.e("S IS HERE",s);
             if(s.length() == 0 || s.equals("")){
                 Toast.makeText(getActivity(), "There was an error creating account", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 registervalid = false;
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.commit();
+
             }else{
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 registervalid = true;
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -923,11 +974,14 @@ public class MainFragment extends Fragment {
         protected void onPostExecute(String s){
             if(s.length() == 0||s.equals("")){
                 Toast.makeText(getActivity(), "Invalid Login", Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.commit();
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 loginvalid = false;
             }else{
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 loginvalid = true;
                 SharedPreferences.Editor editor = sharedPref.edit();
                 s=s.substring(13,s.length()-2);
@@ -935,7 +989,7 @@ public class MainFragment extends Fragment {
                 editor.putString("sessionID", s);
                 editor.commit();
                 dialog.dismiss();
-
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 new RefreshRoomData().execute();
             }
             mSwipeRefreshLayout.setRefreshing(false);
@@ -1149,12 +1203,12 @@ public class MainFragment extends Fragment {
 
 
 //                Log.e("dats", Arrays.toString(courses)+"\n"+Arrays.toString(coursestaken)+"\n"+Arrays.toString(languages));
-                //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                ////Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 //                pullingprefs = false;
             }
         }
     }
-    public class GetBroadcasters extends AsyncTask<String[], Void, String> {
+    public class SetBroadcasters extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
             SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -1167,7 +1221,7 @@ public class MainFragment extends Fragment {
             InputStream is = null;
 
             Certificate ca = null;
-            AssetManager assManager = context.getAssets();
+            AssetManager assManager = getActivity().getAssets();
             try {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
@@ -1213,19 +1267,23 @@ public class MainFragment extends Fragment {
                 Log.e("BRUHHHHh", "BRUH");
 
                 //TODO: FIX URL
-                URL url = new URL("https://mc15.cs.purdue.edu:5001/user/preferences");
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestMethod("PUT");
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
 
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String r = sharedPrefs.getString("pref_room", "LWSN B148-checked");
+                String s = sharedPrefs.getString("pref_status", "I need help on CS 240");
+                r = r.substring(0, r.length()-8);
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"room\" : "+"\""+r+"\", "+"\"courses\" : "+"\""+s+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -1287,7 +1345,312 @@ public class MainFragment extends Fragment {
 
             }else{
 
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public class DeleteBroadcasters extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("DELETE");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");
+
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String r = sharedPrefs.getString("pref_room", "LWSN B148-checked");
+                String s = sharedPrefs.getString("pref_status", "I need help on CS 240");
+                r = r.substring(0, r.length()-8);
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"username\" : "+"\""+uname+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("Login found=",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+                new SetBroadcasters().execute();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    public class GetBroadcasters extends AsyncTask<String[], Void, String> {
+        @Override
+        protected String doInBackground(String[]... params) {
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Log.e("AsyncTask running","WTF");
+            InputStream in;
+            HttpURLConnection con;
+            String found = "";
+            String[] found_array1= new String[10];
+            InputStream caInput = null;
+            InputStream is = null;
+
+            Certificate ca = null;
+            AssetManager assManager = getActivity().getAssets();
+            try {
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+                is = assManager.open("mc15.cs.purdue.edu.cer");
+                caInput = new BufferedInputStream(is);
+
+                ca = cf.generateCertificate(caInput);
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR1");
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR2");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    caInput.close();
+                } catch (IOException e) {
+                    System.out.println("\n\nTHERE WAS AN ERROR3");
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    System.out.println("\n\nTHERE WAS AN ERROR4");
+                    e.printStackTrace();
+                }
+            }
+            int counter = 0;
+
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = null;
+
+
+            try {
+                keyStore = KeyStore.getInstance(keyStoreType);
+                keyStore.load(null, null);
+                keyStore.setCertificateEntry("ca", ca);
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, tmf.getTrustManagers(), null);
+                Log.e("BRUHHHHh", "BRUH");
+
+                //TODO: FIX URL
+                URL url = new URL("https://mc15.cs.purdue.edu:5001/broadcasters");
+
+                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                /*String uname = logger.getString("email","");
+                String pass = logger.getString("pw","");*/
+
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String r = sharedPrefs.getString("selectedRoom", "LWSN B148");
+                String s = sharedPrefs.getString("pref_status", "I need help on CS 240");
+//                r = r.substring(0, r.length()-8);
+
+                //TODO: CHANGE OUT.WRITE
+                out.write("{\"room\" : "+"\""+r+"\"}");
+                out.close();
+                in = urlConnection.getInputStream();
+
+                int t = in.available();
+                Log.e("Login available: ",t+"");
+                char d = (char)in.read();
+                char c='a';
+                found+=d;
+//                System.out.println("FIRST CHAR: "+d);
+                while(in.available()>0){
+                    c = (char)in.read();
+                    found+=c;
+                    System.out.println("CHARS FROM READER: "+c);
+
+                }
+                Log.e("GetBroadcaster ",found);
+                if(c =='}'){
+                    String temp = "";
+                    in.close();
+                    for(int i=0;i<found.length();i++){
+                        char b = found.charAt(i);
+                        temp +=b;
+                        if(b=='\n'/* && counter<found_array1.length-1*/){
+//                            Log.e("COUNTER=",counter+"");
+                            found_array1[counter] = temp;
+//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
+                            temp ="";
+                            counter++;
+                        }
+                    }
+                    in.close();
+                    urlConnection.disconnect();
+                }
+
+            } catch (KeyStoreException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR5");
+                e.printStackTrace();
+            } catch (CertificateException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR6");
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR7");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
+                e.printStackTrace();
+            }
+            counter = 0;
+            Log.e("found length=",found.length()+"");
+            return found;
+        }
+
+        @Override
+        protected void onPostExecute(String s){
+            if(s.length() == 0){
+
+            }else{
+
+                s = s.substring(1, s.length()-2);
+                int c = 0;
+                String[] dat = s.split("[}]");
+                Log.e("dat size", dat.length+"");
+                 bstatus.clear();
+                bun.clear();
+                for(int i  = 0; i< dat.length; i++){
+                    dat[i] = dat[i].replace("{", "");
+                    dat[i] = dat[i].replace("}", "");
+//                    Log.e("dat ", "'"+dat[i]+"'");
+                    String [] temp = dat[i].split("\n");
+
+                    String unam = temp[1].substring(16, temp[1].length()-2);
+                    Log.e("uname", unam);
+                    bun.add(unam);
+                    String stat = temp[3].substring(15, temp[3].length()-2);
+                    Log.e("status", stat);
+                    bstatus.add(stat);
+                }
+                //skip 0,1,5
+                adapter2.notifyDataSetChanged();
+                //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -1364,9 +1727,9 @@ public class MainFragment extends Fragment {
 //            getActivity().finish();
             getActivity().recreate();
         }else if(id == R.id.action_user_preferences){
-//            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
+//            //Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
             /*if(pullingprefs == true){
-                Toast.makeText(getActivity(), "Still refreshing data, try again in a moment", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Still refreshing data, try again in a moment", Toast.LENGTH_SHORT).show();
             }else{
 
             }*/

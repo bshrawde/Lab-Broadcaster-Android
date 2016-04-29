@@ -16,13 +16,23 @@
         android:summary="Set if you are willing to help or need help"
         android:defaultValue="I'm willing to help on "
         ></EditTextPreference>
+
+    <ListPreference
+        android:key = "pref_room"
+        android:title = "Select which room you are currently in"
+        android:summary = "Choose which room you are in"
+        android:entries="@array/rooms"
+        android:entryValues="@array/roomschecked"
+        android:defaultValue="@array/empty_array"
+        ></ListPreference>
+
     <ListPreference
         android:key = "refresh_rate"
         android:title = "Refresh Rate"
         android:summary = "Choose your refresh rate to monitor whether a lab has more than 50 percent computers available"
         android:entries="@array/times"
         android:entryValues="@array/timeschecked"
-        android:defaultValue="manual-checked"
+        android:defaultValue="LWSN B148-checked"
         ></ListPreference>
     <MultiSelectListPreference
         android:title="TA for courses"
