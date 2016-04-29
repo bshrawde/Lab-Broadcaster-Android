@@ -256,7 +256,7 @@ public class ViewLabFragment extends Fragment {
     public class GetBroadcasters extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
-            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Log.e("AsyncTask running","WTF");
             InputStream in;
             HttpURLConnection con;
@@ -323,12 +323,13 @@ public class ViewLabFragment extends Fragment {
                 String pass = logger.getString("pw","");*/
 
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String r = sharedPrefs.getString("selectedRoom", "LWSN B148");
+//                String r = sharedPrefs.getString("selectedRoom", "LWSN B148");
+//                Log.e("R",r);
                 String s = sharedPrefs.getString("pref_status", "I need help on CS 240");
 //                r = r.substring(0, r.length()-8);
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"room\" : "+"\""+r+"\"}");
+                out.write("{\"room\" : "+"\""+room+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -402,6 +403,10 @@ public class ViewLabFragment extends Fragment {
 //                    Log.e("dat ", "'"+dat[i]+"'");
                     String [] temp = dat[i].split("\n");
 
+                    Log.e("temp", temp.length+"\ntemp[0]"+temp[0]);
+                    if(temp.length < 4){
+                        continue;
+                    }
                     String unam = temp[1].substring(16, temp[1].length()-2);
                     Log.e("uname", unam);
                     bun.add(unam);

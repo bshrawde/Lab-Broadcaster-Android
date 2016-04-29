@@ -69,14 +69,14 @@
 
         >
     </MultiSelectListPreference>
-    <MultiSelectListPreference
+<!--    <MultiSelectListPreference
         android:title="Current Courses I need help with"
         android:key="classes_help"
         android:summary="Select the CS courses you need help with"
         android:dialogTitle="Current Courses I Need Help With"
         android:entries="@array/empty_array"
         >
-    </MultiSelectListPreference>
+    </MultiSelectListPreference>-->
 </PreferenceCategory>
     <MultiSelectListPreference
         android:title="Known Languages"

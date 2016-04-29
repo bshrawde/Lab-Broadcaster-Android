@@ -117,7 +117,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_main_fragment, container, false);
         Toolbar toolbar =  (Toolbar) view.findViewById(R.id.toolbar);
 
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
@@ -298,6 +298,7 @@ public class MainFragment extends Fragment {
                                             croom = "HAAS 257-checked";
                                         }
                                         //Toast.makeText(getActivity(), croom, Toast.LENGTH_SHORT).show();
+
                                         editor.putString("pref_room", croom);
                                         editor.commit();
                                         new DeleteBroadcasters().execute();
@@ -681,6 +682,7 @@ public class MainFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 adapter.notifyDataSetChanged();
+//                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 new GetUserPrefs().execute();
             }
 
@@ -836,7 +838,9 @@ public class MainFragment extends Fragment {
             }else{
                 //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 registervalid = true;
+                Toast.makeText(getActivity(), "Please check your email for a verification link", Toast.LENGTH_SHORT).show();
                 }
+
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 adapter.notifyDataSetChanged();
@@ -989,7 +993,7 @@ public class MainFragment extends Fragment {
                 editor.putString("sessionID", s);
                 editor.commit();
                 dialog.dismiss();
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
                 new RefreshRoomData().execute();
             }
             mSwipeRefreshLayout.setRefreshing(false);
@@ -1640,7 +1644,10 @@ public class MainFragment extends Fragment {
                     dat[i] = dat[i].replace("}", "");
 //                    Log.e("dat ", "'"+dat[i]+"'");
                     String [] temp = dat[i].split("\n");
-
+                    Log.e("temp", temp.length+"\ntemp[0]"+temp[0]);
+                    if(temp.length < 4){
+                        continue;
+                    }
                     String unam = temp[1].substring(16, temp[1].length()-2);
                     Log.e("uname", unam);
                     bun.add(unam);

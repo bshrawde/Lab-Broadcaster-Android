@@ -95,7 +95,7 @@ public class UserPreferences extends AppCompatActivity {
             //Log.e("0?>??", selected[0]+"");
             //Log.e("0?>??1", selected[1]+"");
             //Log.e("0?>??2", selected[2]+"");
-            if(selections.size() == 0){
+            /*if(selections.size() == 0){
                 MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                 lp.setEnabled(false);
             }else{
@@ -112,12 +112,12 @@ public class UserPreferences extends AppCompatActivity {
                     }
                     help[i] = selected[i].substring(0, selected[i].length()-8);
 
-                    Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
+                    Log.e("substring ",help[i]);
                 }
                 lp.setEntries(help);
                 lp.setEntryValues(selected);
 
-            }
+            }*/
             //endregionb2
 //region brodcast status
             if(sharedPrefs.getBoolean("pref_broadcast", true) == true){
@@ -129,7 +129,7 @@ public class UserPreferences extends AppCompatActivity {
             }
 //endregion
             //region update course_help local
-            MultiSelectListPreference taking_classes = (MultiSelectListPreference) findPreference("curr_classes");
+           /* MultiSelectListPreference taking_classes = (MultiSelectListPreference) findPreference("curr_classes");
             Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -142,6 +142,9 @@ public class UserPreferences extends AppCompatActivity {
                         String[] selected = selections.toArray(new String[] {});
                         String[] help = new String[selected.length];
                         for(int i = 0; i< selected.length-1; i++){
+                            if(selected[i] == null){
+                                continue;
+                            }
                             help[i] = selected[i].substring(0, selected[i].length()-8);
                             Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                         }
@@ -149,6 +152,7 @@ public class UserPreferences extends AppCompatActivity {
                         lp.setEnabled(true);
                         lp.setEntries(help);
                         lp.setEntryValues(selected);
+                        Log.e("SETTING SOME CLASSES", "BITCH");
 
                     }else{
                         Log.e("Nothing selected","");
@@ -159,7 +163,7 @@ public class UserPreferences extends AppCompatActivity {
                 }
             };
             //endregion
-            taking_classes.setOnPreferenceChangeListener(listener);
+            taking_classes.setOnPreferenceChangeListener(listener);*/
 
             SwitchPreference broadcast = (SwitchPreference) findPreference("pref_broadcast");
             final ListPreference room = (ListPreference) findPreference("pref_room");
@@ -194,11 +198,11 @@ public class UserPreferences extends AppCompatActivity {
             Preference.OnPreferenceChangeListener listener2 = new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Log.e("selected: ", newValue.toString());
+                    //Log.e("selected: ", newValue.toString());
 
 
                     Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
-                    intent.putExtra("refresh", newValue.toString());
+                    //intent.putExtra("refresh", newValue.toString());
                     new AlarmReciever().onReceive(getActivity(), intent);
                     return true;
                 }
