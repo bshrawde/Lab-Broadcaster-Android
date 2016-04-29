@@ -1084,41 +1084,42 @@ public class MainFragment extends Fragment {
                 String[] dat = s.split("\n");
                 Log.e("dat size", dat.length+"");
                 //skip 0,1,5
-                dat[2] = dat[2].substring(13, dat[2].length());
-                dat[2] = dat[2].replace("\"","");
-                dat[3] = dat[3].substring(13, dat[3].length());
-                dat[3] = dat[3].replace("\"","");
-                dat[4] = dat[4].substring(15, dat[4].length());
-                dat[4] = dat[4].replace("\"","");
+                Log.e("dat[2]","'"+dat[2]+"'");
+                Log.e("dat[3]","'"+dat[3]+"'");
+                Log.e("dat[4]","'"+dat[4]+"'");
+                dat[2] = dat[2].substring(15, dat[2].length()-2);
 
-                String[] courses = dat[2].split(", ");
+                dat[3] = dat[3].substring(15, dat[3].length()-2);
+
+                dat[4] = dat[4].substring(17, dat[4].length()-1);
+                Log.e("dat[2]:after","'"+dat[2]+"'");
+                Log.e("dat[3]:after","'"+dat[3]+"'");
+                Log.e("dat[4]:after","'"+dat[4]+"'");
+
+                String[] courses = dat[2].split(",");
                 for(int i = 0; i< courses.length; i++){
-                    if(courses[i].charAt(0) == ' '){
-                        courses[i] = courses[i].substring(1,courses[i].length());
-                    }
-                    courses[i] = courses[i].replace(",", "");
+                    courses[i] = courses[i].trim();
+                    //courses[i] = courses[i].replace(",", "");
                     Log.e(i+".", "'"+courses[i]+"'");
                 }
 
 
-                String[] coursestaken = dat[3].split(", ");
-                String[] languages = dat[4].split(", ");
+                String[] coursestaken = dat[3].split(",");
+                String[] languages = dat[4].split(",");
 
                 for(int i = 0; i< coursestaken.length; i++){
-                    if(coursestaken[i].charAt(0) == ' '){
-                        coursestaken[i] = coursestaken[i].substring(1,coursestaken[i].length());
-                    }
-                    coursestaken[i] = coursestaken[i].replace(",", "");
+                    coursestaken[i] = coursestaken[i].trim();
+                    //coursestaken[i] = coursestaken[i].replace(",", "");
                     Log.e(i+".", "'"+coursestaken[i]+"'");
                 }
 
                 for(int i = 0; i< languages.length; i++){
-                    if(languages[i].charAt(0) == ' '){
-                        languages[i] = languages[i].substring(1,languages[i].length());
-                    }
-                    languages[i] = languages[i].replace(",", "");
+                    languages[i] = languages[i].trim();
+                    //languages[i] = languages[i].replace(",", "");
                     Log.e(i+".", "'"+languages[i]+"'");
                 }
+
+
 
                 //courses[0] = courses[0].substring(1,courses[0].length());
                 //coursestaken[0] = coursestaken[0].substring(1,coursestaken[0].length());

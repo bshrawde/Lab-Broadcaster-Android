@@ -86,17 +86,27 @@ public class UserPreferences extends AppCompatActivity {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //region courses need help on
             Set<String> selections = sharedPrefs.getStringSet("curr_classes", null);
+            Log.e("selectoins lenght",selections.size()+"");
+
+            String[] selected = selections.toArray(new String[] {});
+
+            //Log.e("0?>??", selected[0]+"");
+            //Log.e("0?>??1", selected[1]+"");
+            //Log.e("0?>??2", selected[2]+"");
             if(selections.size() == 0){
                 MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                 lp.setEnabled(false);
             }else{
                 MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                 lp.setEnabled(true);
-                String[] selected = selections.toArray(new String[] {});
+//                String[] selected = selections.toArray(new String[] {});
+                Log.e("SELECTED LENGTH",selected.length+"");
                 String[] help = new String[selected.length];
-                for(int i = 0; i< selected.length; i++){
-//                    help[i] = selected[i].substring(0, selected[i].length()-8);
-//                    Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
+                for(int i = 0; i< selected.length-1; i++){
+                    Log.e("in FOR",i+"");
+                    Log.e("data",selected[i]+"");
+                    help[i] = selected[i].substring(0, selected[i].length()-8);
+                    Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                 }
                 lp.setEntries(help);
                 lp.setEntryValues(selected);
@@ -125,9 +135,9 @@ public class UserPreferences extends AppCompatActivity {
                         Log.e("Selected ",selections.size()+"");
                         String[] selected = selections.toArray(new String[] {});
                         String[] help = new String[selected.length];
-                        for(int i = 0; i< selected.length; i++){
-//                            help[i] = selected[i].substring(0, selected[i].length()-8);
-//                            Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
+                        for(int i = 0; i< selected.length-1; i++){
+                            help[i] = selected[i].substring(0, selected[i].length()-8);
+                            Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                         }
                         MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                         lp.setEnabled(true);
@@ -297,17 +307,63 @@ public class UserPreferences extends AppCompatActivity {
                 Set<String> classes_taken = logger.getStringSet("pref_classes",null);
                 Set<String> Lang = logger.getStringSet("pref_languages",null);
                 String session = logger.getString("sessionID",null);
-                String curr=curr_classes.toString();
-                String past = classes_taken.toString();
-                String lang = Lang.toString();
-                lang = lang.replace("[","");
-                lang = lang.replace("]","");
-                past = past.replace("[","");
-                past = past.replace("]","");
-                curr = curr.replace("[","");
-                curr = curr.replace("]","");
-                //,  "+"\"courses\" : "+"\""+pass+""
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"courses\" : "+"\""+past+"\", "+"\"current\" : "+"\""+curr+"\", "+"\"languages\" : "+"\""+lang+"\" , "+"\"session\" : "+"\""+session+"\" }");
+
+                String[] WTF = curr_classes.toArray(new String[0]);
+                String[] OMG = Lang.toArray(new String[0]);
+                String[] BBQ = classes_taken.toArray(new String[0]);
+                String curr="";
+                String bbqs = "";
+                String omgs = "";
+
+                boolean www = false;
+                for(int w = 0;w<WTF.length;w++){
+                    Log.e("WTF IS GOIN ONG",WTF[w]);
+                    if(WTF[w].equals("\"\"")){
+
+                    }else {
+                        if (w==WTF.length-1) {
+                            curr += WTF[w];
+
+                        } else {
+                            curr += WTF[w]+",";
+                        }
+                    }
+                }
+                boolean bull = false;
+                for(int w = 0;w<BBQ.length;w++){
+                    Log.e("WTF IS GOIN ONG",BBQ[w]);
+                    if(BBQ[w].equals("\"\"")){
+                    }else {
+                        if (w==BBQ.length-1) {
+                            bbqs += BBQ[w];
+
+
+                        } else {
+                            bbqs += BBQ[w]+",";
+                        }
+                    }
+                }
+                boolean comma = false;
+                for(int w = 0;w<OMG.length;w++){
+                    Log.e("WTF IS GOIN ONG",OMG[w]);
+                    if(OMG[w].equals("\"\"")){
+
+                    }else{
+                        if (w==OMG.length-1) {
+                            omgs += OMG[w];
+
+
+                        } else {
+                            omgs += OMG[w]+",";
+                        }
+                    }
+                }
+                Log.e("after",curr);
+                Log.e("after",bbqs);
+                Log.e("after",omgs);
+
+
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"courses\" : "+"\""+bbqs+"\", "+"\"current\" : "+"\""+curr+"\", "+"\"languages\" : "+"\""+omgs+"\" , "+"\"session\" : "+"\""+session+"\" }");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -370,214 +426,6 @@ public class UserPreferences extends AppCompatActivity {
             }else{
 
                 Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    public class GetUserPrefs extends AsyncTask<String[], Void, String> {
-        @Override
-        protected String doInBackground(String[]... params) {
-            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
-            Log.e("AsyncTask running","WTF");
-            InputStream in;
-            HttpURLConnection con;
-            String found = "";
-            String[] found_array1= new String[10];
-            InputStream caInput = null;
-            InputStream is = null;
-
-            Certificate ca = null;
-            AssetManager assManager = context.getAssets();
-            try {
-                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-
-                is = assManager.open("mc15.cs.purdue.edu.cer");
-                caInput = new BufferedInputStream(is);
-
-                ca = cf.generateCertificate(caInput);
-            } catch (CertificateException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR1");
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR2");
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    caInput.close();
-                } catch (IOException e) {
-                    System.out.println("\n\nTHERE WAS AN ERROR3");
-                    e.printStackTrace();
-                } catch (NullPointerException e){
-                    System.out.println("\n\nTHERE WAS AN ERROR4");
-                    e.printStackTrace();
-                }
-            }
-            int counter = 0;
-
-            String keyStoreType = KeyStore.getDefaultType();
-            KeyStore keyStore = null;
-
-
-            try {
-                keyStore = KeyStore.getInstance(keyStoreType);
-                keyStore.load(null, null);
-                keyStore.setCertificateEntry("ca", ca);
-                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-                tmf.init(keyStore);
-
-                SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, tmf.getTrustManagers(), null);
-                Log.e("BRUHHHHh", "BRUH");
-
-                //TODO: FIX URL
-                URL url = new URL("https://mc15.cs.purdue.edu:5001/user/preferences");
-
-                HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
-                urlConnection.setSSLSocketFactory(context.getSocketFactory());
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-
-                    OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
-                String uname = logger.getString("email","");
-                String pass = logger.getString("pw","");
-                String session = logger.getString("sessionID","");
-                Log.e("Sessino id:",session+"");
-
-
-                //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"session\" : "+"\""+session+"\"}");
-                out.close();
-                in = urlConnection.getInputStream();
-
-                int t = in.available();
-                Log.e("Login available: ",t+"");
-                char d = (char)in.read();
-                char c='a';
-                found+=d;
-//                System.out.println("FIRST CHAR: "+d);
-                while(in.available()>0){
-                    c = (char)in.read();
-                    found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
-
-                }
-                Log.e("GET found=",found);
-                if(c =='}'){
-                    String temp = "";
-                    in.close();
-                    for(int i=0;i<found.length();i++){
-                        char b = found.charAt(i);
-                        temp +=b;
-                        if(b=='\n'/* && counter<found_array1.length-1*/){
-//                            Log.e("COUNTER=",counter+"");
-                            found_array1[counter] = temp;
-//                            Log.e("FOUND ARRAY AT: ",counter+": "+found_array1[counter]);
-                            temp ="";
-                            counter++;
-                        }
-                    }
-                    in.close();
-                    urlConnection.disconnect();
-                }
-
-            } catch (KeyStoreException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR5");
-                e.printStackTrace();
-            } catch (CertificateException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR6");
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR7");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR8 inside login");
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR8 inside login 2");
-                e.printStackTrace();
-            }
-            counter = 0;
-            Log.e("found length=",found.length()+"");
-            return found;
-        }
-
-        @Override
-        protected void onPostExecute(String s){
-            if(s.length() == 0){
-                Log.e("why AM I 0","hihj");
-            }else{
-                int c = 0;
-                String[] dat = s.split("\n");
-                Log.e("dat size", dat.length+"");
-                //skip 0,1,5
-                dat[2] = dat[2].substring(13, dat[2].length());
-                dat[2] = dat[2].replace("\"","");
-                dat[3] = dat[3].substring(13, dat[3].length());
-                dat[3] = dat[3].replace("\"","");
-                dat[4] = dat[4].substring(15, dat[4].length());
-                dat[4] = dat[4].replace("\"","");
-
-                String[] courses = dat[2].split(", ");
-                for(int i = 0; i< courses.length; i++){
-                    if(courses[i].charAt(0) == ' '){
-                        courses[i] = courses[i].substring(1,courses[i].length());
-                    }
-                    courses[i] = courses[i].replace(",", "");
-                    Log.e(i+".", "'"+courses[i]+"'");
-                }
-
-
-                String[] coursestaken = dat[3].split(", ");
-                String[] languages = dat[4].split(", ");
-
-                for(int i = 0; i< coursestaken.length; i++){
-                    if(coursestaken[i].charAt(0) == ' '){
-                        coursestaken[i] = coursestaken[i].substring(1,coursestaken[i].length());
-                    }
-                    coursestaken[i] = coursestaken[i].replace(",", "");
-                    Log.e(i+".", "'"+coursestaken[i]+"'");
-                }
-
-                for(int i = 0; i< languages.length; i++){
-                    if(languages[i].charAt(0) == ' '){
-                        languages[i] = languages[i].substring(1,languages[i].length());
-                    }
-                    languages[i] = languages[i].replace(",", "");
-                    Log.e(i+".", "'"+languages[i]+"'");
-                }
-
-                //courses[0] = courses[0].substring(1,courses[0].length());
-                coursestaken[0] = coursestaken[0].substring(1,coursestaken[0].length());
-                languages[0] = languages[0].substring(1,languages[0].length());
-
-                //SharedPreferences sharedPrefs = getSharedPreferences("pref_classes", 0);
-//                SharedPreferences sharedPrefs1 = getSharedPreferences("curr_classes", 0);
-//                SharedPreferences sharedPrefs2 = getSharedPreferences("pref_languages", 0);
-                Set<String> classset = new HashSet<>(Arrays.asList(courses));
-                Set<String> classset1 = new HashSet<>(Arrays.asList(coursestaken));
-                Set<String> langs = new HashSet<>(Arrays.asList(languages));
-
-           /*     for(int i=0;i<classset.size();i++){
-                    Log.e("Data: ",classset.toString());
-                }*/
-
-
-                //SharedPreferences.Editor editor = sharedPrefs.edit();
-                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-
-                editor.putStringSet("pref_classes",classset);
-                editor.putStringSet("curr_classes", classset1);
-                editor.putStringSet("pref_languages", langs);
-                //editor.putString("pref_classes","CS 307: Software Engineering-checked");
-                editor.commit();
-
-
-//                Log.e("dats", Arrays.toString(courses)+"\n"+Arrays.toString(coursestaken)+"\n"+Arrays.toString(languages));
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
-
             }
         }
     }
