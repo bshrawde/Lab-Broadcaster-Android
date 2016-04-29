@@ -71,6 +71,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
@@ -102,6 +103,7 @@ public class MainFragment extends Fragment {
     private boolean populate = false;
     protected boolean loginvalid =false;
     protected boolean registervalid = false;
+    protected boolean pullingprefs = false;
     int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
 
     @Override
@@ -633,6 +635,7 @@ public class MainFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
                 adapter.notifyDataSetChanged();
+                new GetUserPrefs().execute();
             }
 
         }
@@ -932,6 +935,7 @@ public class MainFragment extends Fragment {
                 editor.putString("sessionID", s);
                 editor.commit();
                 dialog.dismiss();
+
                 new RefreshRoomData().execute();
             }
             mSwipeRefreshLayout.setRefreshing(false);
@@ -943,7 +947,8 @@ public class MainFragment extends Fragment {
     public class GetUserPrefs extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
-            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
+//            pullingprefs = true;
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Log.e("AsyncTask running","WTF");
             InputStream in;
             HttpURLConnection con;
@@ -953,7 +958,7 @@ public class MainFragment extends Fragment {
             InputStream is = null;
 
             Certificate ca = null;
-            AssetManager assManager = context.getAssets();
+            AssetManager assManager = getActivity().getAssets();
             try {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
@@ -1005,13 +1010,16 @@ public class MainFragment extends Fragment {
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestMethod("POST");
+
                 OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
                 String uname = logger.getString("email","");
                 String pass = logger.getString("pw","");
+                String session = logger.getString("sessionID","");
+                Log.e("Sessino id:",session+"");
 
 
                 //TODO: CHANGE OUT.WRITE
-                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"password\" : "+"\""+pass+"\"}");
+                out.write("{\"username\" : "+"\""+uname+"\",  "+"\"session\" : "+"\""+session+"\"}");
                 out.close();
                 in = urlConnection.getInputStream();
 
@@ -1027,7 +1035,7 @@ public class MainFragment extends Fragment {
                     System.out.println("CHARS FROM READER: "+c);
 
                 }
-                Log.e("Login found=",found);
+                Log.e("GET found=",found);
                 if(c =='}'){
                     String temp = "";
                     in.close();
@@ -1070,17 +1078,85 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s){
             if(s.length() == 0){
-
+                Log.e("why AM I 0","hihj");
             }else{
+                int c = 0;
+                String[] dat = s.split("\n");
+                Log.e("dat size", dat.length+"");
+                //skip 0,1,5
+                dat[2] = dat[2].substring(13, dat[2].length());
+                dat[2] = dat[2].replace("\"","");
+                dat[3] = dat[3].substring(13, dat[3].length());
+                dat[3] = dat[3].replace("\"","");
+                dat[4] = dat[4].substring(15, dat[4].length());
+                dat[4] = dat[4].replace("\"","");
 
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                String[] courses = dat[2].split(", ");
+                for(int i = 0; i< courses.length; i++){
+                    if(courses[i].charAt(0) == ' '){
+                        courses[i] = courses[i].substring(1,courses[i].length());
+                    }
+                    courses[i] = courses[i].replace(",", "");
+                    Log.e(i+".", "'"+courses[i]+"'");
+                }
+
+
+                String[] coursestaken = dat[3].split(", ");
+                String[] languages = dat[4].split(", ");
+
+                for(int i = 0; i< coursestaken.length; i++){
+                    if(coursestaken[i].charAt(0) == ' '){
+                        coursestaken[i] = coursestaken[i].substring(1,coursestaken[i].length());
+                    }
+                    coursestaken[i] = coursestaken[i].replace(",", "");
+                    Log.e(i+".", "'"+coursestaken[i]+"'");
+                }
+
+                for(int i = 0; i< languages.length; i++){
+                    if(languages[i].charAt(0) == ' '){
+                        languages[i] = languages[i].substring(1,languages[i].length());
+                    }
+                    languages[i] = languages[i].replace(",", "");
+                    Log.e(i+".", "'"+languages[i]+"'");
+                }
+
+                //courses[0] = courses[0].substring(1,courses[0].length());
+                //coursestaken[0] = coursestaken[0].substring(1,coursestaken[0].length());
+                //languages[0] = languages[0].substring(1,languages[0].length());
+
+                //SharedPreferences sharedPrefs = getSharedPreferences("pref_classes", 0);
+//                SharedPreferences sharedPrefs1 = getSharedPreferences("curr_classes", 0);
+//                SharedPreferences sharedPrefs2 = getSharedPreferences("pref_languages", 0);
+                Set<String> classset = new HashSet<>(Arrays.asList(courses));
+                Set<String> classset1 = new HashSet<>(Arrays.asList(coursestaken));
+                Set<String> langs = new HashSet<>(Arrays.asList(languages));
+
+           /*     for(int i=0;i<classset.size();i++){
+                    Log.e("Data: ",classset.toString());
+                }*/
+
+
+                //SharedPreferences.Editor editor = sharedPrefs.edit();
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+
+                editor.putStringSet("pref_classes",classset);
+                editor.putStringSet("curr_classes", classset1);
+                editor.putStringSet("pref_languages", langs);
+                //editor.putString("pref_classes","CS 307: Software Engineering-checked");
+                editor.commit();
+
+
+//                Log.e("dats", Arrays.toString(courses)+"\n"+Arrays.toString(coursestaken)+"\n"+Arrays.toString(languages));
+                //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+//                pullingprefs = false;
             }
         }
     }
     public class GetBroadcasters extends AsyncTask<String[], Void, String> {
         @Override
         protected String doInBackground(String[]... params) {
-            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences logger = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Log.e("AsyncTask running","WTF");
             InputStream in;
             HttpURLConnection con;
@@ -1288,6 +1364,11 @@ public class MainFragment extends Fragment {
             getActivity().recreate();
         }else if(id == R.id.action_user_preferences){
 //            Toast.makeText(MainActivity.this,  "Todo profile settings page", Toast.LENGTH_SHORT).show();
+            /*if(pullingprefs == true){
+                Toast.makeText(getActivity(), "Still refreshing data, try again in a moment", Toast.LENGTH_SHORT).show();
+            }else{
+
+            }*/
             Intent i = new Intent(getActivity(), UserPreferences.class);
             startActivity(i);
 

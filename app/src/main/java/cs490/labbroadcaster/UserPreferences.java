@@ -41,6 +41,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +61,7 @@ public class UserPreferences extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //VERY FIST THING
         //new GetUserPrefs().execute();
-
+        //new GetUserPrefs().execute();
         setContentView(R.layout.activity_userprefs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +71,7 @@ public class UserPreferences extends AppCompatActivity {
         Typeface robotoMono = Typeface.createFromAsset(context.getAssets(), "fonts/roboto-mono-regular.ttf");
 
         mTitle.setTypeface(robotoMono);
+
 
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyPreferenceFragment()).commit();
     }
@@ -92,8 +95,8 @@ public class UserPreferences extends AppCompatActivity {
                 String[] selected = selections.toArray(new String[] {});
                 String[] help = new String[selected.length];
                 for(int i = 0; i< selected.length; i++){
-                    help[i] = selected[i].substring(0, selected[i].length()-8);
-                    Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
+//                    help[i] = selected[i].substring(0, selected[i].length()-8);
+//                    Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                 }
                 lp.setEntries(help);
                 lp.setEntryValues(selected);
@@ -123,8 +126,8 @@ public class UserPreferences extends AppCompatActivity {
                         String[] selected = selections.toArray(new String[] {});
                         String[] help = new String[selected.length];
                         for(int i = 0; i< selected.length; i++){
-                            help[i] = selected[i].substring(0, selected[i].length()-8);
-                            Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
+//                            help[i] = selected[i].substring(0, selected[i].length()-8);
+//                            Log.e("substring ",selected[i].substring(0, selected[i].length()-8));
                         }
                         MultiSelectListPreference lp = (MultiSelectListPreference)findPreference("classes_help");
                         lp.setEnabled(true);
@@ -202,14 +205,15 @@ public class UserPreferences extends AppCompatActivity {
         super.onPause();
         Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
         new SaveUserPrefs().execute();
-        new GetUserPrefs().execute();
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_save:
-                Toast.makeText(UserPreferences.this, "Saving...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(UserPreferences.this, "Saving...", Toast.LENGTH_SHORT).show();
+                recreate();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -459,7 +463,7 @@ public class UserPreferences extends AppCompatActivity {
                     System.out.println("CHARS FROM READER: "+c);
 
                 }
-                Log.e("Login found=",found);
+                Log.e("GET found=",found);
                 if(c =='}'){
                     String temp = "";
                     in.close();
@@ -502,10 +506,78 @@ public class UserPreferences extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s){
             if(s.length() == 0){
-
+                Log.e("why AM I 0","hihj");
             }else{
+                int c = 0;
+                String[] dat = s.split("\n");
+                Log.e("dat size", dat.length+"");
+                //skip 0,1,5
+                dat[2] = dat[2].substring(13, dat[2].length());
+                dat[2] = dat[2].replace("\"","");
+                dat[3] = dat[3].substring(13, dat[3].length());
+                dat[3] = dat[3].replace("\"","");
+                dat[4] = dat[4].substring(15, dat[4].length());
+                dat[4] = dat[4].replace("\"","");
 
+                String[] courses = dat[2].split(", ");
+                for(int i = 0; i< courses.length; i++){
+                    if(courses[i].charAt(0) == ' '){
+                        courses[i] = courses[i].substring(1,courses[i].length());
+                    }
+                    courses[i] = courses[i].replace(",", "");
+                    Log.e(i+".", "'"+courses[i]+"'");
+                }
+
+
+                String[] coursestaken = dat[3].split(", ");
+                String[] languages = dat[4].split(", ");
+
+                for(int i = 0; i< coursestaken.length; i++){
+                    if(coursestaken[i].charAt(0) == ' '){
+                        coursestaken[i] = coursestaken[i].substring(1,coursestaken[i].length());
+                    }
+                    coursestaken[i] = coursestaken[i].replace(",", "");
+                    Log.e(i+".", "'"+coursestaken[i]+"'");
+                }
+
+                for(int i = 0; i< languages.length; i++){
+                    if(languages[i].charAt(0) == ' '){
+                        languages[i] = languages[i].substring(1,languages[i].length());
+                    }
+                    languages[i] = languages[i].replace(",", "");
+                    Log.e(i+".", "'"+languages[i]+"'");
+                }
+
+                //courses[0] = courses[0].substring(1,courses[0].length());
+                coursestaken[0] = coursestaken[0].substring(1,coursestaken[0].length());
+                languages[0] = languages[0].substring(1,languages[0].length());
+
+                //SharedPreferences sharedPrefs = getSharedPreferences("pref_classes", 0);
+//                SharedPreferences sharedPrefs1 = getSharedPreferences("curr_classes", 0);
+//                SharedPreferences sharedPrefs2 = getSharedPreferences("pref_languages", 0);
+                Set<String> classset = new HashSet<>(Arrays.asList(courses));
+                Set<String> classset1 = new HashSet<>(Arrays.asList(coursestaken));
+                Set<String> langs = new HashSet<>(Arrays.asList(languages));
+
+           /*     for(int i=0;i<classset.size();i++){
+                    Log.e("Data: ",classset.toString());
+                }*/
+
+
+                //SharedPreferences.Editor editor = sharedPrefs.edit();
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+
+                editor.putStringSet("pref_classes",classset);
+                editor.putStringSet("curr_classes", classset1);
+                editor.putStringSet("pref_languages", langs);
+                //editor.putString("pref_classes","CS 307: Software Engineering-checked");
+                editor.commit();
+
+
+//                Log.e("dats", Arrays.toString(courses)+"\n"+Arrays.toString(coursestaken)+"\n"+Arrays.toString(languages));
                 Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+
             }
         }
     }
