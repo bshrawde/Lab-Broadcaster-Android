@@ -19,7 +19,7 @@ public class AlarmReciever extends BroadcastReceiver{
     public Context mcontext;
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.mcontext = context;
+/*        this.mcontext = context;
         Log.d("BROADCAST RECIEVER", "Recurring alarm, requesting updated lab capacities");
         SharedPreferences sharedPref  = PreferenceManager.getDefaultSharedPreferences(mcontext);
         String refreshSetting = sharedPref.getString("refresh_rate", "manual-checked");
@@ -34,7 +34,7 @@ public class AlarmReciever extends BroadcastReceiver{
         }else{
             Log.e("Disabling alarm", "ewgf");
             disableAlarm();
-        }
+        }*/
 
     }
     private void setAlarm(){

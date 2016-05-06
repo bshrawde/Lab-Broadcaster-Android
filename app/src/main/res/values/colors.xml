@@ -9,4 +9,8 @@
     <color name="text_color">#FFFFFF</color>
     <color name="count_color">#BEBEBE</color>
     <color name="black_semi_transparent">#B2000000</color>
+    <color name="alternatelessfifty">#4caf50</color>
+    <color name="lessfifty">#FFFFFF</color>
+    <color name="lessseventyfive">#ff9800</color>
+    <color name="moreseventyfive">#f44336</color>
 </resources>

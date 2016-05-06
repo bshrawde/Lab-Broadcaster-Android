@@ -1,6 +1,8 @@
 package cs490.labbroadcaster.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -63,6 +65,28 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
 
         holder.room.setText(cRoom);
         holder.capacity.setText(capacity);
+        String ctemp = capacity.substring(0, capacity.length() - 10);
+        System.out.println("Just capacity "+ctemp);
+        if(ctemp.charAt(0) == 'X'){
+            holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                    .getColor(R.color.lessfifty), PorterDuff.Mode.MULTIPLY));
+        }else{
+//            Float f = Float.parseFloat(ctemp);
+            float f = parse(ctemp);
+            if(f<=.5){
+                /*holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                .getColor(R.color.lessfifty), PorterDuff.Mode.MULTIPLY));*/
+                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                        .getColor(R.color.alternatelessfifty), PorterDuff.Mode.MULTIPLY));
+            }else if(f>.5 && f<.75){
+                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                        .getColor(R.color.lessseventyfive), PorterDuff.Mode.MULTIPLY));
+            }else if(f>=.75){
+                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                        .getColor(R.color.moreseventyfive), PorterDuff.Mode.MULTIPLY));
+            }
+        }
+
         holder.room.setTypeface(robotoMono);
         holder.capacity.setTypeface(robotoMono);
     }
@@ -76,13 +100,23 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView room, capacity;
+        ImageView building;
         public MyViewHolder(View itemView) {
             super(itemView);
             room = (TextView) itemView.findViewById(R.id.room);
             capacity = (TextView) itemView.findViewById(R.id.capacity);
-
+            building = (ImageView) itemView.findViewById(R.id.building);
         }
 
+    }
+
+    float parse(String ratio) {
+        if (ratio.contains("/")) {
+            String[] rat = ratio.split("/");
+            return Float.parseFloat(rat[0]) / Float.parseFloat(rat[1]);
+        } else {
+            return Float.parseFloat(ratio);
+        }
     }
 
 }

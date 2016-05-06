@@ -201,9 +201,8 @@ public class UserPreferences extends AppCompatActivity {
                     //Log.e("selected: ", newValue.toString());
 
 
-                    Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
-                    //intent.putExtra("refresh", newValue.toString());
-                    new AlarmReciever().onReceive(getActivity(), intent);
+//                    Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
+//                    new AlarmReciever().onReceive(getActivity(), intent);
                     return true;
                 }
             };
