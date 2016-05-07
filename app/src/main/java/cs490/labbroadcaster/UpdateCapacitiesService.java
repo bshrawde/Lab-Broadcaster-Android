@@ -207,8 +207,9 @@ public class UpdateCapacitiesService extends Service {
                             parts[0] = parts[0].substring(0,4)+ " " +parts[0].substring(4, parts[0].length());
                             parts[1] = parts[1].replaceAll("[^0-9]","");
                             if(parts[0].equals("LWSN B131")){
-                                parts[1] = parts[1]+"/"+"24 Computers";
                                 percentage = Float.parseFloat(parts[1])/24;
+                                parts[1] = parts[1]+"/"+"24 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -218,8 +219,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("LWSN B146")){
-                                parts[1] = parts[1]+"/"+"24 Computers";
                                 percentage = Float.parseFloat(parts[1])/24;
+                                parts[1] = parts[1]+"/"+"24 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -229,8 +231,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("LWSN B148")){
-                                parts[1] = parts[1]+"/"+"25 Computers";
                                 percentage = Float.parseFloat(parts[1])/25;
+                                parts[1] = parts[1]+"/"+"25 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -240,8 +243,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("LWSN B158")){
-                                parts[1] = parts[1]+"/"+"24 Computers";
                                 percentage = Float.parseFloat(parts[1])/24;
+                                parts[1] = parts[1]+"/"+"24 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -251,8 +255,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("HAAS G56")){
-                                parts[1] = parts[1]+"/"+"24 Computers";
                                 percentage = Float.parseFloat(parts[1])/24;
+                                parts[1] = parts[1]+"/"+"24 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -262,8 +267,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("LWSN B160")){
-                                parts[1] = parts[1]+"/"+"25 Computers";
                                 percentage = Float.parseFloat(parts[1])/25;
+                                parts[1] = parts[1]+"/"+"25 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -273,8 +279,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("HAAS G40")){
-                                parts[1] = parts[1]+"/"+"24 Computers";
                                 percentage = Float.parseFloat(parts[1])/24;
+                                parts[1] = parts[1]+"/"+"24 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -284,8 +291,9 @@ public class UpdateCapacitiesService extends Service {
                                     }
                                 }
                             }else if(parts[0].equals("HAAS 257")){
-                                parts[1] = parts[1]+"/"+"21 Computers";
                                 percentage = Float.parseFloat(parts[1])/21;
+                                parts[1] = parts[1]+"/"+"21 Computers";
+
                                 if(percentage<.5) {
                                     count++;
                                     if(under50.equals("")){
@@ -315,6 +323,7 @@ public class UpdateCapacitiesService extends Service {
                         }else{
                             builder.setContentText(count+" labs including "+ under50+" have under 50% usage!");
                         }
+//                        builder.addAction(,"Disable Background Refresh", );
 
                         Intent intent = new Intent(context, MainActivity.class);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

@@ -32,7 +32,7 @@
         android:summary = "Choose your refresh rate to monitor whether a lab has more than 50 percent computers available"
         android:entries="@array/times"
         android:entryValues="@array/timeschecked"
-        android:defaultValue="LWSN B148-checked"
+        android:defaultValue="manual-checked"
         ></ListPreference>
     <MultiSelectListPreference
         android:title="TA for courses"

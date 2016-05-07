@@ -1,5 +1,7 @@
 package cs490.labbroadcaster;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +44,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,9 @@ import javax.net.ssl.TrustManagerFactory;
 public class UserPreferences extends AppCompatActivity {
     public Context context = this;
     static boolean doibroadcast = false;
+    Intent intent;
+    PendingIntent refreshCapacities;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,10 @@ public class UserPreferences extends AppCompatActivity {
         //VERY FIST THING
         //new GetUserPrefs().execute();
         //new GetUserPrefs().execute();
+
+        intent  = new Intent(context, UpdateCapacitiesService.class);
+        refreshCapacities = PendingIntent.getService(context,0,intent, 0);
+
         setContentView(R.layout.activity_userprefs);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,8 +88,8 @@ public class UserPreferences extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyPreferenceFragment()).commit();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment{
-
+    @SuppressLint("ValidFragment")
+    public class MyPreferenceFragment extends PreferenceFragment{
         @Override
         public void onCreate(final Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
@@ -199,10 +209,11 @@ public class UserPreferences extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     //Log.e("selected: ", newValue.toString());
-
-
-//                    Intent intent = new Intent(getActivity(), UpdateCapacitiesService.class);
-//                    new AlarmReciever().onReceive(getActivity(), intent);
+                    if(newValue.toString().equals("manual-checked")){
+                        manual();
+                    }else{
+                        hourly();
+                    }
                     return true;
                 }
             };
@@ -230,12 +241,6 @@ public class UserPreferences extends AppCompatActivity {
 //        //Toast.makeText(UserPreferences.this, "Back button pressed pause", Toast.LENGTH_SHORT).show();
         new SaveUserPrefs().execute();
         new DeleteBroadcasters().execute();
-
-
-
-
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -734,5 +739,26 @@ public class UserPreferences extends AppCompatActivity {
                 //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void manual(){
+        Log.e("MANUAL REFRESH", "BRUH!");
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(refreshCapacities);
+    }
+
+    public void hourly(){
+        Log.e("HOURLY REFRESH", "BRUH!");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
+        int min = calendar.get(Calendar.MINUTE);
+        Log.e("Refreshing in", hour+" "+min);
+        calendar.set(Calendar.HOUR_OF_DAY, hour); /* refresh in 1 hour */
+        calendar.set(Calendar.MINUTE, min);
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_HOUR, refreshCapacities);
+
+
     }
 }
