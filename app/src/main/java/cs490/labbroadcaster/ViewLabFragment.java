@@ -219,6 +219,23 @@ public class ViewLabFragment extends Fragment {
             public void onClick(View v) {
                 String linkText = "";
                 if("LWSN B146".equals(mTitle.getText())){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=1r5tgrb2sln4oe4h4f4gfeece8@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("LWSN B148".equals(mTitle.getText())){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=hd9ldosmo9upm7u5scvq8uumig@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("LWSN B158".equals(mTitle.getText())){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=25m91hh3dpdlcguv5h30i749pg@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("HAAS 257".equals(mTitle.getText())){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=tg56f4t31msvg4o56iuf37luqk@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("LWSN B160".equals((mTitle.getText()))){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=bvh903t70gtpvgtl6m8vhl2e1s@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("LWSN B131".equals((mTitle.getText()))){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=isp5jp397bj8et0i5r8g6kd3uo@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }else if("HAAS G40".equals((mTitle.getText()))){
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=jv11mjte5oupheck2kmv36mn2o@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                } else if ("HAAS G56".equals((mTitle.getText()))) {
+                    linkText = "https://calendar.google.com/calendar/embed?showTitle=0&showCalendars=0&mode=WEEK&width=600&height=600&wkst=1&bgcolor=%23FFFFFF&src=2c8utbns46atet3h1stfpaud88@group.calendar.google.com&color=%23528800&ctz=America/New_York";
+                }
+/*                if("LWSN B146".equals(mTitle.getText())){
                     linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb146.html";
                 }else if("LWSN B148".equals(mTitle.getText())){
                     linkText = "https://www.cs.purdue.edu/resources/facilities/lwsnb148.html";
@@ -234,7 +251,7 @@ public class ViewLabFragment extends Fragment {
                     linkText = "https://www.cs.purdue.edu/resources/facilities/haasg40.html";
                 } else if ("HAAS G56".equals((mTitle.getText()))) {
                     linkText = "https://www.cs.purdue.edu/resources/facilities/haasg56.html";
-                }
+                }*/
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
                 CustomTabsIntent intent = builder.build();
@@ -245,7 +262,29 @@ public class ViewLabFragment extends Fragment {
         fabusage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Todo", Toast.LENGTH_SHORT).show();
+                String linkText = "";
+                if("LWSN B146".equals(mTitle.getText())){
+                    linkText = "";
+                }else if("LWSN B148".equals(mTitle.getText())){
+                    linkText = "";
+                }else if("LWSN B158".equals(mTitle.getText())){
+                    linkText = "";
+                }else if("HAAS 257".equals(mTitle.getText())){
+                    linkText = "";
+                }else if("LWSN B160".equals((mTitle.getText()))){
+                    linkText = "";
+                }else if("LWSN B131".equals((mTitle.getText()))){
+                    linkText = "";
+                }else if("HAAS G40".equals((mTitle.getText()))){
+                    linkText = "";
+                } else if ("HAAS G56".equals((mTitle.getText()))) {
+                    linkText = "";
+                }
+
+               /* CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(getActivity(), Uri.parse(linkText));*/
             }
         });
 
