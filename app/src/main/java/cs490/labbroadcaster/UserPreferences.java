@@ -61,7 +61,7 @@ public class UserPreferences extends AppCompatActivity {
     public Context context = this;
     static boolean doibroadcast = false;
     Intent intent;
-    PendingIntent refreshCapacities;
+    static PendingIntent refreshCapacities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,8 @@ public class UserPreferences extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyPreferenceFragment()).commit();
     }
 
-    @SuppressLint("ValidFragment")
-    public class MyPreferenceFragment extends PreferenceFragment{
+
+    public static class MyPreferenceFragment extends PreferenceFragment{
         @Override
         public void onCreate(final Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
@@ -210,9 +210,20 @@ public class UserPreferences extends AppCompatActivity {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     //Log.e("selected: ", newValue.toString());
                     if(newValue.toString().equals("manual-checked")){
-                        manual();
+                        Log.e("MANUAL REFRESH", "BRUH!");
+                        AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                        manager.cancel(refreshCapacities);
                     }else{
-                        hourly();
+                        Log.e("HOURLY REFRESH", "BRUH!");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(System.currentTimeMillis());
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY) + 1;
+                        int min = calendar.get(Calendar.MINUTE);
+                        Log.e("Refreshing in", hour+" "+min);
+                        calendar.set(Calendar.HOUR_OF_DAY, hour); /* refresh in 1 hour */
+                        calendar.set(Calendar.MINUTE, min);
+                        AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_HOUR, refreshCapacities);
                     }
                     return true;
                 }
@@ -401,7 +412,7 @@ public class UserPreferences extends AppCompatActivity {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("Login found=",found);
