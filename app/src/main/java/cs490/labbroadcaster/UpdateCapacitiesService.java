@@ -1,5 +1,6 @@
 package cs490.labbroadcaster;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -176,7 +177,7 @@ public class UpdateCapacitiesService extends Service {
         @Override
         protected void onPostExecute(String s[]) {
             super.onPostExecute(s);
-            Toast.makeText(context, "BRUH", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "BRUH", Toast.LENGTH_SHORT).show();
             if(s.length == 0){
 
             }else{
@@ -313,15 +314,19 @@ public class UpdateCapacitiesService extends Service {
                     }
                 }
                 if(count >= 0){
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+                        Notification.Builder builder = new Notification.Builder(context);
+
                         builder.setSmallIcon(R.drawable.ic_domain_white_24dp);
                         builder.setContentTitle("Lab Broadcaster");
                         builder.setAutoCancel(true);
+                    String msg = "";
 
                         if(count==1){
                             builder.setContentText(under50+" has under 50% usage!");
                         }else{
-                            builder.setContentText(count+" labs including "+ under50+" have under 50% usage!");
+                            msg = count+" labs including "+ under50+" have under 50% usage!";
+                            builder.setContentText(msg);
                         }
 //                        builder.addAction(,"Disable Background Refresh", );
 
@@ -333,7 +338,15 @@ public class UpdateCapacitiesService extends Service {
                         builder.setContentIntent(pendingIntent);
 
                         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    if(count > 1){
+                        Notification notification = new Notification.BigTextStyle(builder).bigText(msg).build();
+                        notificationManager.notify(0, notification);
+                    }else{
                         notificationManager.notify(0,builder.build());
+                    }
+
+
+
                 }
 
 

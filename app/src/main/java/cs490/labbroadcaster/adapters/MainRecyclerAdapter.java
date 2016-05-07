@@ -68,7 +68,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         String ctemp = capacity.substring(0, capacity.length() - 10);
         System.out.println("Just capacity "+ctemp);
         if(ctemp.charAt(0) == 'X'){
-            holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+            holder.computer.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                     .getColor(R.color.lessfifty), PorterDuff.Mode.MULTIPLY));
         }else{
 //            Float f = Float.parseFloat(ctemp);
@@ -76,13 +76,13 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             if(f<=.5){
                 /*holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                 .getColor(R.color.lessfifty), PorterDuff.Mode.MULTIPLY));*/
-                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                holder.computer.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                         .getColor(R.color.alternatelessfifty), PorterDuff.Mode.MULTIPLY));
             }else if(f>.5 && f<.75){
-                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                holder.computer.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                         .getColor(R.color.lessseventyfive), PorterDuff.Mode.MULTIPLY));
             }else if(f>=.75){
-                holder.building.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
+                holder.computer.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                         .getColor(R.color.moreseventyfive), PorterDuff.Mode.MULTIPLY));
             }
         }
@@ -100,12 +100,12 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView room, capacity;
-        ImageView building;
+        ImageView computer;
         public MyViewHolder(View itemView) {
             super(itemView);
             room = (TextView) itemView.findViewById(R.id.room);
             capacity = (TextView) itemView.findViewById(R.id.capacity);
-            building = (ImageView) itemView.findViewById(R.id.building);
+            computer = (ImageView) itemView.findViewById(R.id.computer);
         }
 
     }

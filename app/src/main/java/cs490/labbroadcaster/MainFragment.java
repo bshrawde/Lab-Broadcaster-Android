@@ -779,7 +779,7 @@ public class MainFragment extends Fragment {
                  while(in.available()>0){
                         c = (char)in.read();
                         found+=c;
-                        System.out.println("CHARS FROM READER: "+c);
+//                        System.out.println("CHARS FROM READER: "+c);
 
                     }
                     Log.e("Login found=",found);
@@ -931,7 +931,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("Login found=",found);
@@ -1090,7 +1090,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("GET found=",found);
@@ -1300,7 +1300,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("Login found=",found);
@@ -1441,7 +1441,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("Login found=",found);
@@ -1584,7 +1584,7 @@ public class MainFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("GetBroadcaster ",found);

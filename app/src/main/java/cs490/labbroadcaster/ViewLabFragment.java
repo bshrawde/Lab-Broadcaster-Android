@@ -381,7 +381,7 @@ public class ViewLabFragment extends Fragment {
                 while(in.available()>0){
                     c = (char)in.read();
                     found+=c;
-                    System.out.println("CHARS FROM READER: "+c);
+//                    System.out.println("CHARS FROM READER: "+c);
 
                 }
                 Log.e("GetBroadcaster ",found);

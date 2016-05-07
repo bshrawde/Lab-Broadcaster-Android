@@ -98,7 +98,7 @@ public class UserPreferences extends AppCompatActivity {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //region courses need help on
             Set<String> selections = sharedPrefs.getStringSet("curr_classes", null);
-            Log.e("selectoins lenght",selections.size()+"");
+            Log.e("current class lenght",selections.size()+"");
 
             String[] selected = selections.toArray(new String[] {});
 
@@ -758,7 +758,5 @@ public class UserPreferences extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, min);
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_HOUR, refreshCapacities);
-
-
     }
 }
