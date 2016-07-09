@@ -110,7 +110,7 @@ public class MainFragment extends Fragment {
     protected boolean registervalid = false;
     protected boolean pullingprefs = false;
     public ViewLabsRecyclerAdapter adapter2;
-    int debug = 0; //change to 1 to enable normal function, 0 is to skip login dialog box regex checks
+    int debug = 1; //change to 0 to enable normal function, 1 is to skip login dialog box regex checks
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -596,7 +596,7 @@ public class MainFragment extends Fragment {
                 System.out.println("\n\nTHERE WAS AN ERROR8");
                 e.printStackTrace();
             } catch (KeyManagementException e) {
-                System.out.println("\n\nTHERE WAS AN ERROR8");
+                System.out.println("\n\nTHERE WAS AN ERROR9");
                 e.printStackTrace();
             }
             counter = 0;
@@ -606,8 +606,10 @@ public class MainFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s[]){
+            Log.e("Length is ",s.length+" ");
             if(s.length == 0){
-                //Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "There was an error refreshing", Toast.LENGTH_SHORT).show();
+                Log.e("Length is 0"," ");
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(false);
             }else{
@@ -655,6 +657,7 @@ public class MainFragment extends Fragment {
                             cap.add(parts[1]);
                         }
                     }else{
+                        Log.e("NULL","null :(");
                         if(i+1==s.length-1 && data.size() == 0){
                             data.add("LWSN B131");
                             cap.add("?/"+"24 Computers");
@@ -977,7 +980,7 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s){
             if(s.length() == 0||s.equals("")){
-                Toast.makeText(getActivity(), "Invalid Login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Invalid login or server is offline", Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.clear();
                 editor.commit();

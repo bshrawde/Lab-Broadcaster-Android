@@ -67,7 +67,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         holder.capacity.setText(capacity);
         String ctemp = capacity.substring(0, capacity.length() - 10);
         System.out.println("Just capacity "+ctemp);
-        if(ctemp.charAt(0) == 'X'){
+        if(ctemp.charAt(0) == '?'){
             holder.computer.setColorFilter(new PorterDuffColorFilter(mcontext.getResources()
                     .getColor(R.color.lessfifty), PorterDuff.Mode.MULTIPLY));
         }else{
