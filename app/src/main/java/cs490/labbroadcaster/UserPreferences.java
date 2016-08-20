@@ -97,10 +97,10 @@ public class UserPreferences extends AppCompatActivity {
             addPreferencesFromResource(R.xml.userpreferences);
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //region courses need help on
-            Set<String> selections = sharedPrefs.getStringSet("curr_classes", null);
+/*            Set<String> selections = sharedPrefs.getStringSet("curr_classes", null);
             Log.e("current class lenght",selections.size()+"");
 
-            String[] selected = selections.toArray(new String[] {});
+            String[] selected = selections.toArray(new String[] {});*/
 
             //Log.e("0?>??", selected[0]+"");
             //Log.e("0?>??1", selected[1]+"");
